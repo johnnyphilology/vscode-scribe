@@ -1,0 +1,14 @@
+[
+    {
+        "label": "@runes",
+        "detail": "Convert to runes (choose type)"
+    },
+    {
+        "label": "@futhorc",
+        "detail": "Convert to Anglo-Saxon runes"
+    },
+    {
+        "label": "@gothic",
+        "detail": "Convert to Gothic script"
+    }
+]

@@ -1,0 +1,34 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [18, 20, 22, 24] 
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: npm install
+      - run: npm run lint
+
+      # - name: Run tests (Linux)
+      #   run: xvfb-run -a npm test
+      #   if: runner.os == 'Linux'
+
+      # - name: Run tests (non-Linux)
+      #   run: npm test
+      #   if: runner.os != 'Linux'

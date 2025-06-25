@@ -1,0 +1,177 @@
+{
+  "name": "scribe",
+  "displayName": "Scribe",
+  "icon": "icon.png",
+  "author": {
+    "name": "Johnny Starr",
+    "email": "johnnyphilology@gmail.com",
+    "url": "https://johnnyphilology.com"
+  },
+  "description": "A scholarly extension that aids in writing medieval languages.",
+  "publisher": "JohnnyPhilology",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/johnnyphilology/scribe.git"
+  },
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "Education",
+    "Languages",
+    "Formatters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:oldenglish",
+    "onLanguage:oldnorse",
+    "onLanguage:gothic",
+    "onCommand:extension.convertRunesBlocks"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "oldenglish",
+        "aliases": [
+          "Old English",
+          "oldenglish",
+          "Anglo-Saxon",
+          "anglo-saxon"
+        ],
+        "extensions": [
+          ".oe"
+        ],
+        "configuration": "./language-configurations.json"
+      },
+      {
+        "id": "oldnorse",
+        "aliases": [
+          "Old Norse",
+          "oldnorse",
+          "Norrœnt"
+        ],
+        "extensions": [
+          ".on"
+        ],
+        "configuration": "./language-configurations.json"
+      },
+      {
+        "id": "gothic",
+        "aliases": [
+          "Gothic",
+          "gothic"
+        ],
+        "extensions": [
+          ".got"
+        ],
+        "configuration": "./language-configurations.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "extension.convertRunesBlocks",
+        "title": "Convert <runes> blocks to runes"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.convertRunesBlocks",
+        "key": "alt+r",
+        "when": "editorTextFocus"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "oldenglish",
+        "path": "./snippets/oldenglish.code-snippets"
+      },
+      {
+        "language": "oldnorse",
+        "path": "./snippets/oldnorse.code-snippets"
+      },
+      {
+        "language": "gothic",
+        "path": "./snippets/gothic.code-snippets"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "oldenglish",
+        "scopeName": "source.oldenglish",
+        "path": "./syntaxes/oldenglish.tmLanguage.json"
+      },
+      {
+        "language": "oldnorse",
+        "scopeName": "source.oldnorse",
+        "path": "./syntaxes/oldnorse.tmLanguage.json"
+      },
+      {
+        "language": "gothic",
+        "scopeName": "source.gothic",
+        "path": "./syntaxes/gothic.tmLanguage.json"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "extension.convertRunesBlocks",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "constant.language.runes.scribe",
+        "settings": {
+          "foreground": "#16a085",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": "constant.language.gothic.scribe",
+        "settings": {
+          "foreground": "#a83232",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": "keyword.control.runes.scribe",
+        "settings": {
+          "foreground": "#ffb347",
+          "fontStyle": "bold"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "npm run compile && node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.1",
+    "@types/vscode": "^1.101.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.5.0",
+    "eslint": "^9.25.1",
+    "mocha": "^11.7.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  }
+}

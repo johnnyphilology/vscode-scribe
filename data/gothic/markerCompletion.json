@@ -1,0 +1,10 @@
+[
+    {
+        "label": "@runes",
+        "detail": "Convert to runes (choose type)"
+    },
+    {
+        "label": "@gothic",
+        "detail": "Convert to Gothic script"
+    }
+]

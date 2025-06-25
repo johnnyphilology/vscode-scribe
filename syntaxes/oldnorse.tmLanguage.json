@@ -1,0 +1,21 @@
+{
+  "scopeName": "source.oldnorse",
+  "patterns": [
+    {
+      "name": "keyword.control.runes.scribe",
+      "match": "^@(runes|younger|elder|medieval)\\b"
+    },
+    {
+      "name": "keyword.control.runes.scribe",
+      "match": "^@(runes|futhorc|gothic)\\b"
+    },
+    {
+      "name": "constant.language.runes.scribe",
+      "match": "[\u16A0-\u16FF]+"
+    },
+    {
+      "name": "constant.language.gothic.scribe",
+      "match": "(\\uD800[\\uDF30-\\uDF4F])+"
+    }
+  ]
+}
