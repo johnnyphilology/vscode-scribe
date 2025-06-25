@@ -1,3 +1,17 @@
+import * as vscode from 'vscode';
+import { MarkerCommand } from "../types/marker-command";
+
+export function bracketMarkers(markers: Array<string>) {
+    let markerCommands: MarkerCommand[] = [];
+    markers.forEach(marker => {
+       markerCommands.push({
+           label: `<${marker}>`,
+           detail: `Insert a ${marker} block`,
+           insertText: new vscode.SnippetString(`<${marker}>\n$0\n</${marker}>`)
+       });
+    });
+    return markerCommands;
+}
 
 export function extractWordList(wordEntries: { word: string }[]) {
     return wordEntries.map(w => w.word);

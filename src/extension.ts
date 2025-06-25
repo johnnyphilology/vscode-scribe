@@ -10,6 +10,7 @@ import { registerHandleSubstitutions } from './providers/handleSubstitutions';
 import { registerCompletionHover } from './providers/completionHover';
 import { registerWordEntrySemanticTokens } from './providers/semanticTokens';
 import { extractWordList } from './utils/helpers';
+import { bracketMarkers } from './utils/helpers';
 
 import oldEnglishSubs from '../data/oldenglish/substitutions.json';
 import oldNorseSubs from '../data/oldnorse/substitutions.json';
@@ -22,10 +23,12 @@ import oldEnglishMarkers from '../data/oldenglish/markerCompletion.json';
 import oldNorseMarkers from '../data/oldnorse/markerCompletion.json';
 import gothicMarkers from '../data/gothic/markerCompletion.json';
 
+const fullOldEnglishMarkers = [oldEnglishMarkers, bracketMarkers(['futhorc', 'gothic'])].flat();
+
 export function activate(context: vscode.ExtensionContext) {
     registerHandleSubstitutions(context, oldEnglishSubs, 'oldenglish');
     registerCompletion(context, 'oldenglish', oldEnglishWords);
-    registerMarkerCompletion(context, 'oldenglish', oldEnglishMarkers);
+    registerMarkerCompletion(context, 'oldenglish', fullOldEnglishMarkers);
 
     registerHandleSubstitutions(context, oldNorseSubs, 'oldnorse');
     registerCompletion(context, 'oldnorse', oldNorseWords);

@@ -16,6 +16,21 @@
     {
       "name": "constant.language.gothic.scribe",
       "match": "(\\uD800[\\uDF30-\\uDF4F])+"
+    },
+    {
+      "name": "meta.block.tagged.scribe",
+      "begin": "(<)([a-zA-Z]+)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "name": "entity.name.tag.scribe" },
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      },
+      "end": "(</)([a-zA-Z]+)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "name": "entity.name.tag.scribe" },
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      }
     }
   ]
 }

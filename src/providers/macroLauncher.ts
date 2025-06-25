@@ -25,30 +25,42 @@ export function registerMacroLauncher(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerTextEditorCommand('extension.convertRunesBlocks', async (editor) => {
             const doc = editor.document;
+            const fullText = doc.getText();
             const edits: { range: vscode.Range; runes: string }[] = [];
 
-            for (let i = 0; i < doc.lineCount; i++) {
-                const line = doc.lineAt(i);
-                const cmdMatch = line.text.match(/^@(runes|futhorc|elder|younger|medieval|gothic)\s+(.+)/i);
-                if (cmdMatch) {
-                    const marker = cmdMatch[1].toLowerCase();
-                    const content = cmdMatch[2];
-                    if (marker === 'runes') {
-                        // Prompt for which converter to use
-                        const pick = await vscode.window.showQuickPick(
-                            runeConverters.map(c => c.label),
-                            { placeHolder: 'Choose runic script for: ' + content.substring(0, 20) + '...' }
-                        );
-                        if (!pick) {continue;}
-                        const converter = runeConverters.find(c => c.label === pick);
-                        if (!converter) {continue;}
-                        edits.push({ range: line.range, runes: converter.fn(content) });
-                    } else {
-                        const fn = markerMap[marker];
-                        if (!fn) {continue;}
-                        edits.push({ range: line.range, runes: fn(content) });
-                    }
+            const blockRegex = /<(?<marker>runes|futhorc|elder|younger|medieval|gothic)>(?<content>[\s\S]*?)<\/\1>/gi;
+            let match: RegExpExecArray | null;
+
+            while ((match = blockRegex.exec(fullText)) !== null) {
+                const marker = match.groups!.marker.toLowerCase();
+                const content = match.groups!.content.trim();
+
+                let runeOutput = "";
+
+                if (marker === 'runes') {
+                    const pick = await vscode.window.showQuickPick(
+                        runeConverters.map(c => c.label),
+                        { placeHolder: 'Choose runic script for: ' + content.substring(0, 20) + '...' }
+                    );
+                    if (!pick) {continue;}
+                    const converter = runeConverters.find(c => c.label === pick);
+                    if (!converter) {continue;}
+                    runeOutput = converter.fn(content);
+                } else {
+                    const fn = markerMap[marker];
+                    if (!fn) {continue;}
+                    runeOutput = fn(content);
                 }
+
+                // Get start and end offsets
+                const startOffset = match.index;
+                const endOffset = startOffset + match[0].length;
+
+                const startPos = doc.positionAt(startOffset);
+                const endPos = doc.positionAt(endOffset);
+                const range = new vscode.Range(startPos, endPos);
+
+                edits.push({ range, runes: runeOutput });
             }
 
             if (edits.length) {
@@ -57,6 +69,8 @@ export function registerMacroLauncher(context: vscode.ExtensionContext) {
                         editBuilder.replace(edit.range, edit.runes);
                     }
                 });
+            } else {
+                vscode.window.showInformationMessage("No <runes> blocks found.");
             }
         })
     );

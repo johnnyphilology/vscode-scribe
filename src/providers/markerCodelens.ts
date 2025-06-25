@@ -32,7 +32,7 @@ const SUPPORTED_LANGUAGES = [
 
 // --- Conversion functions by marker ---
 const runeFnMap: { [marker: string]: (txt: string) => string } = {
-    '@futhorc': toFuthorc,
+    '<futhorc>': toFuthorc,
     '@elder': toElderFuthark,
     '@younger': toYoungerFuthark,
     '@medieval': toMedievalRunes,

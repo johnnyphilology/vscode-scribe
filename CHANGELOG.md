@@ -1,6 +1,12 @@
 # Change Log
 
-## [0.1.0-beta]
+## [0.1.1]
+- Pre-Release
+- Adding `<runes></runes>` and other tags for multiline transliterations.
+- Fixed bug in `toGothic` function that wasn't handling `th` correctly.
+- Updated README.md to better reflect functionality.
+
+## [0.1.0]
 
 - Pre-Release
 - Added basic functionality for autocomplete and language support

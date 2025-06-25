@@ -4,7 +4,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 <img src="./doc/scribe.png" width="400"/>
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.1.0`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.1.1`, but you are free to evalute it and give feedback!
 
 ### 🗺️ Roadmap for `0.2.0`
 - [ ] Add more Old English words for autocomplete
@@ -143,7 +143,7 @@ The following runic writing systems are fully supported:
 ### Gothic Script
 - Wulifia's Gothic writing system for the Gothic Bible.
 
-#### Example Usage
+#### Inline Markers
 
 ```ruby
 @elder futhark
@@ -163,22 +163,31 @@ ALT+R →
 𐌲𐍉𐍄𐌷𐌹𐌺
 ```
 
+### Tag Markers
+Tag markers work similar to XML where anything inside of `<TAG></TAG>` gets transliterated into the desired writing sysytem.  The following tags are available:
+
+- `<younger>`
+- `<elder>`
+- `<medieval>`
+- `<futhorc>`
+- `<gothic>`
+
 #### Opening to Bēowulf
 
-##### Old English
-
-```ruby
-@futhorc Hwæt! Wē Gār-Dena in ġēardagum,
-@futhorc þēodcyninga, þrym ġefrūnon,
-@futhorc hū þā æþelingas ellen fremedon.
-@futhorc Oft Scyld Scēfing sceaþena þrēatum,
-@futhorc monegum mægþum, meodosetla oftēah,
-@futhorc egsode eorlas syððan ǣrest wearð
-@futhorc fēasceaft funden; hē þæs frōfre ġebād,
-@futhorc wēox under wolcnum, weorðmyndum þāh,
-@futhorc oþþæt him ǣghwylc þāra ymbsittendra
-@futhorc ofer hronrāde hyran scolde,
-@futhorc gomban gyldan; þæt wæs gōd cyning!
+```xml
+<futhorc>
+Hwæt! Wē Gār-Dena in ġēardagum,
+þēodcyninga, þrym ġefrūnon,
+hū þā æþelingas ellen fremedon.
+Oft Scyld Scēfing sceaþena þrēatum,
+monegum mægþum, meodosetla oftēah,
+egsode eorlas syððan ǣrest wearð
+fēasceaft funden; hē þæs frōfre ġebād,
+wēox under wolcnum, weorðmyndum þāh,
+oþþæt him ǣghwylc þāra ymbsittendra
+ofer hronrāde hyran scolde,
+gomban gyldan; þæt wæs gōd cyning!
+</futhorc>
 ```
 
 ALT+R →
@@ -197,37 +206,39 @@ ALT+R →
 ᚷᚩᛗᛒᚪᚾ ᚷᚣᛚᛞᚪᚾ; ᚦᚫᛏ ᚹᚫᛋ ᚷᚩᛞ ᚳᚣᚾᛁᛝ!
 ```
 
-##### The Lord's Prayer in Gothic
+#### The Lord's Prayer in Gothic
 
-```ruby
-@gothic Atta unsar, þu in himinam,
-@gothic weihnai namo þein.
-@gothic qimai þiudinassus þeins.
-@gothic wairþai wilja þeins,
-@gothic swe in himina jah ana airþai.
-@gothic hlaif unsarana þana sinteinan gif uns himma daga.
-@gothic jah aflet uns þatei skulans sijaima,
-@gothic swaswe jah weis afletam þaim skulam unsaraim.
-@gothic jah ni briggais uns in fraistubnjai,
-@gothic ak lausei uns af þamma ubilin.
-@gothic unte þeina ist þiudangardi jah mahts jah wulþus in aiwins.
-@gothic Amen.
+```xml
+<gothic>
+Atta unsar, þu in himinam,
+weihnai namo þein.
+qimai þiudinassus þeins.
+wairþai wilja þeins,
+swe in himina jah ana airþai.
+hlaif unsarana þana sinteinan gif uns himma daga.
+jah aflet uns þatei skulans sijaima,
+swaswe jah weis afletam þaim skulam unsaraim.
+jah ni briggais uns in fraistubnjai,
+ak lausei uns af þamma ubilin.
+unte þeina ist þiudangardi jah mahts jah wulþus in aiwins.
+Amen.
+</gothic>
 ```
 
 ALT+R →
 
 ```
-𐌰𐍄𐍄𐌰 𐌿𐌽𐍃𐌰𐍂, 𐍄𐌷𐌿 𐌹𐌽 𐌷𐌹𐌼𐌹𐌽𐌰𐌼,
-𐍅𐌴𐌹𐌷𐌽𐌰𐌹 𐌽𐌰𐌼𐍉 𐍄𐌷𐌴𐌹𐌽.
-𐌵𐌹𐌼𐌰𐌹 𐍄𐌷𐌹𐌿𐌳𐌹𐌽𐌰𐍃𐍃𐌿𐍃 𐍄𐌷𐌴𐌹𐌽𐍃.
-𐍅𐌰𐌹𐍂𐍄𐌷𐌰𐌹 𐍅𐌹𐌻𐌾𐌰 𐍄𐌷𐌴𐌹𐌽𐍃,
-𐍃𐍅𐌴 𐌹𐌽 𐌷𐌹𐌼𐌹𐌽𐌰 𐌾𐌰𐌷 𐌰𐌽𐌰 𐌰𐌹𐍂𐍄𐌷𐌰𐌹.
-𐌷𐌻𐌰𐌹𐍆 𐌿𐌽𐍃𐌰𐍂𐌰𐌽𐌰 𐍄𐌷𐌰𐌽𐌰 𐍃𐌹𐌽𐍄𐌴𐌹𐌽𐌰𐌽 𐌲𐌹𐍆 𐌿𐌽𐍃 𐌷𐌹𐌼𐌼𐌰 𐌳𐌰𐌲𐌰.
-𐌾𐌰𐌷 𐌰𐍆𐌻𐌴𐍄 𐌿𐌽𐍃 𐍄𐌷𐌰𐍄𐌴𐌹 𐍃𐌺𐌿𐌻𐌰𐌽𐍃 𐍃𐌹𐌾𐌰𐌹𐌼𐌰,
-𐍃𐍅𐌰𐍃𐍅𐌴 𐌾𐌰𐌷 𐍅𐌴𐌹𐍃 𐌰𐍆𐌻𐌴𐍄𐌰𐌼 𐍄𐌷𐌰𐌹𐌼 𐍃𐌺𐌿𐌻𐌰𐌼 𐌿𐌽𐍃𐌰𐍂𐌰𐌹𐌼.
+𐌰𐍄𐍄𐌰 𐌿𐌽𐍃𐌰𐍂, 𐌸𐌿 𐌹𐌽 𐌷𐌹𐌼𐌹𐌽𐌰𐌼,
+𐍅𐌴𐌹𐌷𐌽𐌰𐌹 𐌽𐌰𐌼𐍉 𐌸𐌴𐌹𐌽.
+𐌵𐌹𐌼𐌰𐌹 𐌸𐌹𐌿𐌳𐌹𐌽𐌰𐍃𐍃𐌿𐍃 𐌸𐌴𐌹𐌽𐍃.
+𐍅𐌰𐌹𐍂𐌸𐌰𐌹 𐍅𐌹𐌻𐌾𐌰 𐌸𐌴𐌹𐌽𐍃,
+𐍃𐍅𐌴 𐌹𐌽 𐌷𐌹𐌼𐌹𐌽𐌰 𐌾𐌰𐌷 𐌰𐌽𐌰 𐌰𐌹𐍂𐌸𐌰𐌹.
+𐌷𐌻𐌰𐌹𐍆 𐌿𐌽𐍃𐌰𐍂𐌰𐌽𐌰 𐌸𐌰𐌽𐌰 𐍃𐌹𐌽𐍄𐌴𐌹𐌽𐌰𐌽 𐌲𐌹𐍆 𐌿𐌽𐍃 𐌷𐌹𐌼𐌼𐌰 𐌳𐌰𐌲𐌰.
+𐌾𐌰𐌷 𐌰𐍆𐌻𐌴𐍄 𐌿𐌽𐍃 𐌸𐌰𐍄𐌴𐌹 𐍃𐌺𐌿𐌻𐌰𐌽𐍃 𐍃𐌹𐌾𐌰𐌹𐌼𐌰,
+𐍃𐍅𐌰𐍃𐍅𐌴 𐌾𐌰𐌷 𐍅𐌴𐌹𐍃 𐌰𐍆𐌻𐌴𐍄𐌰𐌼 𐌸𐌰𐌹𐌼 𐍃𐌺𐌿𐌻𐌰𐌼 𐌿𐌽𐍃𐌰𐍂𐌰𐌹𐌼.
 𐌾𐌰𐌷 𐌽𐌹 𐌱𐍂𐌹𐌲𐌲𐌰𐌹𐍃 𐌿𐌽𐍃 𐌹𐌽 𐍆𐍂𐌰𐌹𐍃𐍄𐌿𐌱𐌽𐌾𐌰𐌹,
-𐌰𐌺 𐌻𐌰𐌿𐍃𐌴𐌹 𐌿𐌽𐍃 𐌰𐍆 𐍄𐌷𐌰𐌼𐌼𐌰 𐌿𐌱𐌹𐌻𐌹𐌽.
-𐌿𐌽𐍄𐌴 𐍄𐌷𐌴𐌹𐌽𐌰 𐌹𐍃𐍄 𐍄𐌷𐌹𐌿𐌳𐌰𐌽𐌲𐌰𐍂𐌳𐌹 𐌾𐌰𐌷 𐌼𐌰𐌷𐍄𐍃 𐌾𐌰𐌷 𐍅𐌿𐌻𐍄𐌷𐌿𐍃 𐌹𐌽 𐌰𐌹𐍅𐌹𐌽𐍃.
+𐌰𐌺 𐌻𐌰𐌿𐍃𐌴𐌹 𐌿𐌽𐍃 𐌰𐍆 𐌸𐌰𐌼𐌼𐌰 𐌿𐌱𐌹𐌻𐌹𐌽.
+𐌿𐌽𐍄𐌴 𐌸𐌴𐌹𐌽𐌰 𐌹𐍃𐍄 𐌸𐌹𐌿𐌳𐌰𐌽𐌲𐌰𐍂𐌳𐌹 𐌾𐌰𐌷 𐌼𐌰𐌷𐍄𐍃 𐌾𐌰𐌷 𐍅𐌿𐌻𐌸𐌿𐍃 𐌹𐌽 𐌰𐌹𐍅𐌹𐌽𐍃.
 𐌰𐌼𐌴𐌽.
 ```
 
