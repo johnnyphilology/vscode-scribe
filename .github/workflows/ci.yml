@@ -43,7 +43,7 @@ jobs:
         if: runner.os == 'Linux' && matrix.node == '20'
 
   publish:
-    name: Publish to VS Code Marketplace
+    name: Publish to GitHub Packages
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
@@ -69,8 +69,24 @@ jobs:
           name: vsix-package
           path: '*.vsix'
 
-      - name: Publish to marketplace
-        run: npm run deploy
+      - name: Attach VSIX to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
         env:
-          VSCE_AAD_USERNAME: ${{ secrets.VSCE_AAD_USERNAME }}
-          VSCE_AAD_PASSWORD: ${{ secrets.VSCE_AAD_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to GitHub Packages
+        run: |
+          # Configure npm to publish to GitHub Packages
+          echo "@johnnyphilology:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          
+          # Update package.json for GitHub Packages
+          npm pkg set "publishConfig.registry=https://npm.pkg.github.com"
+          npm pkg set "name=@johnnyphilology/scribe"
+          
+          # Publish the package
+          npm publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
