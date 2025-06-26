@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { bracketMarkers, extractWordList, isInAtMarker, stripDiacritics } from '../../utils/helpers';
+import { bracketMarkers, extractWordList, stripDiacritics } from '../../utils/helpers';
 
 suite('Helper Functions Test Suite', () => {
 	
@@ -23,13 +23,6 @@ suite('Helper Functions Test Suite', () => {
 		const result = extractWordList(wordEntries);
 		
 		assert.deepStrictEqual(result, ['hello', 'world', 'test']);
-	});
-
-	test('isInAtMarker should detect @ markers correctly', () => {
-		assert.strictEqual(isInAtMarker('@runes test'), true);
-		assert.strictEqual(isInAtMarker('  @marker'), true);
-		assert.strictEqual(isInAtMarker('normal text'), false);
-		assert.strictEqual(isInAtMarker('text @marker'), false);
 	});
 
 	test('stripDiacritics should remove diacritical marks', () => {

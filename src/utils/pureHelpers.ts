@@ -5,10 +5,6 @@ export function extractWordList(wordEntries: { word: string }[]) {
     return wordEntries.map(w => w.word);
 }
 
-export function isInAtMarker(line: string): boolean {
-    return /^@\w+\b/.test(line.trimStart());
-}
-
 export function stripDiacritics(text: string): string {
     // Normalize to decomposed form to separate base and diacritic marks
     let stripped = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");

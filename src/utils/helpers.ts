@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
 import { MarkerCommand } from "../types/marker-command";
-import { extractWordList as pureExtractWordList, isInAtMarker as pureIsInAtMarker, stripDiacritics as pureStripDiacritics, applyCasing as pureApplyCasing } from './pureHelpers';
+import { extractWordList as pureExtractWordList, stripDiacritics as pureStripDiacritics, applyCasing as pureApplyCasing } from './pureHelpers';
 
 // Re-export pure functions
 export const extractWordList = pureExtractWordList;
-export const isInAtMarker = pureIsInAtMarker;
 export const stripDiacritics = pureStripDiacritics;
 export const applyCasing = pureApplyCasing;
 

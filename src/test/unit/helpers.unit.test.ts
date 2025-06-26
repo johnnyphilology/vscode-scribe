@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import * as assert from 'assert';
-import { extractWordList, isInAtMarker, stripDiacritics, applyCasing } from '../../utils/pureHelpers';
+import { extractWordList, stripDiacritics, applyCasing } from '../../utils/pureHelpers';
 
 // Unit tests that don't require VS Code context
 describe('Scribe Utility Functions', () => {
@@ -19,19 +19,6 @@ describe('Scribe Utility Functions', () => {
 		it('should handle empty array', () => {
 			const result = extractWordList([]);
 			assert.deepStrictEqual(result, []);
-		});
-	});
-
-	describe('isInAtMarker', () => {
-		it('should detect @ markers at start of line', () => {
-			assert.strictEqual(isInAtMarker('@runes test'), true);
-			assert.strictEqual(isInAtMarker('  @marker'), true);
-			assert.strictEqual(isInAtMarker('@'), false); // needs word boundary
-		});
-
-		it('should not detect @ markers in middle of line', () => {
-			assert.strictEqual(isInAtMarker('normal text'), false);
-			assert.strictEqual(isInAtMarker('text @marker'), false);
 		});
 	});
 

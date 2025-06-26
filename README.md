@@ -5,14 +5,11 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/johnnyphilology/scribe/ci.yml?branch=main&style=for-the-badge)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/johnnyphilology.scribe?include_prereleases&style=for-the-badge)
+
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.1.1`, but you are free to evalute it and give feedback!
-
-### 🗺️ Roadmap for `0.2.0`
-- [ ] Add more Old English words for autocomplete
-- [ ] Add Gothic words for autocomplete
-- [ ] Add Unit Tests
+_Scribe_ is currently **pre-release** at version `0.2.0`, but you are free to evalute it and give feedback!
 
 ## Language Features
 
@@ -20,9 +17,9 @@ _Scribe_ is currently **pre-release** at version `0.1.1`, but you are free to ev
 
 Added basic functionality for autocomplete while typing.  Popups include definition and documentation.
 
-- **Old English:** 772 beginner words
+- **Old English:** 772 common words
 - **Old Norse:** 36,847 words
-- **Gothic:** 1 placeholder word
+- **Gothic:** 110 common words
 
 ## Languages
 
