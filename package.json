@@ -156,7 +156,8 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "npm run compile && node ./out/test/runTest.js"
+    "test": "npm run compile && node ./out/test/runTest.js",
+    "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -168,6 +169,7 @@
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.5.0",
     "eslint": "^9.25.1",
+    "glob": "^11.0.3",
     "mocha": "^11.7.1",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
