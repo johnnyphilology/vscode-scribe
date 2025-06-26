@@ -13,7 +13,11 @@
   - Detailed grammatical documentation for each entry
 
 ### 🧪 **Testing Infrastructure**
-- **Added comprehensive unit testing framework** with 71 passing tests
+- **Added comprehensive unit testing framework** with 71+ passing tests
+- **Expanded test coverage** for all language-specific functionality:
+  - **Enhanced `stripDiacritics` tests** - Comprehensive medieval language handling validation
+  - **Rune conversion tests** - All scripts with extensive Unicode and case preservation tests
+  - **Provider logic tests** - Complete coverage of all extension features
 - **Created provider helper functions** for testable business logic
 - **Separated pure functions** from VS Code dependencies for better testability
 - **Added test coverage** for all providers:
@@ -24,7 +28,6 @@
   - Macro launcher logic (rune block parsing)
   - Gutter decoration logic (line detection for icons)
   - Semantic tokens logic (word highlighting)
-- **Added rune conversion tests** for all scripts (Futhorc, Elder Futhark, Younger Futhark, Medieval, Gothic)
 - **Fast test execution**: All unit tests complete in ~19ms
 
 ### 🔧 **Developer Experience**
@@ -60,17 +63,27 @@
 - **Improved digraph matching** with longest-match-first algorithm
 - **Enhanced text normalization** for better hover provider accuracy
 - **Corrected Gothic conjunction classification** (jah: conjunction, not preposition)
+- **Fixed medieval language diacritics handling** - `stripDiacritics` now correctly:
+  - Only removes diacritical marks from vowels (á, é, í, ó, ú, ý → a, e, i, o, u, y)
+  - Preserves all medieval consonants and special letters (þ, ð, ƿ, æ, ƕ remain unchanged)
+  - Converts macron ash (ǣ) to regular ash (æ)
+  - Maintains proper case preservation throughout
 
 ### 🏗️ **Internal Improvements**
+- **Major code refactoring** to reduce duplication and improve maintainability:
+  - **Generic rune conversion function** - Eliminated duplicate logic across all rune scripts
+  - **Data-driven extension activation** - Refactored from repetitive registration to config-driven approach
+  - **Improved `stripDiacritics` function** - Now correctly handles medieval languages (only removes diacritics from vowels, preserves all special letters like þ, ð, ƿ, æ, ƕ)
 - **Refactored utility functions** into logical modules:
-  - `pureHelpers.ts` - VS Code-independent utilities
-  - `providerHelpers.ts` - Provider business logic
+  - `pureHelpers.ts` - VS Code-independent utilities with generic `convertToRunes` function
+  - `providerHelpers.ts` - Testable provider business logic
   - `helpers.ts` - VS Code-dependent wrappers
-- **Updated all rune scripts** to use pure helper functions
+- **Updated all rune scripts** to use the new generic conversion helper
+- **Enhanced extension activation** with `registerLanguage` helper function
 - **Improved type safety** throughout the codebase
 
 ### 📁 **New Files**
-- `src/utils/pureHelpers.ts` - Pure utility functions
+- `src/utils/pureHelpers.ts` - Pure utility functions with generic rune conversion
 - `src/utils/providerHelpers.ts` - Testable provider logic
 - `src/test/unit/` - Unit test directory with comprehensive coverage
 - `src/test/runUnitTests.ts` - Fast unit test runner
