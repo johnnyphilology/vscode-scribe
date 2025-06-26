@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { stripDiacritics } from "../../../utils/pureHelpers";
 
 const elderMap: { [key: string]: string } = {
     "f": "ᚠ",  // fehu

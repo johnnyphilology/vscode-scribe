@@ -8,6 +8,9 @@ export const isInAtMarker = pureIsInAtMarker;
 export const stripDiacritics = pureStripDiacritics;
 export const applyCasing = pureApplyCasing;
 
+// Re-export provider helpers for use in providers
+export * from './providerHelpers';
+
 // VS Code dependent functions
 export function bracketMarkers(markers: Array<string>) {
     let markerCommands: MarkerCommand[] = [];

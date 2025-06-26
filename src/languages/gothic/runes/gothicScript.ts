@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { stripDiacritics } from "../../../utils/pureHelpers";
 
 const gothicMap: { [key: string]: string } = {
     "þ": "𐌸", "th": "𐌸", "a": "𐌰", "b": "𐌱", "g": "𐌲", "d": "𐌳", 

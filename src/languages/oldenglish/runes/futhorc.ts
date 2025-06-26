@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { stripDiacritics } from "../../../utils/pureHelpers";
 
 const futhorcMap: { [key: string]: string } = {
     "th": "ᚦ", "ng": "ᛝ", "ae": "ᚫ", "eo": "ᛇ",

@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { stripDiacritics } from "../../../utils/pureHelpers";
 
 const medievalMap: { [key: string]: string } = {
     "a": "ᛆ", // medieval a
