@@ -2,12 +2,12 @@
   "scopeName": "source.oldenglish",
   "patterns": [
     {
-      "name": "comment.language.oldenglish.scribe",
-      "match": "^#.*$"
-    },
-    {
       "name": "constant.language.runes.scribe",
       "match": "[\u16A0-\u16FF]+"
+    },
+    {
+      "name": "constant.language.gothic.scribe",
+      "match": "(𐌰|𐌱|𐌲|𐌳|𐌴|𐌵|𐌶|𐌷|𐌸|𐌹|𐌺|𐌻|𐌼|𐌽|𐌾|𐌿|𐍀|𐍁|𐍂|𐍃|𐍄|𐍅|𐍆|𐍇|𐍈|𐍉|𐍊)+"
     },
     {
       "name": "meta.block.tagged.scribe",

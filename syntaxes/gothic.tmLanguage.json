@@ -7,7 +7,7 @@
     },
     {
       "name": "constant.language.gothic.scribe",
-      "match": "(\\uD800[\\uDF30-\\uDF4F])+"
+      "match": "(𐌰|𐌱|𐌲|𐌳|𐌴|𐌵|𐌶|𐌷|𐌸|𐌹|𐌺|𐌻|𐌼|𐌽|𐌾|𐌿|𐍀|𐍁|𐍂|𐍃|𐍄|𐍅|𐍆|𐍇|𐍈|𐍉|𐍊)+"
     },
     {
       "name": "meta.block.tagged.scribe",
