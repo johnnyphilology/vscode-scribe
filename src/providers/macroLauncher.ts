@@ -4,21 +4,14 @@ import { toElderFuthark } from '../languages/oldnorse/runes/elderFuthark';
 import { toYoungerFuthark } from '../languages/oldnorse/runes/youngerFuthark';
 import { toMedievalRunes } from '../languages/oldnorse/runes/medieval';
 import { toGothic } from '../languages/gothic/runes/gothicScript';
-
-const runeConverters = [
-    { label: "Futhorc (Anglo-Saxon)", fn: toFuthorc },
-    { label: "Elder Futhark (Old Norse)", fn: toElderFuthark },
-    { label: "Younger Futhark (Old Norse)", fn: toYoungerFuthark },
-    { label: "Medieval Nordic Runes", fn: toMedievalRunes },
-    { label: "Gothic Alphabet", fn: toGothic }
-];
+import MARKERS from '../../data/markers.json';
 
 const markerMap: { [key: string]: (txt: string) => string } = {
-    'futhorc': toFuthorc,
-    'elder': toElderFuthark,
-    'younger': toYoungerFuthark,
-    'medieval': toMedievalRunes,
-    'gothic': toGothic
+    'Futhorc': toFuthorc,
+    'ElderFuthark': toElderFuthark,
+    'YoungerFuthark': toYoungerFuthark,
+    'MedievalFuthark': toMedievalRunes,
+    'Gothic': toGothic
 };
 
 export function registerMacroLauncher(context: vscode.ExtensionContext) {
@@ -28,29 +21,26 @@ export function registerMacroLauncher(context: vscode.ExtensionContext) {
             const fullText = doc.getText();
             const edits: { range: vscode.Range; runes: string }[] = [];
 
-            const blockRegex = /<(?<marker>runes|futhorc|elder|younger|medieval|gothic)>(?<content>[\s\S]*?)<\/\1>/gi;
+            // Build a regex that matches only PascalCase markers from your marker list
+            const markerPattern = MARKERS.join('|');
+            // Named backreference for tag pairing; no case-insensitive flag!
+            const blockRegex = new RegExp(
+                `<(?<marker>${markerPattern})>(?<content>[\\s\\S]*?)</\\k<marker>>`,
+                'g'
+            );
+
             let match: RegExpExecArray | null;
 
             while ((match = blockRegex.exec(fullText)) !== null) {
-                const marker = match.groups!.marker.toLowerCase();
+                const marker = match.groups!.marker; // PascalCase
                 const content = match.groups!.content.trim();
 
                 let runeOutput = "";
 
-                if (marker === 'runes') {
-                    const pick = await vscode.window.showQuickPick(
-                        runeConverters.map(c => c.label),
-                        { placeHolder: 'Choose runic script for: ' + content.substring(0, 20) + '...' }
-                    );
-                    if (!pick) {continue;}
-                    const converter = runeConverters.find(c => c.label === pick);
-                    if (!converter) {continue;}
-                    runeOutput = converter.fn(content);
-                } else {
-                    const fn = markerMap[marker];
-                    if (!fn) {continue;}
-                    runeOutput = fn(content);
-                }
+                // Use PascalCase marker for lookup
+                const fn = markerMap[marker];
+                if (!fn) { continue; }
+                runeOutput = fn(content);
 
                 // Get start and end offsets
                 const startOffset = match.index;
@@ -70,7 +60,7 @@ export function registerMacroLauncher(context: vscode.ExtensionContext) {
                     }
                 });
             } else {
-                vscode.window.showInformationMessage("No <runes> blocks found.");
+                vscode.window.showInformationMessage("No transliteration blocks found.");
             }
         })
     );

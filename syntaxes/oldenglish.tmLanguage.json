@@ -6,16 +6,8 @@
       "match": "^#.*$"
     },
     {
-      "name": "keyword.control.runes.scribe",
-      "match": "^@(runes|futhorc|gothic)\\b"
-    },
-    {
       "name": "constant.language.runes.scribe",
       "match": "[\u16A0-\u16FF]+"
-    },
-    {
-      "name": "constant.language.gothic.scribe",
-      "match": "(\\uD800[\\uDF30-\\uDF4F])+"
     },
     {
       "name": "meta.block.tagged.scribe",

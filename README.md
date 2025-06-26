@@ -10,7 +10,6 @@ _Scribe_ is currently **pre-release** at version `0.1.1`, but you are free to ev
 - [ ] Add more Old English words for autocomplete
 - [ ] Add Gothic words for autocomplete
 - [ ] Add Unit Tests
-- [ ] Add multi-line `@*` for runic and gothic transliterations
 
 ## Language Features
 
@@ -143,39 +142,19 @@ The following runic writing systems are fully supported:
 ### Gothic Script
 - Wulifia's Gothic writing system for the Gothic Bible.
 
-#### Inline Markers
+### Transliteration Tags
+These tags work similar to XML where anything inside of `<Tag></Tag>` gets transliterated into the desired writing sysytem.  The following tags are available:
 
-```ruby
-@elder futhark
-@younger futhark
-@medieval futhark
-@futhorc futhorc
-@gothic gothik
-```
-
-ALT+R →
-
-```
-ᚠᚢᚦᚨᚱᚲ
-ᚠᚢᛏᚼᛅᚱᚴ
-ᚠᚢᛐᚼᛆᚱᚴ
-ᚠᚢᚦᚩᚱᚳ
-𐌲𐍉𐍄𐌷𐌹𐌺
-```
-
-### Tag Markers
-Tag markers work similar to XML where anything inside of `<TAG></TAG>` gets transliterated into the desired writing sysytem.  The following tags are available:
-
-- `<younger>`
-- `<elder>`
-- `<medieval>`
-- `<futhorc>`
-- `<gothic>`
+- `<Futhorc>`
+- `<YoungerFuthark>`
+- `<ElderFuthark>`
+- `<MedievalFuthark>`
+- `<Gothic>`
 
 #### Opening to Bēowulf
 
 ```xml
-<futhorc>
+<Futhorc>
 Hwæt! Wē Gār-Dena in ġēardagum,
 þēodcyninga, þrym ġefrūnon,
 hū þā æþelingas ellen fremedon.
@@ -187,7 +166,7 @@ wēox under wolcnum, weorðmyndum þāh,
 oþþæt him ǣghwylc þāra ymbsittendra
 ofer hronrāde hyran scolde,
 gomban gyldan; þæt wæs gōd cyning!
-</futhorc>
+</Futhorc>
 ```
 
 ALT+R →
@@ -209,7 +188,7 @@ ALT+R →
 #### The Lord's Prayer in Gothic
 
 ```xml
-<gothic>
+<Gothic>
 Atta unsar, þu in himinam,
 weihnai namo þein.
 qimai þiudinassus þeins.
@@ -222,7 +201,7 @@ jah ni briggais uns in fraistubnjai,
 ak lausei uns af þamma ubilin.
 unte þeina ist þiudangardi jah mahts jah wulþus in aiwins.
 Amen.
-</gothic>
+</Gothic>
 ```
 
 ALT+R →

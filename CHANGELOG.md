@@ -3,6 +3,8 @@
 ## [0.1.1]
 - Pre-Release
 - Adding `<runes></runes>` and other tags for multiline transliterations.
+- Removed `@` style inline markers
+- Removed Codelense for now
 - Fixed bug in `toGothic` function that wasn't handling `th` correctly.
 - Updated README.md to better reflect functionality.
 
