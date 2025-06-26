@@ -2,6 +2,551 @@
     {
         "word": "jah",
         "detail": "and",
-        "documentation": "*preposition*"
+        "documentation": "*conjunction*"
+    },
+    {
+        "word": "ik",
+        "detail": "I",
+        "documentation": "*pronoun* - first person singular nominative"
+    },
+    {
+        "word": "þu",
+        "detail": "you (singular)",
+        "documentation": "*pronoun* - second person singular nominative"
+    },
+    {
+        "word": "is",
+        "detail": "he",
+        "documentation": "*pronoun* - third person masculine singular nominative"
+    },
+    {
+        "word": "si",
+        "detail": "she",
+        "documentation": "*pronoun* - third person feminine singular nominative"
+    },
+    {
+        "word": "ita",
+        "detail": "it",
+        "documentation": "*pronoun* - third person neuter singular nominative"
+    },
+    {
+        "word": "weis",
+        "detail": "we",
+        "documentation": "*pronoun* - first person plural nominative"
+    },
+    {
+        "word": "jus",
+        "detail": "you (plural)",
+        "documentation": "*pronoun* - second person plural nominative"
+    },
+    {
+        "word": "eis",
+        "detail": "they (masculine)",
+        "documentation": "*pronoun* - third person masculine plural nominative"
+    },
+    {
+        "word": "ijos",
+        "detail": "they (feminine)",
+        "documentation": "*pronoun* - third person feminine plural nominative"
+    },
+    {
+        "word": "ija",
+        "detail": "they (neuter)",
+        "documentation": "*pronoun* - third person neuter plural nominative"
+    },
+    {
+        "word": "guþ",
+        "detail": "God",
+        "documentation": "*noun* - masculine, divine name"
+    },
+    {
+        "word": "frauja",
+        "detail": "lord, master",
+        "documentation": "*noun* - masculine weak declension"
+    },
+    {
+        "word": "þiudans",
+        "detail": "king",
+        "documentation": "*noun* - masculine strong declension"
+    },
+    {
+        "word": "manna",
+        "detail": "man, person",
+        "documentation": "*noun* - masculine weak declension"
+    },
+    {
+        "word": "qino",
+        "detail": "woman, wife",
+        "documentation": "*noun* - feminine weak declension"
+    },
+    {
+        "word": "barn",
+        "detail": "child",
+        "documentation": "*noun* - neuter strong declension"
+    },
+    {
+        "word": "sunus",
+        "detail": "son",
+        "documentation": "*noun* - masculine u-stem"
+    },
+    {
+        "word": "dauhtar",
+        "detail": "daughter",
+        "documentation": "*noun* - feminine consonant stem"
+    },
+    {
+        "word": "fadar",
+        "detail": "father",
+        "documentation": "*noun* - masculine consonant stem"
+    },
+    {
+        "word": "aiþei",
+        "detail": "mother",
+        "documentation": "*noun* - feminine i-stem"
+    },
+    {
+        "word": "broþar",
+        "detail": "brother",
+        "documentation": "*noun* - masculine consonant stem"
+    },
+    {
+        "word": "swistar",
+        "detail": "sister",
+        "documentation": "*noun* - feminine consonant stem"
+    },
+    {
+        "word": "hus",
+        "detail": "house",
+        "documentation": "*noun* - neuter strong declension"
+    },
+    {
+        "word": "gards",
+        "detail": "house, court",
+        "documentation": "*noun* - masculine i-stem"
+    },
+    {
+        "word": "akrs",
+        "detail": "field",
+        "documentation": "*noun* - masculine strong declension"
+    },
+    {
+        "word": "baurg",
+        "detail": "city, town",
+        "documentation": "*noun* - feminine strong declension"
+    },
+    {
+        "word": "wato",
+        "detail": "water",
+        "documentation": "*noun* - neuter n-stem"
+    },
+    {
+        "word": "fon",
+        "detail": "fire",
+        "documentation": "*noun* - neuter strong declension"
+    },
+    {
+        "word": "luftus",
+        "detail": "air",
+        "documentation": "*noun* - masculine u-stem"
+    },
+    {
+        "word": "airþa",
+        "detail": "earth",
+        "documentation": "*noun* - feminine weak declension"
+    },
+    {
+        "word": "dags",
+        "detail": "day",
+        "documentation": "*noun* - masculine strong declension"
+    },
+    {
+        "word": "nahts",
+        "detail": "night",
+        "documentation": "*noun* - feminine consonant stem"
+    },
+    {
+        "word": "jer",
+        "detail": "year",
+        "documentation": "*noun* - neuter strong declension"
+    },
+    {
+        "word": "menoþs",
+        "detail": "month",
+        "documentation": "*noun* - masculine strong declension"
+    },
+    {
+        "word": "wiko",
+        "detail": "week",
+        "documentation": "*noun* - feminine weak declension"
+    },
+    {
+        "word": "sunno",
+        "detail": "sun",
+        "documentation": "*noun* - feminine weak declension"
+    },
+    {
+        "word": "mena",
+        "detail": "moon",
+        "documentation": "*noun* - masculine weak declension"
+    },
+    {
+        "word": "stairno",
+        "detail": "star",
+        "documentation": "*noun* - feminine weak declension"
+    },
+    {
+        "word": "himins",
+        "detail": "heaven, sky",
+        "documentation": "*noun* - masculine strong declension"
+    },
+    {
+        "word": "im",
+        "detail": "am/is",
+        "documentation": "*verb* - 1st/3rd person singular present of 'to be'"
+    },
+    {
+        "word": "ist",
+        "detail": "is",
+        "documentation": "*verb* - 3rd person singular present of 'to be'"
+    },
+    {
+        "word": "sijum",
+        "detail": "are/am",
+        "documentation": "*verb* - 1st person plural present of 'to be'"
+    },
+    {
+        "word": "sijuþ",
+        "detail": "are",
+        "documentation": "*verb* - 2nd person plural present of 'to be'"
+    },
+    {
+        "word": "sind",
+        "detail": "are",
+        "documentation": "*verb* - 3rd person plural present of 'to be'"
+    },
+    {
+        "word": "haban",
+        "detail": "to have",
+        "documentation": "*verb* - weak verb, infinitive"
+    },
+    {
+        "word": "wisan",
+        "detail": "to be",
+        "documentation": "*verb* - strong verb, infinitive"
+    },
+    {
+        "word": "qiþan",
+        "detail": "to say, speak",
+        "documentation": "*verb* - strong verb class V, infinitive"
+    },
+    {
+        "word": "gaggan",
+        "detail": "to go",
+        "documentation": "*verb* - reduplicated verb, infinitive"
+    },
+    {
+        "word": "kuman",
+        "detail": "to come",
+        "documentation": "*verb* - strong verb class IV, infinitive"
+    },
+    {
+        "word": "giban",
+        "detail": "to give",
+        "documentation": "*verb* - strong verb class V, infinitive"
+    },
+    {
+        "word": "niman",
+        "detail": "to take",
+        "documentation": "*verb* - strong verb class IV, infinitive"
+    },
+    {
+        "word": "saihwan",
+        "detail": "to see",
+        "documentation": "*verb* - strong verb class V, infinitive"
+    },
+    {
+        "word": "hausjan",
+        "detail": "to hear",
+        "documentation": "*verb* - weak verb class I, infinitive"
+    },
+    {
+        "word": "witan",
+        "detail": "to know",
+        "documentation": "*verb* - preterite-present verb, infinitive"
+    },
+    {
+        "word": "kan",
+        "detail": "know(s)",
+        "documentation": "*verb* - 1st/3rd person singular present of 'witan'"
+    },
+    {
+        "word": "kunnan",
+        "detail": "to be able, can",
+        "documentation": "*verb* - preterite-present verb, infinitive"
+    },
+    {
+        "word": "mag",
+        "detail": "can, may",
+        "documentation": "*verb* - 1st/3rd person singular present of 'magan'"
+    },
+    {
+        "word": "skal",
+        "detail": "shall, must",
+        "documentation": "*verb* - 1st/3rd person singular present of 'skulan'"
+    },
+    {
+        "word": "wil",
+        "detail": "want, will",
+        "documentation": "*verb* - 1st/3rd person singular present of 'wiljan'"
+    },
+    {
+        "word": "liuban",
+        "detail": "to love",
+        "documentation": "*verb* - weak verb class I, infinitive"
+    },
+    {
+        "word": "fijan",
+        "detail": "to hate",
+        "documentation": "*verb* - weak verb class III, infinitive"
+    },
+    {
+        "word": "mikils",
+        "detail": "great, large",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "leitils",
+        "detail": "small, little",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "gods",
+        "detail": "good",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "ubils",
+        "detail": "evil, bad",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "skeirs",
+        "detail": "clear, bright",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "riqis",
+        "detail": "dark",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "niujis",
+        "detail": "new",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "fairneis",
+        "detail": "old",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "juggs",
+        "detail": "young",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "sineigs",
+        "detail": "old (of persons)",
+        "documentation": "*adjective* - strong declension"
+    },
+    {
+        "word": "hardus",
+        "detail": "hard",
+        "documentation": "*adjective* - u-stem"
+    },
+    {
+        "word": "hnasqus",
+        "detail": "soft",
+        "documentation": "*adjective* - u-stem"
+    },
+    {
+        "word": "in",
+        "detail": "in, into",
+        "documentation": "*preposition* - takes dative or accusative"
+    },
+    {
+        "word": "us",
+        "detail": "out of, from",
+        "documentation": "*preposition* - takes dative"
+    },
+    {
+        "word": "ana",
+        "detail": "on, upon",
+        "documentation": "*preposition* - takes dative or accusative"
+    },
+    {
+        "word": "under",
+        "detail": "under",
+        "documentation": "*preposition* - takes dative or accusative"
+    },
+    {
+        "word": "ufar",
+        "detail": "over, above",
+        "documentation": "*preposition* - takes dative or accusative"
+    },
+    {
+        "word": "miþ",
+        "detail": "with",
+        "documentation": "*preposition* - takes dative"
+    },
+    {
+        "word": "wiþra",
+        "detail": "against",
+        "documentation": "*preposition* - takes accusative"
+    },
+    {
+        "word": "faur",
+        "detail": "before, for",
+        "documentation": "*preposition* - takes dative or accusative"
+    },
+    {
+        "word": "afar",
+        "detail": "after",
+        "documentation": "*preposition* - takes dative"
+    },
+    {
+        "word": "du",
+        "detail": "to, towards",
+        "documentation": "*preposition* - takes dative"
+    },
+    {
+        "word": "fram",
+        "detail": "from",
+        "documentation": "*preposition* - takes dative"
+    },
+    {
+        "word": "þairh",
+        "detail": "through",
+        "documentation": "*preposition* - takes accusative"
+    },
+    {
+        "word": "ains",
+        "detail": "one",
+        "documentation": "*numeral* - masculine nominative"
+    },
+    {
+        "word": "twai",
+        "detail": "two",
+        "documentation": "*numeral* - masculine nominative"
+    },
+    {
+        "word": "þreis",
+        "detail": "three",
+        "documentation": "*numeral* - masculine nominative"
+    },
+    {
+        "word": "fidwor",
+        "detail": "four",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "fimf",
+        "detail": "five",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "saihs",
+        "detail": "six",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "sibun",
+        "detail": "seven",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "ahtau",
+        "detail": "eight",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "niun",
+        "detail": "nine",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "taihun",
+        "detail": "ten",
+        "documentation": "*numeral* - indeclinable"
+    },
+    {
+        "word": "hunds",
+        "detail": "hundred",
+        "documentation": "*numeral* - neuter strong declension"
+    },
+    {
+        "word": "þusundi",
+        "detail": "thousand",
+        "documentation": "*numeral* - neuter strong declension"
+    },
+    {
+        "word": "ni",
+        "detail": "not",
+        "documentation": "*adverb* - negation particle"
+    },
+    {
+        "word": "niu",
+        "detail": "not (interrogative)",
+        "documentation": "*adverb* - negative interrogative particle"
+    },
+    {
+        "word": "swa",
+        "detail": "so, thus",
+        "documentation": "*adverb*"
+    },
+    {
+        "word": "þan",
+        "detail": "than, then",
+        "documentation": "*adverb/conjunction*"
+    },
+    {
+        "word": "nu",
+        "detail": "now",
+        "documentation": "*adverb*"
+    },
+    {
+        "word": "þanuh",
+        "detail": "then, therefore",
+        "documentation": "*adverb*"
+    },
+    {
+        "word": "her",
+        "detail": "here",
+        "documentation": "*adverb*"
+    },
+    {
+        "word": "jainar",
+        "detail": "there",
+        "documentation": "*adverb*"
+    },
+    {
+        "word": "hwaþro",
+        "detail": "where",
+        "documentation": "*adverb* - interrogative"
+    },
+    {
+        "word": "hwan",
+        "detail": "when",
+        "documentation": "*adverb* - interrogative"
+    },
+    {
+        "word": "hwaiwa",
+        "detail": "how",
+        "documentation": "*adverb* - interrogative"
+    },
+    {
+        "word": "duhwe",
+        "detail": "why",
+        "documentation": "*adverb* - interrogative"
     }
 ]
