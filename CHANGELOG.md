@@ -2,11 +2,17 @@
 
 ## [0.1.1]
 - Pre-Release
-- Adding `<runes></runes>` and other tags for multiline transliterations.
+- Adding XML style tag markers for multiline transliterations:
+  - `<Futhorc>`
+  - `<ElderFuthark>`
+  - `<YoungerFuthark>`
+  - `<MedievalFuthark>`
+  - `<Gothic>`
 - Removed `@` style inline markers
 - Removed Codelense for now
 - Fixed bug in `toGothic` function that wasn't handling `th` correctly.
 - Updated README.md to better reflect functionality.
+- Added "gutter" icons for each transliteration type
 
 ## [0.1.0]
 

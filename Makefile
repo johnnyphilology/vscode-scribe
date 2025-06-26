@@ -14,7 +14,7 @@ build: dependencies
 test: build
 	@npm test
 
-package: test
+package: dependencies
 	@vsce package
 
 install: package
