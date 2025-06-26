@@ -2,11 +2,15 @@ name: CI
 
 on:
   push:
-    branches: [main, 'feature/*']
+    branches: [main, 'feature/*', 'bugfix/*']
   pull_request:
     branches: [main]
   release:
     types: [created]
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   test:
