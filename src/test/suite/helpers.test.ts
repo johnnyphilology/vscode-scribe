@@ -25,10 +25,33 @@ suite('Helper Functions Test Suite', () => {
 		assert.deepStrictEqual(result, ['hello', 'world', 'test']);
 	});
 
-	test('stripDiacritics should remove diacritical marks', () => {
-		assert.strictEqual(stripDiacritics('café'), 'cafe');
-		assert.strictEqual(stripDiacritics('naïve'), 'naive');
-		assert.strictEqual(stripDiacritics('résumé'), 'resume');
-		assert.strictEqual(stripDiacritics('normal'), 'normal');
+	test('stripDiacritics should handle medieval language characters', () => {
+		// Old English specific characters
+		assert.strictEqual(stripDiacritics('hūs'), 'hus'); // long u
+		assert.strictEqual(stripDiacritics('æppel'), 'aeppel'); // ash
+		assert.strictEqual(stripDiacritics('þæt'), 'thaet'); // thorn + ash
+		assert.strictEqual(stripDiacritics('ġōd'), 'god'); // dotted g + long o
+		assert.strictEqual(stripDiacritics('cȳning'), 'cyning'); // long y
+		assert.strictEqual(stripDiacritics('ƿiþ'), 'with'); // wynn + thorn
+		
+		// Old Norse specific characters  
+		assert.strictEqual(stripDiacritics('Óðinn'), 'othinn'); // accented o + eth
+		assert.strictEqual(stripDiacritics('Ragnarök'), 'ragnarok'); // accented o
+		assert.strictEqual(stripDiacritics('víkingr'), 'vikingr'); // accented i
+		assert.strictEqual(stripDiacritics('þórr'), 'thorr'); // thorn + accented o
+		assert.strictEqual(stripDiacritics('áss'), 'ass'); // accented a
+		
+		// Gothic specific characters
+		assert.strictEqual(stripDiacritics('guþ'), 'guth'); // thorn
+		assert.strictEqual(stripDiacritics('ƕas'), 'hvas'); // hwair
+		
+		// Mixed medieval text
+		assert.strictEqual(stripDiacritics('Béowulf'), 'beowulf');
+		assert.strictEqual(stripDiacritics('Ēadweard'), 'eadweard');
+		assert.strictEqual(stripDiacritics('Ælfræd'), 'aelfraeth');
+		
+		// Should preserve non-diacritic characters
+		assert.strictEqual(stripDiacritics('cyning'), 'cyning');
+		assert.strictEqual(stripDiacritics(''), '');
 	});
 });

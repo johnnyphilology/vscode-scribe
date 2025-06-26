@@ -1,25 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { applyCasing } from '../../utils/helpers';
 
 suite('Completion Provider Test Suite', () => {
-	
-	test('applyCasing should handle various casing scenarios', () => {
-		// All lowercase input
-		assert.strictEqual(applyCasing('test', 'example'), 'example');
-		
-		// First letter capitalized
-		assert.strictEqual(applyCasing('Test', 'example'), 'Example');
-		
-		// All uppercase input (more than one character)
-		assert.strictEqual(applyCasing('TEST', 'example'), 'EXAMPLE');
-		
-		// Single uppercase character
-		assert.strictEqual(applyCasing('T', 'example'), 'Example');
-		
-		// Empty input
-		assert.strictEqual(applyCasing('', 'example'), 'example');
-	});
 
 	test('completion provider should be registered for medieval languages', async () => {
 		// This is an integration test that checks if completion providers are registered

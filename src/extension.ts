@@ -20,26 +20,40 @@ import markers from '../data/markers.json';
 
 const allMarkers = bracketMarkers(markers);
 
+interface LanguageConfig {
+    id: string;
+    substitutions: { [key: string]: string };
+    words: any[];
+}
+
+/**
+ * Register all providers for a medieval language
+ * @param context - VS Code extension context
+ * @param config - Language configuration
+ */
+function registerLanguage(context: vscode.ExtensionContext, config: LanguageConfig) {
+    registerHandleSubstitutions(context, config.substitutions, config.id);
+    registerCompletion(context, config.id, config.words);
+    registerMarkerCompletion(context, config.id, allMarkers);
+    
+    // Only register hover and semantic tokens for languages with words
+    if (config.words.length > 0) {
+        registerCompletionHover(context, config.id, config.words);
+        registerWordEntrySemanticTokens(context, config.id, extractWordList(config.words));
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
-    registerHandleSubstitutions(context, oldEnglishSubs, 'oldenglish');
-    registerCompletion(context, 'oldenglish', oldEnglishWords);
-    registerMarkerCompletion(context, 'oldenglish', allMarkers);
+    // Register all medieval languages
+    const languages: LanguageConfig[] = [
+        { id: 'oldenglish', substitutions: oldEnglishSubs, words: oldEnglishWords },
+        { id: 'oldnorse', substitutions: oldNorseSubs, words: oldNorseWords },
+        { id: 'gothic', substitutions: gothicSubs, words: gothicWords }
+    ];
 
-    registerHandleSubstitutions(context, oldNorseSubs, 'oldnorse');
-    registerCompletion(context, 'oldnorse', oldNorseWords);
-    registerMarkerCompletion(context, 'oldnorse', allMarkers);
-
-    registerHandleSubstitutions(context, gothicSubs, 'gothic');
-    registerCompletion(context, 'gothic', gothicWords);
-    registerMarkerCompletion(context, 'gothic', allMarkers);
+    languages.forEach(lang => registerLanguage(context, lang));
 
     registerMacroLauncher(context); // Macro for @runes lines, user chooses script
-
-    registerCompletionHover(context, 'oldenglish', oldEnglishWords);
-    registerCompletionHover(context, 'oldnorse', oldNorseWords);
-
-    registerWordEntrySemanticTokens(context, 'oldenglish', extractWordList(oldEnglishWords));
-    registerWordEntrySemanticTokens(context, 'oldnorse', extractWordList(oldNorseWords));
 
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
