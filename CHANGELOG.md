@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.2.2] 
+### Updating CI to create a package and VSIX on Github
+- Publishing VSIX to releases on Github
+
 ## [0.2.1] 
 ### Updating CI to create a package and VSIX on Github
 - Simple changes to `ci.yml`

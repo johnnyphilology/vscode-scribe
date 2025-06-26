@@ -74,6 +74,25 @@ jobs:
           name: vsix-package
           path: '*.vsix'
 
+      - name: Attach VSIX to release
+        run: |
+          # Get the release tag from the GitHub event
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VSIX_FILE=$(ls *.vsix | head -1)
+          
+          echo "📦 Uploading $VSIX_FILE to release $TAG_NAME"
+          
+          # Upload the VSIX file to the release
+          if gh release upload "$TAG_NAME" "$VSIX_FILE" --clobber; then
+            echo "✅ Successfully attached VSIX to release"
+          else
+            echo "⚠️ Could not attach VSIX to release automatically"
+            echo "📦 VSIX file is available as workflow artifact"
+            echo "🔗 Download from: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to GitHub Packages
         run: |
           # Configure npm to publish to GitHub Packages
