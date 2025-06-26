@@ -29,13 +29,6 @@ describe('Scribe Utility Functions', () => {
 			assert.strictEqual(stripDiacritics('résumé'), 'resume');
 		});
 
-		it('should handle Old English characters', () => {
-			assert.strictEqual(stripDiacritics('æ'), 'ae');
-			assert.strictEqual(stripDiacritics('þ'), 'th');
-			assert.strictEqual(stripDiacritics('ð'), 'th');
-			assert.strictEqual(stripDiacritics('ƿ'), 'w');
-		});
-
 		it('should handle text without diacritics', () => {
 			assert.strictEqual(stripDiacritics('normal'), 'normal');
 			assert.strictEqual(stripDiacritics(''), '');

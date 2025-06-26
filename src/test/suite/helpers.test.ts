@@ -25,33 +25,34 @@ suite('Helper Functions Test Suite', () => {
 		assert.deepStrictEqual(result, ['hello', 'world', 'test']);
 	});
 
-	test('stripDiacritics should handle medieval language characters', () => {
-		// Old English specific characters
-		assert.strictEqual(stripDiacritics('hūs'), 'hus'); // long u
-		assert.strictEqual(stripDiacritics('æppel'), 'aeppel'); // ash
-		assert.strictEqual(stripDiacritics('þæt'), 'thaet'); // thorn + ash
-		assert.strictEqual(stripDiacritics('ġōd'), 'god'); // dotted g + long o
-		assert.strictEqual(stripDiacritics('cȳning'), 'cyning'); // long y
-		assert.strictEqual(stripDiacritics('ƿiþ'), 'with'); // wynn + thorn
+	test('stripDiacritics should only remove diacritical marks, preserve medieval letters', () => {
+		// Should only remove diacritical marks (macrons, accents) from vowels
+		assert.strictEqual(stripDiacritics('hūs'), 'hus'); // remove macron from u
+		assert.strictEqual(stripDiacritics('gōd'), 'god'); // remove macron from o
+		assert.strictEqual(stripDiacritics('cȳning'), 'cyning'); // remove macron from y
+		assert.strictEqual(stripDiacritics('Óðinn'), 'Oðinn'); // remove accent from O
+		assert.strictEqual(stripDiacritics('víkingr'), 'vikingr'); // remove accent from i
+		assert.strictEqual(stripDiacritics('áss'), 'ass'); // remove accent from a
 		
-		// Old Norse specific characters  
-		assert.strictEqual(stripDiacritics('Óðinn'), 'othinn'); // accented o + eth
-		assert.strictEqual(stripDiacritics('Ragnarök'), 'ragnarok'); // accented o
-		assert.strictEqual(stripDiacritics('víkingr'), 'vikingr'); // accented i
-		assert.strictEqual(stripDiacritics('þórr'), 'thorr'); // thorn + accented o
-		assert.strictEqual(stripDiacritics('áss'), 'ass'); // accented a
+		// Should convert macron ash to regular ash
+		assert.strictEqual(stripDiacritics('ǣppel'), 'æppel'); // macron ash to regular ash
+		assert.strictEqual(stripDiacritics('Ǣlfræd'), 'Ælfræd'); // macron ash to regular ash
 		
-		// Gothic specific characters
-		assert.strictEqual(stripDiacritics('guþ'), 'guth'); // thorn
-		assert.strictEqual(stripDiacritics('ƕas'), 'hvas'); // hwair
+		// Should preserve all medieval letters without diacritics
+		assert.strictEqual(stripDiacritics('æppel'), 'æppel'); // preserve regular ash
+		assert.strictEqual(stripDiacritics('þæt'), 'þæt'); // preserve thorn and ash
+		assert.strictEqual(stripDiacritics('ƿiþ'), 'ƿiþ'); // preserve wynn and thorn
+		assert.strictEqual(stripDiacritics('guþ'), 'guþ'); // preserve thorn
+		assert.strictEqual(stripDiacritics('ƕas'), 'ƕas'); // preserve hwair
+		assert.strictEqual(stripDiacritics('ċġ'), 'cg'); // dotted letters still get normalized
 		
-		// Mixed medieval text
-		assert.strictEqual(stripDiacritics('Béowulf'), 'beowulf');
-		assert.strictEqual(stripDiacritics('Ēadweard'), 'eadweard');
-		assert.strictEqual(stripDiacritics('Ælfræd'), 'aelfraeth');
+		// Mixed examples
+		assert.strictEqual(stripDiacritics('Béowulf'), 'Beowulf'); // remove accent from e
+		assert.strictEqual(stripDiacritics('Ēadweard'), 'Eadweard'); // remove macron from E
 		
-		// Should preserve non-diacritic characters
+		// Should preserve text without diacritics
 		assert.strictEqual(stripDiacritics('cyning'), 'cyning');
+		assert.strictEqual(stripDiacritics('þðƿƕæ'), 'þðƿƕæ'); // all medieval letters preserved
 		assert.strictEqual(stripDiacritics(''), '');
 	});
 });

@@ -9,21 +9,11 @@ export function stripDiacritics(text: string): string {
     // Normalize to decomposed form to separate base and diacritic marks
     let stripped = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    // Replace special Old English letters (dotted, wynn, thorn, etc.)
-    // AFTER normalization, so both composed and decomposed characters are caught
+    // Only handle specific diacritical combinations that need special treatment
+    // Convert macron-marked ash to regular ash, but preserve all other medieval letters
     return stripped
-        .replace(/[ǣǢ]/g, 'ae')
-        .replace(/[æ]/g, 'ae')
-        .replace(/[āă]/g, 'a')
-        .replace(/[ēĕ]/g, 'e')
-        .replace(/[īĭ]/g, 'i')
-        .replace(/[ōŏ]/g, 'o')
-        .replace(/[ūŭ]/g, 'u')
-        .replace(/[ȳ]/g, 'y')
-        .replace(/[ċ]/g, 'c')
-        .replace(/[ġ]/g, 'g')
-        .replace(/[ƿ]/g, 'w')
-        .replace(/[þð]/g, 'th');
+        .replace(/[ǣǢ]/g, 'æ'); // macron ash to regular ash
+        // Note: All other medieval letters (æ, þ, ð, ƿ, ƕ, ċ, ġ) are preserved
 }
 
 export function applyCasing(input: string, suggestion: string): string {
