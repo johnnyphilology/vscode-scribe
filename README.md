@@ -1,7 +1,7 @@
 # Scribe
 A scholarly Visual Studio Code extension that aids in writing medieval languages.
 
-<img src="./doc/scribe.png" width="400"/>
+<img src="https://raw.githubusercontent.com/johnnyphilology/scribe/refs/heads/main/doc/scribe.png" width="400"/>
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/johnnyphilology/scribe/ci.yml?branch=main&style=for-the-badge)
 ![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/johnnyphilology_scribe?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonarqubecloud)
@@ -10,7 +10,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.2.1`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.2.2`, but you are free to evalute it and give feedback!
 
 ## Language Features
 
