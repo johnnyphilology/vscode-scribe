@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { convertToRunes } from "../../../utils/pureHelpers";
 
 const futhorcMap: { [key: string]: string } = {
     "th": "ᚦ", "ng": "ᛝ", "ae": "ᚫ", "eo": "ᛇ",
@@ -8,30 +8,8 @@ const futhorcMap: { [key: string]: string } = {
     "þ": "ᚦ", "ð": "ᚦ"
 };
 
+const futhorcDigraphs = ["th", "ng", "ae", "eo"];
+
 export function toFuthorc(text: string): string {
-    let out = "";
-    let i = 0;
-    text = stripDiacritics(text.toLowerCase());
-    while (i < text.length) {
-        let match = null;
-        for (const dg of ["th", "ng", "ae", "eo"]) {
-            if (text.startsWith(dg, i)) {
-                match = dg;
-                break;
-            }
-        }
-        if (match) {
-            out += futhorcMap[match];
-            i += match.length;
-            continue;
-        }
-        const ch = text[i];
-        if (futhorcMap[ch]) {
-            out += futhorcMap[ch];
-        } else {
-            out += ch;
-        }
-        i++;
-    }
-    return out;
+    return convertToRunes(text, futhorcMap, futhorcDigraphs);
 }

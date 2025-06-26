@@ -43,6 +43,22 @@
 			"problemMatcher": [],
 			"label": "npm: compile",
 			"detail": "webpack"
+		},
+		{
+			"type": "npm",
+			"script": "test:unit",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test:unit",
+			"detail": "Run unit tests (no VS Code required)"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "Run integration tests with VS Code"
 		}
 	]
 }

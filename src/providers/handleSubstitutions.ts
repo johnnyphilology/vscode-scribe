@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { isInAtMarker, applyCasing } from '../utils/helpers';
+import { applyCasing } from '../utils/helpers';
 
 export function registerHandleSubstitutions(
     context: vscode.ExtensionContext,
@@ -17,9 +17,6 @@ export function registerHandleSubstitutions(
                 const lineNum = change.range.start.line;
                 const line = document.lineAt(lineNum).text;
                 const cursorPos = change.range.start.character + change.text.length;
-
-                if (isInAtMarker(line)) {continue;}
-
                 const maxDigraphLength = Math.max(...Object.keys(substitutions).map(s => s.length));
                 const beforeCursor = line.substring(Math.max(0, cursorPos - maxDigraphLength), cursorPos);
 

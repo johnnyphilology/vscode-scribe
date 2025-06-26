@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { convertToRunes } from "../../../utils/pureHelpers";
 
 const elderMap: { [key: string]: string } = {
     "f": "ᚠ",  // fehu
@@ -39,34 +39,8 @@ const elderMap: { [key: string]: string } = {
     // Add more for your preferences
 };
 
+const elderDigraphs = ["ng", "th", "eo"];
+
 export function toElderFuthark(text: string): string {
-    let out = "";
-    text = stripDiacritics(text.toLowerCase());
-    let i = 0;
-    while (i < text.length) {
-        // Handle digraphs first (ng, th, eo)
-        if (i + 1 < text.length && text.substring(i, i + 2) === "ng") {
-            out += elderMap["ng"];
-            i += 2;
-            continue;
-        }
-        if (i + 1 < text.length && text.substring(i, i + 2) === "th") {
-            out += elderMap["th"];
-            i += 2;
-            continue;
-        }
-        if (i + 1 < text.length && text.substring(i, i + 2) === "eo") {
-            out += elderMap["eo"];
-            i += 2;
-            continue;
-        }
-        const ch = text[i];
-        if (elderMap[ch]) {
-            out += elderMap[ch];
-        } else {
-            out += ch;
-        }
-        i++;
-    }
-    return out;
+    return convertToRunes(text, elderMap, elderDigraphs);
 }

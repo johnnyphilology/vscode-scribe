@@ -5,3 +5,6 @@ node_modules
 *.vsix
 *.log
 .idea/
+CI_IMPROVEMENTS.md
+TEST_SETUP_SUCCESS.md
+UNIT_TESTING_COMPLETE.md

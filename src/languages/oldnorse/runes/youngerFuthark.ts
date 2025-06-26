@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { convertToRunes } from "../../../utils/pureHelpers";
 
 const youngerMap: { [key: string]: string } = {
     "f": "ᚠ",  // fé
@@ -34,24 +34,8 @@ const youngerMap: { [key: string]: string } = {
     "ng": "ᛘ", // sometimes used for nasal m
 };
 
+const youngerDigraphs = ["ng"];
+
 export function toYoungerFuthark(text: string): string {
-    let out = "";
-    text = stripDiacritics(text.toLowerCase());
-    let i = 0;
-    while (i < text.length) {
-        // Check for digraphs like 'ng'
-        if (i + 1 < text.length && text.substring(i, i + 2) === "ng") {
-            out += youngerMap["ng"];
-            i += 2;
-            continue;
-        }
-        const ch = text[i];
-        if (youngerMap[ch]) {
-            out += youngerMap[ch];
-        } else {
-            out += ch;
-        }
-        i++;
-    }
-    return out;
+    return convertToRunes(text, youngerMap, youngerDigraphs);
 }

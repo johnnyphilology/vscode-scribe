@@ -1,17 +1,20 @@
+name: CI
+
 on:
   push:
-    branches: [main]
+    branches: [main, 'feature/*']
   pull_request:
     branches: [main]
   release:
     types: [created]
 
 jobs:
-  build:
+  test:
+    name: Test on ${{ matrix.os }} with Node.js ${{ matrix.node }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [18, 20, 22, 24] 
+        node: [18, 20] # LTS versions only
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -21,14 +24,53 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: 'npm'
 
-      - run: npm install
-      - run: npm run lint
+      - name: Install dependencies
+        run: npm ci
 
-      # - name: Run tests (Linux)
-      #   run: xvfb-run -a npm test
-      #   if: runner.os == 'Linux'
+      - name: Lint code
+        run: npm run lint
 
-      # - name: Run tests (non-Linux)
-      #   run: npm test
-      #   if: runner.os != 'Linux'
+      - name: Compile TypeScript
+        run: npm run compile
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests (Linux only)
+        run: xvfb-run -a npm test
+        if: runner.os == 'Linux' && matrix.node == '20'
+
+  publish:
+    name: Publish to VS Code Marketplace
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package extension
+        run: npm run package-extension
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-package
+          path: '*.vsix'
+
+      - name: Publish to marketplace
+        run: npm run deploy
+        env:
+          VSCE_AAD_USERNAME: ${{ secrets.VSCE_AAD_USERNAME }}
+          VSCE_AAD_PASSWORD: ${{ secrets.VSCE_AAD_PASSWORD }}

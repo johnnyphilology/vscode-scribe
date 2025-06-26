@@ -1,4 +1,4 @@
-import { stripDiacritics } from "../../../utils/helpers";
+import { convertToRunes } from "../../../utils/pureHelpers";
 
 const medievalMap: { [key: string]: string } = {
     "a": "ᛆ", // medieval a
@@ -34,15 +34,5 @@ const medievalMap: { [key: string]: string } = {
 };
 
 export function toMedievalRunes(text: string): string {
-    let out = "";
-    text = stripDiacritics(text.toLowerCase());
-    for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        if (medievalMap[ch]) {
-            out += medievalMap[ch];
-        } else {
-            out += ch;
-        }
-    }
-    return out;
+    return convertToRunes(text, medievalMap);
 }
