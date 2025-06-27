@@ -93,18 +93,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to VS Code Marketplace
-        run: |
-          # Install latest vsce with Azure authentication support
-          npm install -g @vscode/vsce
-          
-          # Authenticate and publish using Azure Service Principal
-          vsce publish --azure-credential
-        env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
       - name: Publish to GitHub Packages
         run: |
           # Configure npm to publish to GitHub Packages
