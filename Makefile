@@ -2,6 +2,7 @@ PROVIDER_ID = JohnnyPhilology
 PROJECT = scribe
 EXTENSION = $(PROVIDER_ID).$(PROJECT)
 VERSION := $(shell grep version package.json | cut -d '"' -f4)
+.DEFAULT_GOAL := test
 
 .PHONY: build clean purge install dependencies
 

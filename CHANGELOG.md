@@ -1,22 +1,36 @@
 # Change Log
 
 ## [0.4.0] 
-### 🎨 **New Scribe Theme**
-- **Built-in "Scribe" color theme** specifically designed for medieval languages
-- **Enhanced syntax highlighting** for all three language families:
-  - **Runic text** (all Futhark variants) - Bright green highlighting
-  - **Gothic script** - Orange highlighting for Gothic characters
-  - **Medieval letters** (æ, þ, ð, ƿ, ȝ, ƕ, ø, å) - Purple highlighting
-  - **XML-style tags** (`<Futhorc>`, `<Gothic>`, etc.) - Green with gray brackets
-  - **Word entries** - Gold highlighting with semantic tokens
-- **Scholar-friendly dark theme** optimized for reading medieval texts
-- **Reduced eye strain** with warm, high-contrast colors
+### 🎨 **New Scribe Theme & Styling**
+- **Script-specific tag colors** - Each rune script now has its own distinctive color matching SVG icons:
+  - **`<Futhorc>`** - Gold (`#FFD700`)
+  - **`<ElderFuthark>`** - Red (`#D32F2F`)
+  - **`<YoungerFuthark>`** - Green (`#19c819`)
+  - **`<MedievalFuthark>`** - Purple (`#8e24aa`)
+  - **`<Gothic>`** - Blue (`#2087e7`)
+- **Refined typography** - Removed bold styling from tag names and italic styling from word entries for cleaner appearance
+- **Consistent color scheme** - Gothic script characters now match Gothic tag colors (both blue)
 
-### 📜 **Enhanced Language Support**
-- **Improved Old English syntax** - Highlights æ, þ, ð, ƿ, ȝ, ƕ characters
-- **Enhanced Old Norse syntax** - Highlights æ, þ, ð, ø, å characters  
-- **Better Gothic syntax** - Uses Unicode range for all Gothic script characters
-- **Consistent highlighting** across all medieval language files
+### ⚙️ **New Settings Management**
+- **Settings insertion command** - New `📋 Insert Scribe Settings Template` command for easy setup
+- **Keyboard shortcut** - `Alt+Shift+S` to quickly insert complete settings template
+- **Language-specific font settings** - Added font family configuration for medieval language files (`.oe`, `.on`, `.got`)
+- **Complete settings template** - Includes all current colors, semantic highlighting, and font recommendations
+
+### 🔧 **Improved User Experience**
+- **Semantic highlighting setup** - Added required `"editor.semanticHighlighting.enabled": true` to documentation and templates
+- **Font ligatures support** - Added `"editor.fontLigatures": true` for better medieval character rendering
+- **Updated documentation** - Clear setup instructions with multiple access methods for settings template
+
+### 🐛 **Bug Fixes & Polish**
+- **Fixed semantic token highlighting** - Resolved issue where word entries weren't highlighting due to missing global setting
+- **Enhanced grammar definitions** - Updated all language grammars to support script-specific tag highlighting
+- **Debugging improvements** - Added console logging to semantic tokens provider for troubleshooting
+
+### 📚 **Documentation Updates**
+- **Updated README** - New quick setup section with settings command instructions
+- **Enhanced theme documentation** - Complete color reference with SVG-matched values
+- **Setup troubleshooting** - Added diagnostic information for semantic highlighting issues
 
 ## [0.3.0] 
 ### Added Web Compatibility for vscode.dev
