@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.2.3] 
+### Updating CI to publish to VSCode Marketplace
+- Publishing to VSCode Marketplace on Release
+
 ## [0.2.2] 
 ### Updating CI to create a package and VSIX on Github
 - Publishing VSIX to releases on Github
