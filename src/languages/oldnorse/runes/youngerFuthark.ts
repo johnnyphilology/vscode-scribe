@@ -4,6 +4,7 @@ const youngerMap: { [key: string]: string } = {
     "f": "ᚠ",  // fé
     "u": "ᚢ",  // úr
     "þ": "ᚦ",  // þurs
+    "ð": "ᚦ",  // eth maps to þurs (same phonetic family)
     "o": "ᚬ",  // óss (sometimes also a)
     "a": "ᛅ",  // áss
     "r": "ᚱ",  // reið

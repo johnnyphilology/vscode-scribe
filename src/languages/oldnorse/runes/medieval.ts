@@ -30,6 +30,7 @@ const medievalMap: { [key: string]: string } = {
     "æ": "ᛅ",
     "ø": "ᚯ",
     "þ": "ᚦ",
+    "ð": "ᚦ", // eth maps to thorn in medieval runes
     // Add digraphs if you like, e.g. ng, or for dialectal purposes.
 };
 

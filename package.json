@@ -9,12 +9,18 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
   "engines": {
     "vscode": "^1.101.0"
+  },
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
   },
   "categories": [
     "Education",
@@ -22,13 +28,8 @@
     "Formatters",
     "Other"
   ],
-  "activationEvents": [
-    "onLanguage:oldenglish",
-    "onLanguage:oldnorse",
-    "onLanguage:gothic",
-    "onCommand:extension.convertRunesBlocks"
-  ],
   "main": "./dist/extension.js",
+  "browser": "./dist/web/extension.js",
   "contributes": {
     "languages": [
       {
@@ -150,15 +151,19 @@
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
+    "compile:web": "webpack --config-name webExtensionConfig",
     "watch": "webpack --watch",
+    "watch:web": "webpack --watch --config-name webExtensionConfig",
     "package": "webpack --mode production --devtool hidden-source-map",
-    "package-extension": "npm run package && vsce package",
+    "package:web": "webpack --mode production --devtool hidden-source-map --config-name webExtensionConfig",
+    "package-extension": "npm run package && npm run package:web && vsce package",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "npm run compile && node ./out/test/runTest.js",
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
+    "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish"
   },
   "devDependencies": {
@@ -169,10 +174,13 @@
     "@typescript-eslint/parser": "^8.31.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-web": "^0.0.70",
     "@vscode/vsce": "^3.5.0",
+    "assert": "^2.1.0",
     "eslint": "^9.25.1",
     "glob": "^11.0.3",
     "mocha": "^11.7.1",
+    "path-browserify": "^1.0.1",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.7",

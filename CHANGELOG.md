@@ -1,8 +1,24 @@
 # Change Log
 
-## [0.2.3] 
-### Updating CI to publish to VSCode Marketplace
-- Publishing to VSCode Marketplace on Release
+## [0.3.0] 
+### Added Web Compatibility for vscode.dev
+- **Web Extension Support** - Extension now works on vscode.dev and github.dev
+- **Dual Build Configuration** - Builds for both desktop and web environments
+- **Browser Polyfills** - Added necessary polyfills for web compatibility
+- **Virtual Workspaces** - Full support for virtual workspaces and untrusted workspaces
+- **Web Testing** - Added web-specific testing capabilities
+
+### 🛠️ **Technical Improvements**
+- **Updated webpack configuration** for dual targeting (Node.js + WebWorker)
+- **Added browser polyfills** (assert, path-browserify) for web compatibility
+- **Enhanced build scripts** with separate web compilation commands
+- **CI/CD updates** to test web compatibility
+- **Package.json updates** with browser field and web capabilities
+
+### 📦 **New Build Commands**
+- `npm run compile:web` - Compile for web environment
+- `npm run package:web` - Package for web deployment
+- `npm run test:web` - Run tests in web environment
 
 ## [0.2.2] 
 ### Updating CI to create a package and VSIX on Github

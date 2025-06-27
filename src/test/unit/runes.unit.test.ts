@@ -60,6 +60,12 @@ describe('Rune Conversion Functions', () => {
             assert.ok(result.length > 0);
         });
 
+        it('should convert eth (ð) to thorn rune', () => {
+            assert.strictEqual(toElderFuthark('ð'), 'ᚦ');
+            assert.strictEqual(toElderFuthark('þ'), 'ᚦ');
+            assert.strictEqual(toElderFuthark('th'), 'ᚦ');
+        });
+
         it('should handle text input', () => {
             const result = toElderFuthark('hello');
             assert.ok(typeof result === 'string');
@@ -71,6 +77,11 @@ describe('Rune Conversion Functions', () => {
     });
 
     describe('toYoungerFuthark', () => {
+        it('should convert eth (ð) to thorn rune', () => {
+            assert.strictEqual(toYoungerFuthark('ð'), 'ᚦ');
+            assert.strictEqual(toYoungerFuthark('þ'), 'ᚦ');
+        });
+
         it('should convert basic text', () => {
             const result = toYoungerFuthark('hello');
             assert.ok(typeof result === 'string');
@@ -82,6 +93,11 @@ describe('Rune Conversion Functions', () => {
     });
 
     describe('toMedievalRunes', () => {
+        it('should convert eth (ð) to thorn rune', () => {
+            assert.strictEqual(toMedievalRunes('ð'), 'ᚦ');
+            assert.strictEqual(toMedievalRunes('þ'), 'ᚦ');
+        });
+
         it('should convert basic text', () => {
             const result = toMedievalRunes('hello');
             assert.ok(typeof result === 'string');
