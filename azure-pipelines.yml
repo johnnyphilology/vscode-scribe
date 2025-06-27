@@ -1,0 +1,25 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm ci
+    npx vsce package
+  displayName: 'Install dependencies & package extension'
+
+- task: PublishVisualStudioExtension@2
+  displayName: 'Publish VS Code Extension to Marketplace'
+  inputs:
+    connectedServiceName: 'vsce-publish-sp'
+    vsixFile: '**/*.vsix'
+    publisherId: 'JohnnyPhilology'     # Your publisher ID (case-sensitive)
+    extensionId: 'scribe'              # Your extension ID (from package.json)
+    updateTasksVersion: false
