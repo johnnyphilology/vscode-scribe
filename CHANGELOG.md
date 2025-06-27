@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.4.0] 
+### 🎨 **New Scribe Theme**
+- **Built-in "Scribe" color theme** specifically designed for medieval languages
+- **Enhanced syntax highlighting** for all three language families:
+  - **Runic text** (all Futhark variants) - Bright green highlighting
+  - **Gothic script** - Orange highlighting for Gothic characters
+  - **Medieval letters** (æ, þ, ð, ƿ, ȝ, ƕ, ø, å) - Purple highlighting
+  - **XML-style tags** (`<Futhorc>`, `<Gothic>`, etc.) - Green with gray brackets
+  - **Word entries** - Gold highlighting with semantic tokens
+- **Scholar-friendly dark theme** optimized for reading medieval texts
+- **Reduced eye strain** with warm, high-contrast colors
+
+### 📜 **Enhanced Language Support**
+- **Improved Old English syntax** - Highlights æ, þ, ð, ƿ, ȝ, ƕ characters
+- **Enhanced Old Norse syntax** - Highlights æ, þ, ð, ø, å characters  
+- **Better Gothic syntax** - Uses Unicode range for all Gothic script characters
+- **Consistent highlighting** across all medieval language files
+
 ## [0.3.0] 
 ### Added Web Compatibility for vscode.dev
 - **Web Extension Support** - Extension now works on vscode.dev and github.dev

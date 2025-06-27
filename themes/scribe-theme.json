@@ -1,0 +1,101 @@
+{
+  "name": "Scribe",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1a1a1a",
+    "editor.foreground": "#d4d4d4",
+    "activityBar.background": "#2d2d30",
+    "sideBar.background": "#252526",
+    "statusBar.background": "#007acc",
+    "statusBar.foreground": "#ffffff",
+    "titleBar.activeBackground": "#3c3c3c",
+    "titleBar.activeForeground": "#cccccc",
+    "titleBar.inactiveBackground": "#2d2d30",
+    "titleBar.inactiveForeground": "#cccccc"
+  },
+  "tokenColors": [
+    {
+      "name": "Comment",
+      "scope": [
+        "comment",
+        "punctuation.definition.comment"
+      ],
+      "settings": {
+        "fontStyle": "italic",
+        "foreground": "#6A9955"
+      }
+    },
+    {
+      "name": "String",
+      "scope": "string",
+      "settings": {
+        "foreground": "#ce9178"
+      }
+    },
+    {
+      "name": "Number",
+      "scope": "constant.numeric",
+      "settings": {
+        "foreground": "#b5cea8"
+      }
+    },
+    {
+      "name": "Keyword",
+      "scope": "keyword",
+      "settings": {
+        "foreground": "#569cd6"
+      }
+    },
+    {
+      "name": "Variable",
+      "scope": "variable",
+      "settings": {
+        "foreground": "#9cdcfe"
+      }
+    },
+    {
+      "name": "Function",
+      "scope": [
+        "entity.name.function",
+        "support.function"
+      ],
+      "settings": {
+        "foreground": "#dcdcaa"
+      }
+    },
+    {
+      "name": "Scribe Tag Brackets",
+      "scope": [
+        "punctuation.definition.tag.begin.scribe",
+        "punctuation.definition.tag.end.scribe"
+      ],
+      "settings": {
+        "foreground": "#808080"
+      }
+    },
+    {
+      "name": "Scribe Tag Names",
+      "scope": "entity.name.tag.scribe",
+      "settings": {
+        "foreground": "#01ad29",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Runic Text",
+      "scope": "constant.language.runes.scribe",
+      "settings": {
+        "foreground": "#07d00b",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Gothic Script",
+      "scope": "constant.language.gothic.scribe",
+      "settings": {
+        "foreground": "#ff6b35",
+        "fontStyle": "bold"
+      }
+    }
+  ]
+}

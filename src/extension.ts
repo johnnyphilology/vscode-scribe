@@ -7,16 +7,17 @@ import { registerMarkerCompletion } from './providers/markerCompletion';
 import { registerHandleSubstitutions } from './providers/handleSubstitutions';
 import { registerCompletionHover } from './providers/completionHover';
 import { registerWordEntrySemanticTokens } from './providers/semanticTokens';
-import { extractWordList } from './utils/helpers';
-import { bracketMarkers } from './utils/helpers';
+import { extractWordList, bracketMarkers } from './utils/helpers';
 
 import oldEnglishSubs from '../data/oldenglish/substitutions.json';
 import oldNorseSubs from '../data/oldnorse/substitutions.json';
 import gothicSubs from '../data/gothic/substitutions.json';
 import gothicWords from '../data/gothic/completionWords.json';
 import oldEnglishWords from '../data/oldenglish/completionWords.json';
-import oldNorseWords from '../data/oldnorse/completionWords.json';
+import oldNorseWordsRaw from '../data/oldnorse/completionWords.json';
 import markers from '../data/markers.json';
+
+const oldNorseWords: any[] = Array.isArray(oldNorseWordsRaw) ? oldNorseWordsRaw : Object.values(oldNorseWordsRaw);
 
 const allMarkers = bracketMarkers(markers);
 
@@ -43,6 +44,129 @@ function registerLanguage(context: vscode.ExtensionContext, config: LanguageConf
     }
 }
 
+/**
+ * Register the settings insertion command
+ * @param context - VS Code extension context
+ */
+function registerSettingsInsertion(context: vscode.ExtensionContext) {
+    const disposable = vscode.commands.registerCommand('extension.insertScribeSettings', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        const settingsTemplate = `{
+  "editor.fontFamily": "Noto Serif",
+  "editor.fontSize": 16,
+  "editor.fontLigatures": true,
+  "editor.semanticHighlighting.enabled": true,
+  "workbench.colorTheme": "Scribe",
+  "[oldenglish]": {
+    "editor.fontFamily": "Noto Serif"
+  },
+  "[oldnorse]": {
+    "editor.fontFamily": "Noto Serif"
+  },
+  "[gothic]": {
+    "editor.fontFamily": "Noto Serif"
+  },
+  "editor.semanticTokenColorCustomizations": {
+    "[Scribe]": {
+      "rules": {
+        "wordentry": {
+          "foreground": "#FFD700"
+        },
+        "wordentry.definition": {
+          "foreground": "#FFD700",
+          "fontStyle": "bold"
+        }
+      }
+    }
+  },
+  "editor.tokenColorCustomizations": {
+    "[Scribe]": {
+      "textMateRules": [
+        {
+          "scope": "constant.language.runes.scribe",
+          "settings": {
+            "foreground": "#07d00b",
+            "fontStyle": "bold"
+          }
+        },
+        {
+          "scope": "constant.language.gothic.scribe",
+          "settings": {
+            "foreground": "#2087e7",
+            "fontStyle": "bold"
+          }
+        },
+        {
+          "scope": "constant.language.medieval.scribe",
+          "settings": {
+            "foreground": "#9d4edd",
+            "fontStyle": "bold"
+          }
+        },
+        {
+          "scope": "entity.name.tag.futhorc.scribe",
+          "settings": {
+            "foreground": "#FFD700"
+          }
+        },
+        {
+          "scope": "entity.name.tag.elderfuthark.scribe",
+          "settings": {
+            "foreground": "#D32F2F"
+          }
+        },
+        {
+          "scope": "entity.name.tag.youngerfuthark.scribe",
+          "settings": {
+            "foreground": "#19c819"
+          }
+        },
+        {
+          "scope": "entity.name.tag.medievalfuthark.scribe",
+          "settings": {
+            "foreground": "#8e24aa"
+          }
+        },
+        {
+          "scope": "entity.name.tag.gothic.scribe",
+          "settings": {
+            "foreground": "#2087e7"
+          }
+        },
+        {
+          "scope": "entity.name.tag.scribe",
+          "settings": {
+            "foreground": "#01ad29"
+          }
+        },
+        {
+          "scope": [
+            "punctuation.definition.tag.begin.scribe",
+            "punctuation.definition.tag.end.scribe"
+          ],
+          "settings": {
+            "foreground": "#808080"
+          }
+        }
+      ]
+    }
+  }
+}`;
+
+        const snippet = new vscode.SnippetString(settingsTemplate);
+        editor.insertSnippet(snippet);
+        
+        vscode.window.showInformationMessage('📋 Scribe settings template inserted! Copy this to your VS Code settings.json');
+    });
+
+    context.subscriptions.push(disposable);
+}
+
 export function activate(context: vscode.ExtensionContext) {
     // Register all medieval languages
     const languages: LanguageConfig[] = [
@@ -54,6 +178,9 @@ export function activate(context: vscode.ExtensionContext) {
     languages.forEach(lang => registerLanguage(context, lang));
 
     registerMacroLauncher(context); // Macro for @runes lines, user chooses script
+
+    // Register settings insertion command
+    registerSettingsInsertion(context);
 
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
