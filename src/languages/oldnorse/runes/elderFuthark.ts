@@ -5,6 +5,7 @@ const elderMap: { [key: string]: string } = {
     "u": "ᚢ",  // uruz
     "þ": "ᚦ",  // thurisaz
     "th": "ᚦ", // allow Latin digraph for thorn
+    "ð": "ᚦ",  // eth maps to thorn (same phonetic family)
     "a": "ᚨ",  // ansuz
     "r": "ᚱ",  // raido
     "k": "ᚲ",  // kaunan

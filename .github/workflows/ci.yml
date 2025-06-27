@@ -40,6 +40,9 @@ jobs:
       - name: Compile TypeScript
         run: npm run compile
 
+      - name: Compile for Web
+        run: npm run compile:web
+
       - name: Run unit tests
         run: npm run test:unit
 
