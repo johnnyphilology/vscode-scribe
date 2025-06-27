@@ -129,6 +129,13 @@
         "path": "./themes/scribe-theme.json"
       }
     ],
+    "iconThemes": [
+      {
+        "id": "scribe-icons",
+        "label": "Scribe Icons",
+        "path": "./themes/scribe-icon-theme.json"
+      }
+    ],
     "menus": {
       "editor/title": [
         {
@@ -186,7 +193,8 @@
     "test": "npm run compile && node ./out/test/runTest.js",
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
-    "deploy": "vsce publish"
+    "deploy": "vsce publish",
+    "version-bump": "node scripts/version-bump.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

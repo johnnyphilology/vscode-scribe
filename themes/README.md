@@ -22,12 +22,18 @@ The Scribe theme is specifically designed for medieval language scholars and ent
   - **`<Gothic>`** - Blue (`#2087e7`)
   - **Other tags** - Default green (`#01ad29`)
 
+### 📁 **Custom File Icons**
+- **`.oe` files** - Futhorc rune icon (ᚫ) in gold
+- **`.on` files** - Elder Futhark rune icon (ᚠ) in red  
+- **`.got` files** - Gothic script icon (𐌸) in blue
+
 ### 🔧 **Setup Instructions**
 
-#### Step 1: Activate the Theme
+#### Step 1: Activate the Theme & Icons
 1. Install the Scribe extension
 2. Open VS Code settings (Ctrl/Cmd + ,)
-3. Go to **Appearance** → **Color Theme**
+3. Go to **Appearance** → **Color Theme** → Select **"Scribe"**
+4. Go to **Appearance** → **File Icon Theme** → Select **"Scribe Icons"**
 4. Select **"Scribe"** from the list
 
 #### Step 2: Enable Semantic Token Colors (Required for word highlighting)
