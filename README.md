@@ -10,7 +10,42 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.3.0`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.4.0`, but you are free to evalute it and give feedback!
+
+## 🎨 Scribe Theme
+
+Scribe includes a beautiful custom theme specifically designed for medieval language work:
+
+- **Dark scholarly theme** optimized for reading medieval texts
+- **Enhanced syntax highlighting** for runic text, Gothic script, and medieval letters
+- **Custom file icons** for medieval language files (`.oe`, `.on`, `.got`)
+- **Semantic token support** for word definitions and glossaries
+- **Reduced eye strain** with warm, professional colors
+
+### Quick Setup:
+1. **Install Scribe extension**
+2. **Set theme**: Preferences → Color Theme → "Scribe"
+3. **Set icons**: Preferences → File Icon Theme → "Scribe Icons"
+4. **Get settings template**: 
+   - **Command Palette** (`Ctrl/Cmd+Shift+P`) → "📋 Insert Scribe Settings Template"
+   - **Or keyboard shortcut**: `Alt+Shift+S` (in JSON files)
+   - **Or manually add** to settings.json:
+```json
+{
+  "editor.semanticHighlighting.enabled": true,
+  "workbench.colorTheme": "Scribe",
+  "editor.semanticTokenColorCustomizations": {
+    "[Scribe]": {
+      "rules": {
+        "wordentry": {
+          "foreground": "#FFD700",
+          "fontStyle": "italic"
+        }
+      }
+    }
+  }
+}
+```
 
 ## Language Features
 

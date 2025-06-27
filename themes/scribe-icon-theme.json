@@ -1,0 +1,48 @@
+{
+  "iconDefinitions": {
+    "_file_oldenglish": {
+      "iconPath": "../media/Futhorc.svg"
+    },
+    "_file_oldnorse": {
+      "iconPath": "../media/YoungerFuthark.svg"
+    },
+    "_file_gothic": {
+      "iconPath": "../media/Gothic.svg"
+    },
+  },
+  "fileExtensions": {
+    "oe": "_file_oldenglish",
+    "on": "_file_oldnorse",
+    "got": "_file_gothic"
+  },
+  "fileNames": {},
+  "languageIds": {
+    "oldenglish": "_file_oldenglish",
+    "oldnorse": "_file_oldnorse",
+    "gothic": "_file_gothic"
+  },
+  "light": {
+    "fileExtensions": {
+      "oe": "_file_oldenglish",
+      "on": "_file_oldnorse",
+      "got": "_file_gothic"
+    },
+    "languageIds": {
+      "oldenglish": "_file_oldenglish",
+      "oldnorse": "_file_oldnorse",
+      "gothic": "_file_gothic"
+    }
+  },
+  "highContrast": {
+    "fileExtensions": {
+      "oe": "_file_oldenglish",
+      "on": "_file_oldnorse",
+      "got": "_file_gothic"
+    },
+    "languageIds": {
+      "oldenglish": "_file_oldenglish",
+      "oldnorse": "_file_oldnorse",
+      "gothic": "_file_gothic"
+    }
+  }
+}

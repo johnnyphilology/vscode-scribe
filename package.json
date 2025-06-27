@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -72,7 +72,11 @@
     "commands": [
       {
         "command": "extension.convertRunesBlocks",
-        "title": "Convert <runes> blocks to runes"
+        "title": "✨ Convert <*> Blocks"
+      },
+      {
+        "command": "extension.insertScribeSettings",
+        "title": "📋 Insert Scribe Settings Template"
       }
     ],
     "keybindings": [
@@ -80,6 +84,11 @@
         "command": "extension.convertRunesBlocks",
         "key": "alt+r",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "extension.insertScribeSettings",
+        "key": "alt+shift+s",
+        "when": "editorTextFocus && resourceExtname == .json"
       }
     ],
     "snippets": [
@@ -113,12 +122,32 @@
         "path": "./syntaxes/gothic.tmLanguage.json"
       }
     ],
+    "themes": [
+      {
+        "label": "Scribe",
+        "uiTheme": "vs-dark",
+        "path": "./themes/scribe-theme.json"
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "scribe-icons",
+        "label": "Scribe Icons",
+        "path": "./themes/scribe-icon-theme.json"
+      }
+    ],
     "menus": {
       "editor/title": [
         {
           "command": "extension.convertRunesBlocks",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "extension.insertScribeSettings",
+          "when": "editorIsOpen"
         }
       ]
     }
@@ -164,7 +193,8 @@
     "test": "npm run compile && node ./out/test/runTest.js",
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
-    "deploy": "vsce publish"
+    "deploy": "vsce publish",
+    "version-bump": "node scripts/version-bump.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
