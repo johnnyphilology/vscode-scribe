@@ -1,15 +1,10 @@
 # Change Log
 
-
 ## [0.4.1] - 2025-06-27
 ### Added
-- 
-
-### Changed
-- 
-
-### Fixed
-- 
+- **Developer automation scripts**:
+  - **Version bump script** (`npm run version-bump`) - Interactive semantic versioning with package.json, README.md, and CHANGELOG.md updates
+  - **Word addition script** (`npm run add-word`) - Interactive tool for adding new dictionary entries with duplicate detection and merge capabilities
 
 ## [0.4.0] 
 ### 🎨 **New Scribe Theme & Styling**
@@ -21,6 +16,10 @@
   - **`<Gothic>`** - Blue (`#2087e7`)
 - **Refined typography** - Removed bold styling from tag names and italic styling from word entries for cleaner appearance
 - **Consistent color scheme** - Gothic script characters now match Gothic tag colors (both blue)
+- **Custom file icon theme** - "Scribe Icons" theme with medieval language file icons:
+  - **`.oe` files** - Futhorc rune icon (ᚫ) in gold
+  - **`.on` files** - Elder Futhark rune icon (ᚠ) in red
+  - **`.got` files** - Gothic script icon (𐌸) in blue
 
 ### ⚙️ **New Settings Management**
 - **Settings insertion command** - New `📋 Insert Scribe Settings Template` command for easy setup
