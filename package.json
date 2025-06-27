@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -194,7 +194,8 @@
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish",
-    "version-bump": "node scripts/version-bump.js"
+    "version-bump": "node scripts/version-bump.js",
+    "add-word": "node scripts/add-word.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

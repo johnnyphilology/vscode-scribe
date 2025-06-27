@@ -1,5 +1,16 @@
 # Change Log
 
+
+## [0.4.1] - 2025-06-27
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
 ## [0.4.0] 
 ### 🎨 **New Scribe Theme & Styling**
 - **Script-specific tag colors** - Each rune script now has its own distinctive color matching SVG icons:
