@@ -222,6 +222,19 @@ function registerSettingsInsertion(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
+/**
+ * Register the open settings command
+ * @param context - VS Code extension context
+ */
+function registerOpenSettings(context: vscode.ExtensionContext) {
+    const disposable = vscode.commands.registerCommand('extension.openScribeSettings', () => {
+        // Open VS Code settings UI directly to Scribe settings
+        vscode.commands.executeCommand('workbench.action.openSettings', 'scribe');
+    });
+
+    context.subscriptions.push(disposable);
+}
+
 export function activate(context: vscode.ExtensionContext) {
     // Auto-activate theme if setting enabled
     autoActivateTheme();
@@ -239,6 +252,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register settings insertion command
     registerSettingsInsertion(context);
+    registerOpenSettings(context);
 
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}

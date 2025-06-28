@@ -1,12 +1,17 @@
 # Change Log
 
-## [Unreleased] - 0.5.0
+## [0.5.0] - 2025-06-27
 ### ⚙️ **New Configuration Settings**
 - **Theme auto-activation** - `scribe.theme.autoActivate` setting to automatically enable Scribe theme on extension load (enabled by default)
 - **Custom highlight colors** - `scribe.completion.highlightColor` setting to customize word entry highlighting color (default: `#FFD700`)
 - **Old English wynn conversion** - `scribe.oldenglish.enableWynn` setting to automatically convert all "w" letters to wynn (ƿ) in Old English text (disabled by default)
 
-### 🔄 **Dynamic Configuration**
+### � **Enhanced Settings Access**
+- **Editor toolbar button** - Added **⚙️ gear icon** in editor toolbar for medieval language files (`.oe`, `.on`, `.got`) that opens Scribe settings directly
+- **Command palette integration** - Added "⚙️ Scribe Settings" command for quick access to configuration
+- **Contextual availability** - Settings button only appears when working with medieval language files
+
+### �🔄 **Dynamic Configuration**
 - **Real-time settings updates** - Configuration changes are detected and applied automatically
 - **Smart reload prompts** - Extension prompts for window reload when needed for settings that require restart
 - **Settings template integration** - Settings insertion command now uses current configuration values
@@ -22,7 +27,6 @@
 - **Configuration listeners** - Added workspace configuration change detection for real-time updates
 - **Better error handling** - Improved error messages and user feedback for configuration changes
 
-## [0.4.1] - 2025-06-27
 ### Added
 - **Developer automation scripts**:
   - **Version bump script** (`npm run version-bump`) - Interactive semantic versioning with package.json, README.md, and CHANGELOG.md updates

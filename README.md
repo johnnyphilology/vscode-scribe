@@ -10,7 +10,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.4.1`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.5.0`, but you are free to evalute it and give feedback!
 
 ## 🎨 Scribe Theme
 
@@ -26,9 +26,10 @@ Scribe includes a beautiful custom theme specifically designed for medieval lang
 1. **Install Scribe extension**
 2. **Set theme**: Preferences → Color Theme → "Scribe"
 3. **Set icons**: Preferences → File Icon Theme → "Scribe Icons"
-4. **Get settings template**: 
-   - **Command Palette** (`Ctrl/Cmd+Shift+P`) → "📋 Insert Scribe Settings Template"
-   - **Or keyboard shortcut**: `Alt+Shift+S` (in JSON files)
+4. **Configure settings**: 
+   - **Editor toolbar**: Click **⚙️** icon when editing medieval files (`.oe`, `.on`, `.got`)
+   - **Command Palette** (`Ctrl/Cmd+Shift+P`) → "⚙️ Scribe Settings"
+   - **Settings template**: "📋 Insert Scribe Settings Template" or `Alt+Shift+S`
    - **Or manually add** to settings.json:
 ```json
 {
@@ -271,12 +272,20 @@ Scribe provides several settings to customize your medieval language experience.
 
 ### How to Configure
 
-#### Option 1: Settings UI
+#### Option 1: Editor Toolbar 
+When working with medieval language files (`.oe`, `.on`, `.got`), look for the **⚙️ gear icon** in the editor toolbar (top-right). Click it to open Scribe settings directly!
+
+#### Option 2: Settings UI
 1. Go to `File > Preferences > Settings` (or `Ctrl/Cmd + ,`)
 2. Search for "Scribe"
 3. Configure the options as desired
 
-#### Option 2: Manual Configuration
+#### Option 3: Command Palette
+- **⚙️ Scribe Settings** - Opens settings UI directly to Scribe configuration
+- **✨ Convert Language Blocks** - Converts <Language> tags to their respective transliterated characters
+- **📋 Insert Scribe Settings Template** - Generates complete settings template
+
+#### Option 4: Manual Configuration
 Add these to your VS Code `settings.json`:
 
 ```json

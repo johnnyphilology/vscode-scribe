@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -71,17 +71,23 @@
     ],
     "commands": [
       {
-        "command": "extension.convertRunesBlocks",
-        "title": "✨ Convert <*> Blocks"
+        "command": "extension.convertLanguageBlocks",
+        "title": "✨ Convert Language Blocks",
+        "icon": "$(sparkle)"
       },
       {
         "command": "extension.insertScribeSettings",
         "title": "📋 Insert Scribe Settings Template"
+      },
+      {
+        "command": "extension.openScribeSettings",
+        "title": "⚙️ Scribe Settings",
+        "icon": "$(gear)"
       }
     ],
     "keybindings": [
       {
-        "command": "extension.convertRunesBlocks",
+        "command": "extension.convertLanguageBlocks",
         "key": "alt+r",
         "when": "editorTextFocus"
       },
@@ -139,7 +145,12 @@
     "menus": {
       "editor/title": [
         {
-          "command": "extension.convertRunesBlocks",
+          "command": "extension.convertLanguageBlocks",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.openScribeSettings",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
         }
@@ -148,6 +159,9 @@
         {
           "command": "extension.insertScribeSettings",
           "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.openScribeSettings"
         }
       ]
     },
