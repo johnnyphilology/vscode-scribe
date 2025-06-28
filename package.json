@@ -28,6 +28,9 @@
     "Formatters",
     "Other"
   ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "browser": "./dist/web/extension.js",
   "contributes": {
@@ -83,6 +86,16 @@
         "command": "extension.openScribeSettings",
         "title": "⚙️ Scribe Settings",
         "icon": "$(gear)"
+      },
+      {
+        "command": "scribe.addWord",
+        "title": "➕ Add Word to Dictionary (Sidebar)",
+        "icon": "$(add)"
+      },
+      {
+        "command": "scribe.addWordPanel",
+        "title": "📝 Add Word to Dictionary (New Tab)",
+        "icon": "$(new-file)"
       }
     ],
     "keybindings": [
@@ -95,6 +108,16 @@
         "command": "extension.insertScribeSettings",
         "key": "alt+shift+s",
         "when": "editorTextFocus && resourceExtname == .json"
+      },
+      {
+        "command": "scribe.addWord",
+        "key": "alt+shift+w",
+        "when": "true"
+      },
+      {
+        "command": "scribe.addWordPanel",
+        "key": "alt+shift+ctrl+w",
+        "when": "true"
       }
     ],
     "snippets": [
@@ -142,6 +165,17 @@
         "path": "./themes/scribe-icon-theme.json"
       }
     ],
+    "views": {
+      "explorer": [
+        {
+          "id": "scribe.addWordView",
+          "name": "Add Word to Dictionary",
+          "type": "webview",
+          "when": "true",
+          "icon": "$(add)"
+        }
+      ]
+    },
     "menus": {
       "editor/title": [
         {
@@ -153,6 +187,11 @@
           "command": "extension.openScribeSettings",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
+        },
+        {
+          "command": "scribe.addWordPanel",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
@@ -162,6 +201,12 @@
         },
         {
           "command": "extension.openScribeSettings"
+        },
+        {
+          "command": "scribe.addWord"
+        },
+        {
+          "command": "scribe.addWordPanel"
         }
       ]
     },
@@ -183,6 +228,11 @@
           "type": "boolean",
           "default": false,
           "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
+        },
+        "scribe.dataPath": {
+          "type": "string",
+          "default": "data",
+          "description": "Path to the directory containing language dictionaries (relative to workspace root)"
         }
       }
     }
@@ -231,6 +281,7 @@
     "deploy": "vsce publish",
     "version-bump": "node scripts/version-bump.js",
     "add-word": "node scripts/add-word.js",
+    "add-word-ts": "npx ts-node src/cli/add-word.ts",
     "auto-release": "node scripts/auto-release.js",
     "auto-merge": "node scripts/auto-merge.js",
     "debug-gh": "node scripts/debug-gh.js",

@@ -7,6 +7,8 @@ import { registerMarkerCompletion } from './providers/markerCompletion';
 import { registerHandleSubstitutions } from './providers/handleSubstitutions';
 import { registerCompletionHover } from './providers/completionHover';
 import { registerWordEntrySemanticTokens } from './providers/semanticTokens';
+import { AddWordWebviewProvider } from './providers/addWordWebview';
+import { AddWordWebviewPanel } from './providers/addWordWebviewPanel';
 import { extractWordList, bracketMarkers } from './utils/helpers';
 
 import oldEnglishSubs from '../data/oldenglish/substitutions.json';
@@ -254,6 +256,25 @@ export function activate(context: vscode.ExtensionContext) {
     registerSettingsInsertion(context);
     registerOpenSettings(context);
 
+    // Register Add Word webview provider (sidebar)
+    const addWordProvider = new AddWordWebviewProvider(context.extensionUri);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(AddWordWebviewProvider.viewType, addWordProvider)
+    );
+
+    // Register Add Word commands
+    const addWordCommand = vscode.commands.registerCommand('scribe.addWord', () => {
+        vscode.commands.executeCommand('workbench.view.explorer');
+        vscode.commands.executeCommand('scribe.addWordView.focus');
+    });
+    context.subscriptions.push(addWordCommand);
+
+    // Register Add Word Panel command (opens in new tab)
+    const addWordPanelCommand = vscode.commands.registerCommand('scribe.addWordPanel', () => {
+        AddWordWebviewPanel.createOrShow(context.extensionUri);
+    });
+    context.subscriptions.push(addWordPanelCommand);
+
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
     }, null, context.subscriptions);
@@ -282,6 +303,18 @@ export function activate(context: vscode.ExtensionContext) {
             if (event.affectsConfiguration('scribe.oldenglish.enableWynn')) {
                 vscode.window.showInformationMessage(
                     '🔄 Old English wynn conversion setting changed. Reload the window for changes to take effect.',
+                    'Reload'
+                ).then(selection => {
+                    if (selection === 'Reload') {
+                        vscode.commands.executeCommand('workbench.action.reloadWindow');
+                    }
+                });
+            }
+            
+            // Handle data path setting change
+            if (event.affectsConfiguration('scribe.dataPath')) {
+                vscode.window.showInformationMessage(
+                    '📁 Data path setting changed. Reload the window for changes to take effect.',
                     'Reload'
                 ).then(selection => {
                     if (selection === 'Reload') {
