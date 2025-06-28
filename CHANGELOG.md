@@ -1,5 +1,35 @@
 # Change Log
 
+
+## [0.6.0] - 2025-06-28
+**🎉 Major Release: Developer Tools & Modular Architecture**
+
+This release introduces comprehensive developer tooling, modular architecture improvements, and enhanced testing infrastructure. The extension now features interactive webviews for common development tasks, configurable settings, and a robust testing framework ready for CI/CD.
+
+### Added
+- **🛠️ Developer Mode** - New `scribe.developerMode` setting enabling advanced features for extension development
+- **📝 Add Word Webview** - Interactive interface for adding new words to medieval language dictionaries
+- **🔄 Auto-Merge Webview** - Developer tool for automating GitHub pull request merges with configurable settings
+- **📈 Version Bump Webview** - Streamlined semantic versioning interface with patch/minor/major options and auto-confirmation
+- **⚙️ Workspace Settings Generator** - Command to create pre-configured VS Code workspace settings for medieval language projects
+- **🎨 Theme Manager** - Modular theme activation and management system
+- **📊 Configuration Manager** - Centralized configuration handling for all extension settings
+- **🔧 Enhanced Developer Tooling** - Improved Makefile with colorful help, Zsh autocomplete, and organized dev scripts
+
+### Changed  
+- **🏗️ Modularized Extension Architecture** - Refactored `extension.ts` into specialized provider modules for better maintainability
+- **📂 Configurable Data Paths** - Dictionary data path now configurable via `scribe.dataPath` setting (default: "data")
+- **🎛️ Command Visibility** - Developer commands now properly gated behind developer mode setting
+- **📜 Enhanced Scripts** - Version bump script now accepts command-line arguments for non-interactive automation
+- **🧪 Comprehensive Testing** - Complete rewrite of test infrastructure with unit and integration test separation
+
+### Fixed
+- **🐛 Test Interface Compatibility** - Resolved BDD vs TDD test syntax conflicts in integration tests
+- **🔧 VS Code API Safety** - Added proper API availability checks for CI/CD environments  
+- **🧹 Sinon Stubbing Issues** - Fixed test cleanup and mocking conflicts in webview tests
+- **⚡ TypeScript Compilation** - Resolved all compilation errors and improved type safety
+- **🚀 CI/CD Robustness** - Enhanced test runner with proper error handling and environment detection
+
 ## [0.5.1] - 2025-06-28
 ### Testing Auto Release
 - **Testing auto-release workflow** - This is a test release to verify the automated release process
