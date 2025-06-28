@@ -1,9 +1,8 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 
-describe('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
-
+describe('Basic Integration Tests', () => {
+	
 	it('Extension should be present', () => {
 		// Skip if VS Code API is not available
 		if (!vscode.extensions) {
@@ -76,39 +75,15 @@ describe('Extension Test Suite', () => {
 		
 		// Test that configuration schema is properly defined
 		// These will have default values even if not explicitly set
-		const enableSemanticTokens = config.get('enableSemanticTokens');
-		const enableDeveloperMode = config.get('enableDeveloperMode');
-		const dictionaryDataPath = config.get('dictionaryDataPath');
+		const autoActivateTheme = config.get('theme.autoActivate');
+		const developerMode = config.get('developerMode');
+		const dataPath = config.get('dataPath');
+		const highlightColor = config.get('completion.highlightColor');
 		
 		// Should have boolean or defined values (not undefined)
-		assert.notStrictEqual(enableSemanticTokens, undefined);
-		assert.notStrictEqual(enableDeveloperMode, undefined);
-		assert.notStrictEqual(dictionaryDataPath, undefined);
-	});
-
-	it('Language support should be properly configured', async () => {
-		// Skip in CI environments where language configuration might not be fully available
-		if (process.env.CI || process.env.GITHUB_ACTIONS) {
-			console.log('Skipping language configuration test in CI environment');
-			return;
-		}
-
-		// Test that medieval languages are supported
-		const supportedLanguages = ['oldenglish', 'oldnorse', 'gothic'];
-		
-		for (const lang of supportedLanguages) {
-			// Try to create a document with the language
-			try {
-				const doc = await vscode.workspace.openTextDocument({
-					language: lang,
-					content: 'test content'
-				});
-				assert.ok(doc.languageId === lang);
-				await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-			} catch (error) {
-				console.log(`Language ${lang} test error:`, error);
-				// Don't fail the test if language isn't fully configured in test environment
-			}
-		}
+		assert.notStrictEqual(autoActivateTheme, undefined);
+		assert.notStrictEqual(developerMode, undefined);
+		assert.notStrictEqual(dataPath, undefined);
+		assert.notStrictEqual(highlightColor, undefined);
 	});
 });

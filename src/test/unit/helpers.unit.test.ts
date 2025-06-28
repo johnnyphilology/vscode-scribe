@@ -1,4 +1,3 @@
-import { describe, it } from 'mocha';
 import * as assert from 'assert';
 import { extractWordList, stripDiacritics, applyCasing } from '../../utils/pureHelpers';
 

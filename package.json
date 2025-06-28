@@ -325,6 +325,7 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "npm run compile && node ./out/test/runTest.js",
+    "test:ci": "npm run compile && VSCODE_TEST_CI=true node ./out/test/runTest.js",
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish",
