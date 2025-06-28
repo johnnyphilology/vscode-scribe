@@ -28,12 +28,51 @@ interface LanguageConfig {
 }
 
 /**
+ * Auto-activate Scribe theme if setting is enabled
+ */
+function autoActivateTheme() {
+    const config = vscode.workspace.getConfiguration('scribe');
+    const autoActivate = config.get<boolean>('theme.autoActivate', true);
+    
+    if (autoActivate) {
+        const currentTheme = vscode.workspace.getConfiguration('workbench').get<string>('colorTheme');
+        if (currentTheme !== 'Scribe') {
+            vscode.workspace.getConfiguration('workbench').update('colorTheme', 'Scribe', vscode.ConfigurationTarget.Global);
+            console.log('[Scribe] Auto-activated Scribe theme');
+        }
+    }
+}
+
+/**
+ * Get dynamic Old English substitutions based on wynn setting
+ */
+function getOldEnglishSubstitutions(): { [key: string]: string } {
+    const config = vscode.workspace.getConfiguration('scribe');
+    const enableWynn = config.get<boolean>('oldenglish.enableWynn', false);
+    
+    const baseSubstitutions: { [key: string]: string } = { ...oldEnglishSubs };
+    
+    if (enableWynn) {
+        // Add w -> ƿ substitution
+        baseSubstitutions['w'] = 'ƿ';
+        baseSubstitutions['W'] = 'Ƿ';
+    }
+    
+    return baseSubstitutions;
+}
+
+/**
  * Register all providers for a medieval language
  * @param context - VS Code extension context
  * @param config - Language configuration
  */
 function registerLanguage(context: vscode.ExtensionContext, config: LanguageConfig) {
-    registerHandleSubstitutions(context, config.substitutions, config.id);
+    // Use dynamic substitutions for Old English
+    const substitutions = config.id === 'oldenglish' 
+        ? getOldEnglishSubstitutions() 
+        : config.substitutions;
+        
+    registerHandleSubstitutions(context, substitutions, config.id);
     registerCompletion(context, config.id, config.words);
     registerMarkerCompletion(context, config.id, allMarkers);
     
@@ -45,18 +84,20 @@ function registerLanguage(context: vscode.ExtensionContext, config: LanguageConf
 }
 
 /**
- * Register the settings insertion command
- * @param context - VS Code extension context
+ * Get the custom highlight color from settings
  */
-function registerSettingsInsertion(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand('extension.insertScribeSettings', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            vscode.window.showErrorMessage('No active editor found');
-            return;
-        }
+function getHighlightColor(): string {
+    const config = vscode.workspace.getConfiguration('scribe');
+    return config.get<string>('completion.highlightColor', '#FFD700');
+}
 
-        const settingsTemplate = `{
+/**
+ * Generate settings template with current configuration values
+ */
+function generateSettingsTemplate(): string {
+    const highlightColor = getHighlightColor();
+    
+    return `{
   "editor.fontFamily": "Noto Serif",
   "editor.fontSize": 16,
   "editor.fontLigatures": true,
@@ -75,10 +116,10 @@ function registerSettingsInsertion(context: vscode.ExtensionContext) {
     "[Scribe]": {
       "rules": {
         "wordentry": {
-          "foreground": "#FFD700"
+          "foreground": "${highlightColor}"
         },
         "wordentry.definition": {
-          "foreground": "#FFD700",
+          "foreground": "${highlightColor}",
           "fontStyle": "bold"
         }
       }
@@ -157,7 +198,21 @@ function registerSettingsInsertion(context: vscode.ExtensionContext) {
     }
   }
 }`;
+}
 
+/**
+ * Register the settings insertion command
+ * @param context - VS Code extension context
+ */
+function registerSettingsInsertion(context: vscode.ExtensionContext) {
+    const disposable = vscode.commands.registerCommand('extension.insertScribeSettings', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        const settingsTemplate = generateSettingsTemplate();
         const snippet = new vscode.SnippetString(settingsTemplate);
         editor.insertSnippet(snippet);
         
@@ -167,7 +222,23 @@ function registerSettingsInsertion(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
+/**
+ * Register the open settings command
+ * @param context - VS Code extension context
+ */
+function registerOpenSettings(context: vscode.ExtensionContext) {
+    const disposable = vscode.commands.registerCommand('extension.openScribeSettings', () => {
+        // Open VS Code settings UI directly to Scribe settings
+        vscode.commands.executeCommand('workbench.action.openSettings', 'scribe');
+    });
+
+    context.subscriptions.push(disposable);
+}
+
 export function activate(context: vscode.ExtensionContext) {
+    // Auto-activate theme if setting enabled
+    autoActivateTheme();
+
     // Register all medieval languages
     const languages: LanguageConfig[] = [
         { id: 'oldenglish', substitutions: oldEnglishSubs, words: oldEnglishWords },
@@ -181,6 +252,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register settings insertion command
     registerSettingsInsertion(context);
+    registerOpenSettings(context);
 
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
@@ -197,6 +269,38 @@ export function activate(context: vscode.ExtensionContext) {
     if (vscode.window.activeTextEditor) {
         handleGutters(vscode.window.activeTextEditor, context);
     }
-}
 
-export function deactivate() {}
+    // Listen for configuration changes
+    vscode.workspace.onDidChangeConfiguration(event => {
+        if (event.affectsConfiguration('scribe')) {
+            // Handle theme auto-activation setting change
+            if (event.affectsConfiguration('scribe.theme.autoActivate')) {
+                autoActivateTheme();
+            }
+            
+            // Handle Old English wynn conversion setting change
+            if (event.affectsConfiguration('scribe.oldenglish.enableWynn')) {
+                vscode.window.showInformationMessage(
+                    '🔄 Old English wynn conversion setting changed. Reload the window for changes to take effect.',
+                    'Reload'
+                ).then(selection => {
+                    if (selection === 'Reload') {
+                        vscode.commands.executeCommand('workbench.action.reloadWindow');
+                    }
+                });
+            }
+            
+            // Handle highlight color setting change
+            if (event.affectsConfiguration('scribe.completion.highlightColor')) {
+                vscode.window.showInformationMessage(
+                    '🎨 Word entry highlight color changed. Update your settings.json with the new template to see changes.',
+                    'Generate Template'
+                ).then(selection => {
+                    if (selection === 'Generate Template') {
+                        vscode.commands.executeCommand('extension.insertScribeSettings');
+                    }
+                });
+            }
+        }
+    }, null, context.subscriptions);
+}

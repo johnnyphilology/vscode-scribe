@@ -4,7 +4,7 @@ EXTENSION = $(PROVIDER_ID).$(PROJECT)
 VERSION := $(shell grep version package.json | cut -d '"' -f4)
 .DEFAULT_GOAL := unit-test
 
-.PHONY: build clean purge install dependencies bump
+.PHONY: build clean purge install dependencies bump add-word unit-test test package uninstall
 
 dependencies:
 	@npm install
@@ -36,3 +36,6 @@ purge: clean
 
 bump:
 	@npm run version-bump
+
+add-word:
+	@npm run add-word

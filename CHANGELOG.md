@@ -1,5 +1,45 @@
 # Change Log
 
+## [0.5.0] - 2025-06-27
+### ⚙️ **New Configuration Settings**
+- **Theme auto-activation** - `scribe.theme.autoActivate` setting to automatically enable Scribe theme on extension load (enabled by default)
+- **Custom highlight colors** - `scribe.completion.highlightColor` setting to customize word entry highlighting color (default: `#FFD700`)
+- **Old English wynn conversion** - `scribe.oldenglish.enableWynn` setting to automatically convert all "w" letters to wynn (ƿ) in Old English text (disabled by default)
+
+### � **Enhanced Settings Access**
+- **Editor toolbar button** - Added **⚙️ gear icon** in editor toolbar for medieval language files (`.oe`, `.on`, `.got`) that opens Scribe settings directly
+- **Command palette integration** - Added "⚙️ Scribe Settings" command for quick access to configuration
+- **Contextual availability** - Settings button only appears when working with medieval language files
+
+### �🔄 **Dynamic Configuration**
+- **Real-time settings updates** - Configuration changes are detected and applied automatically
+- **Smart reload prompts** - Extension prompts for window reload when needed for settings that require restart
+- **Settings template integration** - Settings insertion command now uses current configuration values
+- **Configuration validation** - Proper TypeScript typing and validation for all settings
+
+### 📚 **Enhanced Documentation**
+- **Comprehensive settings guide** - Added detailed configuration section to README.md
+- **Settings UI integration** - All settings now accessible through VS Code's standard settings interface
+- **Setting descriptions** - Clear descriptions and default values for all configuration options
+
+### 🛠️ **Technical Improvements**
+- **Type safety** - Fixed TypeScript compilation errors in dynamic substitution handling
+- **Configuration listeners** - Added workspace configuration change detection for real-time updates
+- **Better error handling** - Improved error messages and user feedback for configuration changes
+- **Command refactoring** - Renamed `convertRunesBlocks` to `convertLanguageBlocks` for better clarity
+
+### 🚀 **Developer Automation**
+- **Auto-release script** - Complete automated workflow: PR creation → CI wait → auto-merge → GitHub release
+- **Auto-merge script** - Simple PR creation with auto-merge for feature branches
+- **GitHub CLI integration** - Full `gh` command integration for streamlined workflows
+- **CI monitoring** - Intelligent waiting for SonarQube and test checks to pass
+- **Release automation** - Automatic GitHub releases with changelog-based release notes
+
+### Added
+- **Developer automation scripts**:
+  - **Version bump script** (`npm run version-bump`) - Interactive semantic versioning with package.json, README.md, and CHANGELOG.md updates
+  - **Word addition script** (`npm run add-word`) - Interactive tool for adding new dictionary entries with duplicate detection and merge capabilities
+
 ## [0.4.0] 
 ### 🎨 **New Scribe Theme & Styling**
 - **Script-specific tag colors** - Each rune script now has its own distinctive color matching SVG icons:
@@ -10,6 +50,10 @@
   - **`<Gothic>`** - Blue (`#2087e7`)
 - **Refined typography** - Removed bold styling from tag names and italic styling from word entries for cleaner appearance
 - **Consistent color scheme** - Gothic script characters now match Gothic tag colors (both blue)
+- **Custom file icon theme** - "Scribe Icons" theme with medieval language file icons:
+  - **`.oe` files** - Futhorc rune icon (ᚫ) in gold
+  - **`.on` files** - Elder Futhark rune icon (ᚠ) in red
+  - **`.got` files** - Gothic script icon (𐌸) in blue
 
 ### ⚙️ **New Settings Management**
 - **Settings insertion command** - New `📋 Insert Scribe Settings Template` command for easy setup

@@ -16,7 +16,7 @@ const markerMap: { [key: string]: (txt: string) => string } = {
 
 export function registerMacroLauncher(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.commands.registerTextEditorCommand('extension.convertRunesBlocks', async (editor) => {
+        vscode.commands.registerTextEditorCommand('extension.convertLanguageBlocks', async (editor) => {
             const doc = editor.document;
             const fullText = doc.getText();
             const edits: { range: vscode.Range; runes: string }[] = [];

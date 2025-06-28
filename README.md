@@ -10,7 +10,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.4.0`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.5.0`, but you are free to evalute it and give feedback!
 
 ## 🎨 Scribe Theme
 
@@ -26,9 +26,10 @@ Scribe includes a beautiful custom theme specifically designed for medieval lang
 1. **Install Scribe extension**
 2. **Set theme**: Preferences → Color Theme → "Scribe"
 3. **Set icons**: Preferences → File Icon Theme → "Scribe Icons"
-4. **Get settings template**: 
-   - **Command Palette** (`Ctrl/Cmd+Shift+P`) → "📋 Insert Scribe Settings Template"
-   - **Or keyboard shortcut**: `Alt+Shift+S` (in JSON files)
+4. **Configure settings**: 
+   - **Editor toolbar**: Click **⚙️** icon when editing medieval files (`.oe`, `.on`, `.got`)
+   - **Command Palette** (`Ctrl/Cmd+Shift+P`) → "⚙️ Scribe Settings"
+   - **Settings template**: "📋 Insert Scribe Settings Template" or `Alt+Shift+S`
    - **Or manually add** to settings.json:
 ```json
 {
@@ -214,8 +215,8 @@ ALT+R →
 ᚩᚠᛏ ᛋᚳᚣᛚᛞ ᛋᚳᛖᚠᛁᛝ ᛋᚳᛖᚪᚦᛖᚾᚪ ᚦᚱᛖᚪᛏᚢᛗ,
 ᛗᚩᚾᛖᚷᚢᛗ ᛗᚫᚷᚦᚢᛗ, ᛗᛇᛞᚩᛋᛖᛏᛚᚪ ᚩᚠᛏᛖᚪᚻ,
 ᛖᚷᛋᚩᛞᛖ ᛇᚱᛚᚪᛋ ᛋᚣᚦᚦᚪᚾ ᚫᚱᛖᛋᛏ ᚹᛖᚪᚱᚦ
-ᚠᛖᚪᛋᚳᛖᚪᚠᛏ ᚠᚢᚾᛞᛖᚾ; ᚻᛖ ᚦᚫᛋ ᚠᚱᚩᚠᚱᛖ ᚷᛖᛒᚪᛞ,
-ᚹᛇᛉ ᚢᚾᛞᛖᚱ ᚹᚩᛚᚳᚾᚢᛗ, ᚹᛇᚱᚦᛗᚣᚾᛞᚢᛗ ᚦᚪᚻ,
+ᚠᛖᚪᛋᚳᛖᚪᚠᛏ ᚠᚢᚾᛖᚾ; ᚻᛖ ᚦᚫᛋ ᚠᚱᚩᚠᚱᛖ ᚷᛖᛒᚪᛞ,
+ᚹᛇᛉ ᚢᚾᛖᚱ ᚹᚩᛚᚳᚾᚢᛗ, ᚹᛇᚱᚦᛗᚣᚾᛞᚢᛗ ᚦᚪᚻ,
 ᚩᚦᚦᚫᛏ ᚻᛁᛗ ᚫᚷᚻᚹᚣᛚᚳ ᚦᚪᚱᚪ ᚣᛗᛒᛋᛁᛏᛏᛖᚾᛞᚱᚪ
 ᚩᚠᛖᚱ ᚻᚱᚩᚾᚱᚪᛞᛖ ᚻᚣᚱᚪᚾ ᛋᚳᚩᛚᛞᛖ,
 ᚷᚩᛗᛒᚪᚾ ᚷᚣᛚᛞᚪᚾ; ᚦᚫᛏ ᚹᚫᛋ ᚷᚩᛞ ᚳᚣᚾᛁᛝ!
@@ -256,5 +257,87 @@ ALT+R →
 𐌿𐌽𐍄𐌴 𐌸𐌴𐌹𐌽𐌰 𐌹𐍃𐍄 𐌸𐌹𐌿𐌳𐌰𐌽𐌲𐌰𐍂𐌳𐌹 𐌾𐌰𐌷 𐌼𐌰𐌷𐍄𐍃 𐌾𐌰𐌷 𐍅𐌿𐌻𐌸𐌿𐍃 𐌹𐌽 𐌰𐌹𐍅𐌹𐌽𐍃.
 𐌰𐌼𐌴𐌽.
 ```
+
+## ⚙️ Configuration
+
+Scribe provides several settings to customize your medieval language experience. You can access these through VS Code's settings UI (`File > Preferences > Settings`) or by editing your `settings.json` file directly.
+
+### Extension Settings
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `scribe.theme.autoActivate` | boolean | `true` | Automatically activate Scribe theme when extension loads |
+| `scribe.completion.highlightColor` | string | `"#FFD700"` | Custom color for word entry highlighting (hex color) |
+| `scribe.oldenglish.enableWynn` | boolean | `false` | Convert all 'w' letters to wynn (ƿ) in Old English text |
+
+### How to Configure
+
+#### Option 1: Editor Toolbar 
+When working with medieval language files (`.oe`, `.on`, `.got`), look for the **⚙️ gear icon** in the editor toolbar (top-right). Click it to open Scribe settings directly!
+
+#### Option 2: Settings UI
+1. Go to `File > Preferences > Settings` (or `Ctrl/Cmd + ,`)
+2. Search for "Scribe"
+3. Configure the options as desired
+
+#### Option 3: Command Palette
+- **⚙️ Scribe Settings** - Opens settings UI directly to Scribe configuration
+- **✨ Convert Language Blocks** - Converts <Language> tags to their respective transliterated characters
+- **📋 Insert Scribe Settings Template** - Generates complete settings template
+
+#### Option 4: Manual Configuration
+Add these to your VS Code `settings.json`:
+
+```json
+{
+  "scribe.theme.autoActivate": true,
+  "scribe.completion.highlightColor": "#FFD700",
+  "scribe.oldenglish.enableWynn": false
+}
+```
+
+### Setting Details
+
+#### Theme Auto-Activation
+When enabled, Scribe will automatically switch to its custom theme when the extension loads. This ensures you get the best visual experience for medieval text work.
+
+#### Custom Highlight Color
+Customize the color used to highlight word entries in your medieval language files. Use any valid hex color (e.g., `#FF6B6B` for red, `#4ECDC4` for teal).
+
+#### Old English Wynn Conversion
+When enabled, all instances of the letter "w" will be automatically converted to the historical wynn character (ƿ) in Old English files. This provides a more authentic representation of historical texts.
+
+**Note:** Changes to wynn conversion require a window reload to take effect.
+
+## 🛠️ Developer Automation
+
+Scribe includes powerful automation scripts for development and release workflows:
+
+### 🚀 **Release Automation**
+```bash
+# Complete automated release workflow
+npm run auto-release
+```
+**Features:** Creates PR → Waits for CI → Auto-merges → Creates GitHub release
+
+### 🔀 **PR Auto-Merge**
+```bash
+# Create PR with auto-merge enabled
+npm run auto-merge
+```
+**Features:** Creates PR → Enables auto-merge → Merges when CI passes
+
+### 📦 **Version Management**
+```bash
+# Interactive semantic version bumping
+npm run version-bump
+
+# Add new dictionary words
+npm run add-word
+```
+
+**Prerequisites:** GitHub CLI (`gh`) installed and authenticated
+
+**Documentation:** See [`scripts/README.md`](./scripts/README.md) for detailed usage guide
 
 ## [AGPLv3 License](./LICENSE)

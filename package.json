@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -71,17 +71,23 @@
     ],
     "commands": [
       {
-        "command": "extension.convertRunesBlocks",
-        "title": "✨ Convert <*> Blocks"
+        "command": "extension.convertLanguageBlocks",
+        "title": "✨ Convert Language Blocks",
+        "icon": "$(sparkle)"
       },
       {
         "command": "extension.insertScribeSettings",
         "title": "📋 Insert Scribe Settings Template"
+      },
+      {
+        "command": "extension.openScribeSettings",
+        "title": "⚙️ Scribe Settings",
+        "icon": "$(gear)"
       }
     ],
     "keybindings": [
       {
-        "command": "extension.convertRunesBlocks",
+        "command": "extension.convertLanguageBlocks",
         "key": "alt+r",
         "when": "editorTextFocus"
       },
@@ -139,7 +145,12 @@
     "menus": {
       "editor/title": [
         {
-          "command": "extension.convertRunesBlocks",
+          "command": "extension.convertLanguageBlocks",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.openScribeSettings",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
         }
@@ -148,8 +159,32 @@
         {
           "command": "extension.insertScribeSettings",
           "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.openScribeSettings"
         }
       ]
+    },
+    "configuration": {
+      "title": "Scribe",
+      "properties": {
+        "scribe.theme.autoActivate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically activate Scribe theme when extension loads"
+        },
+        "scribe.completion.highlightColor": {
+          "type": "string",
+          "default": "#FFD700",
+          "description": "Custom color for word entry highlighting (hex color)",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "scribe.oldenglish.enableWynn": {
+          "type": "boolean",
+          "default": false,
+          "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
+        }
+      }
     }
   },
   "editor.tokenColorCustomizations": {
@@ -194,7 +229,10 @@
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish",
-    "version-bump": "node scripts/version-bump.js"
+    "version-bump": "node scripts/version-bump.js",
+    "add-word": "node scripts/add-word.js",
+    "auto-release": "node scripts/auto-release.js",
+    "auto-merge": "node scripts/auto-merge.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
