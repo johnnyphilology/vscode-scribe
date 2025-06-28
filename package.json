@@ -150,6 +150,27 @@
           "when": "editorIsOpen"
         }
       ]
+    },
+    "configuration": {
+      "title": "Scribe",
+      "properties": {
+        "scribe.theme.autoActivate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically activate Scribe theme when extension loads"
+        },
+        "scribe.completion.highlightColor": {
+          "type": "string",
+          "default": "#FFD700",
+          "description": "Custom color for word entry highlighting (hex color)",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "scribe.oldenglish.enableWynn": {
+          "type": "boolean",
+          "default": false,
+          "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
+        }
+      }
     }
   },
   "editor.tokenColorCustomizations": {

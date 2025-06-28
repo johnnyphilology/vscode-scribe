@@ -1,5 +1,27 @@
 # Change Log
 
+## [Unreleased] - 0.5.0
+### ⚙️ **New Configuration Settings**
+- **Theme auto-activation** - `scribe.theme.autoActivate` setting to automatically enable Scribe theme on extension load (enabled by default)
+- **Custom highlight colors** - `scribe.completion.highlightColor` setting to customize word entry highlighting color (default: `#FFD700`)
+- **Old English wynn conversion** - `scribe.oldenglish.enableWynn` setting to automatically convert all "w" letters to wynn (ƿ) in Old English text (disabled by default)
+
+### 🔄 **Dynamic Configuration**
+- **Real-time settings updates** - Configuration changes are detected and applied automatically
+- **Smart reload prompts** - Extension prompts for window reload when needed for settings that require restart
+- **Settings template integration** - Settings insertion command now uses current configuration values
+- **Configuration validation** - Proper TypeScript typing and validation for all settings
+
+### 📚 **Enhanced Documentation**
+- **Comprehensive settings guide** - Added detailed configuration section to README.md
+- **Settings UI integration** - All settings now accessible through VS Code's standard settings interface
+- **Setting descriptions** - Clear descriptions and default values for all configuration options
+
+### 🛠️ **Technical Improvements**
+- **Type safety** - Fixed TypeScript compilation errors in dynamic substitution handling
+- **Configuration listeners** - Added workspace configuration change detection for real-time updates
+- **Better error handling** - Improved error messages and user feedback for configuration changes
+
 ## [0.4.1] - 2025-06-27
 ### Added
 - **Developer automation scripts**:

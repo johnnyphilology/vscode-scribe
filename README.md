@@ -214,8 +214,8 @@ ALT+R →
 ᚩᚠᛏ ᛋᚳᚣᛚᛞ ᛋᚳᛖᚠᛁᛝ ᛋᚳᛖᚪᚦᛖᚾᚪ ᚦᚱᛖᚪᛏᚢᛗ,
 ᛗᚩᚾᛖᚷᚢᛗ ᛗᚫᚷᚦᚢᛗ, ᛗᛇᛞᚩᛋᛖᛏᛚᚪ ᚩᚠᛏᛖᚪᚻ,
 ᛖᚷᛋᚩᛞᛖ ᛇᚱᛚᚪᛋ ᛋᚣᚦᚦᚪᚾ ᚫᚱᛖᛋᛏ ᚹᛖᚪᚱᚦ
-ᚠᛖᚪᛋᚳᛖᚪᚠᛏ ᚠᚢᚾᛞᛖᚾ; ᚻᛖ ᚦᚫᛋ ᚠᚱᚩᚠᚱᛖ ᚷᛖᛒᚪᛞ,
-ᚹᛇᛉ ᚢᚾᛞᛖᚱ ᚹᚩᛚᚳᚾᚢᛗ, ᚹᛇᚱᚦᛗᚣᚾᛞᚢᛗ ᚦᚪᚻ,
+ᚠᛖᚪᛋᚳᛖᚪᚠᛏ ᚠᚢᚾᛖᚾ; ᚻᛖ ᚦᚫᛋ ᚠᚱᚩᚠᚱᛖ ᚷᛖᛒᚪᛞ,
+ᚹᛇᛉ ᚢᚾᛖᚱ ᚹᚩᛚᚳᚾᚢᛗ, ᚹᛇᚱᚦᛗᚣᚾᛞᚢᛗ ᚦᚪᚻ,
 ᚩᚦᚦᚫᛏ ᚻᛁᛗ ᚫᚷᚻᚹᚣᛚᚳ ᚦᚪᚱᚪ ᚣᛗᛒᛋᛁᛏᛏᛖᚾᛞᚱᚪ
 ᚩᚠᛖᚱ ᚻᚱᚩᚾᚱᚪᛞᛖ ᚻᚣᚱᚪᚾ ᛋᚳᚩᛚᛞᛖ,
 ᚷᚩᛗᛒᚪᚾ ᚷᚣᛚᛞᚪᚾ; ᚦᚫᛏ ᚹᚫᛋ ᚷᚩᛞ ᚳᚣᚾᛁᛝ!
@@ -256,5 +256,48 @@ ALT+R →
 𐌿𐌽𐍄𐌴 𐌸𐌴𐌹𐌽𐌰 𐌹𐍃𐍄 𐌸𐌹𐌿𐌳𐌰𐌽𐌲𐌰𐍂𐌳𐌹 𐌾𐌰𐌷 𐌼𐌰𐌷𐍄𐍃 𐌾𐌰𐌷 𐍅𐌿𐌻𐌸𐌿𐍃 𐌹𐌽 𐌰𐌹𐍅𐌹𐌽𐍃.
 𐌰𐌼𐌴𐌽.
 ```
+
+## ⚙️ Configuration
+
+Scribe provides several settings to customize your medieval language experience. You can access these through VS Code's settings UI (`File > Preferences > Settings`) or by editing your `settings.json` file directly.
+
+### Extension Settings
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `scribe.theme.autoActivate` | boolean | `true` | Automatically activate Scribe theme when extension loads |
+| `scribe.completion.highlightColor` | string | `"#FFD700"` | Custom color for word entry highlighting (hex color) |
+| `scribe.oldenglish.enableWynn` | boolean | `false` | Convert all 'w' letters to wynn (ƿ) in Old English text |
+
+### How to Configure
+
+#### Option 1: Settings UI
+1. Go to `File > Preferences > Settings` (or `Ctrl/Cmd + ,`)
+2. Search for "Scribe"
+3. Configure the options as desired
+
+#### Option 2: Manual Configuration
+Add these to your VS Code `settings.json`:
+
+```json
+{
+  "scribe.theme.autoActivate": true,
+  "scribe.completion.highlightColor": "#FFD700",
+  "scribe.oldenglish.enableWynn": false
+}
+```
+
+### Setting Details
+
+#### Theme Auto-Activation
+When enabled, Scribe will automatically switch to its custom theme when the extension loads. This ensures you get the best visual experience for medieval text work.
+
+#### Custom Highlight Color
+Customize the color used to highlight word entries in your medieval language files. Use any valid hex color (e.g., `#FF6B6B` for red, `#4ECDC4` for teal).
+
+#### Old English Wynn Conversion
+When enabled, all instances of the letter "w" will be automatically converted to the historical wynn character (ƿ) in Old English files. This provides a more authentic representation of historical texts.
+
+**Note:** Changes to wynn conversion require a window reload to take effect.
 
 ## [AGPLv3 License](./LICENSE)
