@@ -1,4 +1,3 @@
-import { describe, it } from 'mocha';
 import * as assert from 'assert';
 import { toFuthorc } from '../../languages/oldenglish/runes/futhorc';
 import { toElderFuthark } from '../../languages/oldnorse/runes/elderFuthark';

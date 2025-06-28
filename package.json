@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -27,6 +27,9 @@
     "Programming Languages",
     "Formatters",
     "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "browser": "./dist/web/extension.js",
@@ -72,17 +75,43 @@
     "commands": [
       {
         "command": "extension.convertLanguageBlocks",
-        "title": "✨ Convert Language Blocks",
-        "icon": "$(sparkle)"
+        "title": "⚡ Convert Language Blocks",
+        "icon": "$(zap)"
       },
       {
-        "command": "extension.insertScribeSettings",
-        "title": "📋 Insert Scribe Settings Template"
+        "command": "scribe.setupWorkspaceSettings",
+        "title": "🔧 Insert/Setup Scribe Settings",
+        "icon": "$(wrench)"
       },
       {
         "command": "extension.openScribeSettings",
         "title": "⚙️ Scribe Settings",
         "icon": "$(gear)"
+      },
+      {
+        "command": "scribe.addWord",
+        "title": "➕ Add Word to Dictionary (Sidebar)",
+        "icon": "$(add)"
+      },
+      {
+        "command": "scribe.addWordPanel",
+        "title": "📝 Add Word to Dictionary (New Tab)",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "scribe.autoMerge",
+        "title": "🔀 Auto-Merge Current Branch",
+        "icon": "$(git-merge)"
+      },
+      {
+        "command": "scribe.versionBump",
+        "title": "📈 Version Bump",
+        "icon": "$(tag)"
+      },
+      {
+        "command": "scribe.autoRelease",
+        "title": "🚀 Auto-Release",
+        "icon": "$(rocket)"
       }
     ],
     "keybindings": [
@@ -92,9 +121,34 @@
         "when": "editorTextFocus"
       },
       {
-        "command": "extension.insertScribeSettings",
+        "command": "scribe.setupWorkspaceSettings",
         "key": "alt+shift+s",
-        "when": "editorTextFocus && resourceExtname == .json"
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "scribe.addWord",
+        "key": "alt+shift+w",
+        "when": "true"
+      },
+      {
+        "command": "scribe.addWordPanel",
+        "key": "alt+shift+ctrl+w",
+        "when": "true"
+      },
+      {
+        "command": "scribe.autoMerge",
+        "key": "alt+shift+m",
+        "when": "config.scribe.developerMode"
+      },
+      {
+        "command": "scribe.versionBump",
+        "key": "alt+shift+b",
+        "when": "config.scribe.developerMode"
+      },
+      {
+        "command": "scribe.autoRelease",
+        "key": "alt+shift+r",
+        "when": "config.scribe.developerMode"
       }
     ],
     "snippets": [
@@ -142,6 +196,17 @@
         "path": "./themes/scribe-icon-theme.json"
       }
     ],
+    "views": {
+      "explorer": [
+        {
+          "id": "scribe.addWordView",
+          "name": "Add Word to Dictionary",
+          "type": "webview",
+          "when": "true",
+          "icon": "$(add)"
+        }
+      ]
+    },
     "menus": {
       "editor/title": [
         {
@@ -153,15 +218,58 @@
           "command": "extension.openScribeSettings",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
+        },
+        {
+          "command": "scribe.addWordPanel",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        },
+        {
+          "command": "scribe.setupWorkspaceSettings",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        },
+        {
+          "command": "scribe.autoMerge",
+          "when": "config.scribe.developerMode",
+          "group": "navigation"
+        },
+        {
+          "command": "scribe.versionBump",
+          "when": "config.scribe.developerMode",
+          "group": "navigation"
+        },
+        {
+          "command": "scribe.autoRelease",
+          "when": "config.scribe.developerMode",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
         {
-          "command": "extension.insertScribeSettings",
+          "command": "scribe.setupWorkspaceSettings",
           "when": "editorIsOpen"
         },
         {
           "command": "extension.openScribeSettings"
+        },
+        {
+          "command": "scribe.addWord"
+        },
+        {
+          "command": "scribe.addWordPanel"
+        },
+        {
+          "command": "scribe.autoMerge",
+          "when": "config.scribe.developerMode"
+        },
+        {
+          "command": "scribe.versionBump",
+          "when": "config.scribe.developerMode"
+        },
+        {
+          "command": "scribe.autoRelease",
+          "when": "config.scribe.developerMode"
         }
       ]
     },
@@ -183,6 +291,16 @@
           "type": "boolean",
           "default": false,
           "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
+        },
+        "scribe.dataPath": {
+          "type": "string",
+          "default": "data",
+          "description": "Path to the directory containing language dictionaries (relative to workspace root)"
+        },
+        "scribe.developerMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable developer mode with additional debugging features and experimental functionality"
         }
       }
     }
@@ -226,11 +344,13 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "npm run compile && node ./out/test/runTest.js",
+    "test:ci": "npm run compile && VSCODE_TEST_CI=true node ./out/test/runTest.js",
     "test:unit": "npm run compile-tests && node ./out/test/runUnitTests.js",
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish",
     "version-bump": "node scripts/version-bump.js",
     "add-word": "node scripts/add-word.js",
+    "add-word-ts": "npx ts-node src/cli/add-word.ts",
     "auto-release": "node scripts/auto-release.js",
     "auto-merge": "node scripts/auto-merge.js",
     "debug-gh": "node scripts/debug-gh.js",
@@ -240,6 +360,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.1",
+    "@types/sinon": "^17.0.4",
     "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
@@ -252,6 +373,7 @@
     "glob": "^11.0.3",
     "mocha": "^11.7.1",
     "path-browserify": "^1.0.1",
+    "sinon": "^21.0.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.7",
