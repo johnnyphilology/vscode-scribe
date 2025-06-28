@@ -130,29 +130,18 @@ export class VersionBumpWebviewPanel {
             const currentVersion = this._getCurrentVersion();
             const newVersion = this._bumpVersion(currentVersion, bumpType);
 
-            // Show confirmation
-            const proceed = await vscode.window.showWarningMessage(
-                `Bump version from ${currentVersion} to ${newVersion}?`,
-                { modal: true },
-                'Yes, Bump Version',
-                'Cancel'
-            );
-
-            if (proceed !== 'Yes, Bump Version') {
-                return;
-            }
-
-            // Run the version bump script
+            // The webview already collected user confirmation, so we pass the bump type
+            // and auto-confirm to avoid duplicate prompts
             const terminal = vscode.window.createTerminal({
                 name: 'Version Bump',
                 cwd: workspaceRoot
             });
 
-            terminal.sendText('npm run version-bump');
+            terminal.sendText(`npm run version-bump -- ${bumpType} --yes`);
             terminal.show();
 
             vscode.window.showInformationMessage(
-                'Version bump script is running in the terminal.'
+                `Version bump (${bumpType}) script is running in the terminal.`
             );
 
             // Update the webview with new version

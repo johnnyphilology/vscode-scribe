@@ -135,6 +135,29 @@ function confirmBump(oldVersion, newVersion, bumpType) {
 
 async function main() {
   try {
+    // Check for help flag
+    const args = process.argv.slice(2);
+    if (args.includes('--help') || args.includes('-h')) {
+      console.log('🚀 Version Bump Script');
+      console.log('======================');
+      console.log('Usage: node version-bump.js [bump-type] [options]');
+      console.log('');
+      console.log('Bump types:');
+      console.log('  major    - Breaking changes (X.0.0)');
+      console.log('  minor    - New features (0.X.0)');
+      console.log('  patch    - Bug fixes (0.0.X)');
+      console.log('');
+      console.log('Options:');
+      console.log('  --yes, -y    Auto-confirm without prompting');
+      console.log('  --help, -h   Show this help message');
+      console.log('');
+      console.log('Examples:');
+      console.log('  node version-bump.js              # Interactive mode');
+      console.log('  node version-bump.js patch --yes  # Auto patch bump');
+      console.log('  node version-bump.js minor        # Minor bump with confirmation');
+      process.exit(0);
+    }
+
     // Check if we're in the right directory
     if (!fs.existsSync('package.json')) {
       console.error('❌ No package.json found. Please run this script from the project root.');
@@ -144,10 +167,31 @@ async function main() {
     const currentVersion = getCurrentVersion();
     console.log(`📦 Current version: ${currentVersion}`);
     
-    const bumpType = await askBumpType();
+    // Check for command line arguments
+    const bumpTypeArg = args.find(arg => ['major', 'minor', 'patch'].includes(arg));
+    const autoConfirm = args.includes('--yes') || args.includes('-y');
+    
+    let bumpType;
+    if (bumpTypeArg) {
+      bumpType = bumpTypeArg;
+      console.log(`🚀 Using ${bumpType} version bump (from command line)`);
+    } else {
+      bumpType = await askBumpType();
+    }
+    
     const newVersion = bumpVersion(currentVersion, bumpType);
     
-    const confirmed = await confirmBump(currentVersion, newVersion, bumpType);
+    let confirmed;
+    if (autoConfirm) {
+      console.log(`\n📋 Version Bump Summary:`);
+      console.log(`   Current: ${currentVersion}`);
+      console.log(`   New:     ${newVersion}`);
+      console.log(`   Type:    ${bumpType}`);
+      console.log(`\n✅ Auto-confirming version bump (--yes flag provided)`);
+      confirmed = true;
+    } else {
+      confirmed = await confirmBump(currentVersion, newVersion, bumpType);
+    }
     
     if (!confirmed) {
       console.log('❌ Operation cancelled.');
