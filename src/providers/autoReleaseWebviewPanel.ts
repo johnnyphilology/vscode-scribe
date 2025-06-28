@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
 
 export class AutoReleaseWebviewPanel {
     public static currentPanel: AutoReleaseWebviewPanel | undefined;
@@ -48,13 +46,13 @@ export class AutoReleaseWebviewPanel {
 
         // Handle messages from the webview
         this._panel.webview.onDidReceiveMessage(
-            message => {
+            async message => {
                 switch (message.command) {
                     case 'getStatus':
-                        this._handleGetStatus();
+                        await this._handleGetStatus();
                         return;
                     case 'createRelease':
-                        this._handleCreateRelease();
+                        await this._handleCreateRelease();
                         return;
                 }
             },
@@ -77,79 +75,157 @@ export class AutoReleaseWebviewPanel {
         }
     }
 
-    private _getCurrentVersion(): string {
+    private async _getCurrentVersion(): Promise<string> {
         try {
             if (!vscode.workspace.workspaceFolders) {
                 return '0.0.0';
             }
-            const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
-            const packageJsonPath = path.join(workspaceRoot, 'package.json');
-            const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+            const workspaceRoot = vscode.workspace.workspaceFolders[0].uri;
+            const packageJsonUri = vscode.Uri.joinPath(workspaceRoot, 'package.json');
+            const packageJsonContent = await vscode.workspace.fs.readFile(packageJsonUri);
+            const packageJson = JSON.parse(packageJsonContent.toString());
             return packageJson.version || '0.0.0';
         } catch (error) {
             return '0.0.0';
         }
     }
 
-    private _getCurrentBranch(): string {
+    private async _getCurrentBranch(): Promise<string> {
         try {
-            // Use VS Code's built-in git extension if available
+            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
-            if (gitExtension && gitExtension.isActive) {
-                const git = gitExtension.exports;
-                const repo = git.getRepository(vscode.workspace.workspaceFolders?.[0].uri);
-                if (repo && repo.state && repo.state.HEAD) {
-                    return repo.state.HEAD.name || 'unknown';
+            if (gitExtension) {
+                if (!gitExtension.isActive) {
+                    await gitExtension.activate();
                 }
+                const git = gitExtension.exports;
+                const api = git.getAPI(1);
+                
+                console.log('Git API available, repositories:', api.repositories.length);
+                
+                // Wait a bit for repositories to be discovered
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                if (api.repositories.length > 0) {
+                    const repo = api.repositories[0];
+                    console.log('Repository state:', repo.state);
+                    console.log('HEAD:', repo.state.HEAD);
+                    
+                    // Try to refresh the repository state
+                    try {
+                        await repo.status();
+                    } catch (statusError) {
+                        console.warn('Failed to refresh repo status:', statusError);
+                    }
+                    
+                    if (repo.state.HEAD && repo.state.HEAD.name) {
+                        return repo.state.HEAD.name;
+                    }
+                    
+                    // Try alternative: check if there's a ref
+                    if (repo.state.HEAD && repo.state.HEAD.name === undefined) {
+                        // Try to get branch from refs
+                        const refs = repo.state.refs || [];
+                        const headRef = refs.find((ref: any) => ref.type === 0); // HEAD type
+                        if (headRef) {
+                            const branchName = headRef.name?.replace('refs/heads/', '');
+                            if (branchName) {
+                                return branchName;
+                            }
+                        }
+                    }
+                } else {
+                    console.log('No repositories found, trying to discover...');
+                    // Try to trigger repository discovery
+                    try {
+                        await vscode.commands.executeCommand('git.refresh');
+                        // Wait a bit and try again
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        if (api.repositories.length > 0) {
+                            const repo = api.repositories[0];
+                            if (repo.state.HEAD && repo.state.HEAD.name) {
+                                return repo.state.HEAD.name;
+                            }
+                        }
+                    } catch (refreshError) {
+                        console.warn('Failed to refresh git repositories:', refreshError);
+                    }
+                }
+            } else {
+                console.log('Git extension not found');
             }
+
             return 'unknown';
         } catch (error) {
+            console.warn('Failed to get current branch:', error);
             return 'unknown';
         }
     }
 
-    private _hasUncommittedChanges(): boolean {
+    private async _hasUncommittedChanges(): Promise<boolean> {
         try {
-            // Use VS Code's built-in git extension if available
+            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
-            if (gitExtension && gitExtension.isActive) {
+            if (gitExtension) {
+                if (!gitExtension.isActive) {
+                    await gitExtension.activate();
+                }
                 const git = gitExtension.exports;
-                const repo = git.getRepository(vscode.workspace.workspaceFolders?.[0].uri);
-                if (repo && repo.state) {
+                const api = git.getAPI(1);
+                
+                if (api.repositories.length > 0) {
+                    const repo = api.repositories[0];
+                    console.log('Checking changes - workingTreeChanges:', repo.state.workingTreeChanges?.length);
+                    console.log('Checking changes - indexChanges:', repo.state.indexChanges?.length);
+                    
                     const workingTreeChanges = repo.state.workingTreeChanges || [];
                     const indexChanges = repo.state.indexChanges || [];
                     return workingTreeChanges.length > 0 || indexChanges.length > 0;
                 }
             }
+
             return false;
         } catch (error) {
+            console.warn('Failed to check uncommitted changes:', error);
             return false;
         }
     }
 
-    private _getLatestCommitMessage(): string {
+    private async _getLatestCommitMessage(): Promise<string> {
         try {
-            // Use VS Code's built-in git extension if available
+            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
-            if (gitExtension && gitExtension.isActive) {
+            if (gitExtension) {
+                if (!gitExtension.isActive) {
+                    await gitExtension.activate();
+                }
                 const git = gitExtension.exports;
-                const repo = git.getRepository(vscode.workspace.workspaceFolders?.[0].uri);
-                if (repo && repo.state && repo.state.HEAD && repo.state.HEAD.commit) {
-                    return repo.state.HEAD.commit.message || 'No commit found';
+                const api = git.getAPI(1);
+                
+                if (api.repositories.length > 0) {
+                    const repo = api.repositories[0];
+                    console.log('Checking commit - HEAD:', repo.state.HEAD);
+                    console.log('Checking commit - commit:', repo.state.HEAD?.commit);
+                    
+                    if (repo.state.HEAD && repo.state.HEAD.commit) {
+                        return repo.state.HEAD.commit.message || 'No commit found';
+                    }
                 }
             }
+
             return 'No commit found';
         } catch (error) {
+            console.warn('Failed to get latest commit message:', error);
             return 'No commit found';
         }
     }
 
-    private _handleGetStatus() {
+    private async _handleGetStatus() {
         const status = {
-            currentVersion: this._getCurrentVersion(),
-            currentBranch: this._getCurrentBranch(),
-            hasUncommittedChanges: this._hasUncommittedChanges(),
-            latestCommit: this._getLatestCommitMessage()
+            currentVersion: await this._getCurrentVersion(),
+            currentBranch: await this._getCurrentBranch(),
+            hasUncommittedChanges: await this._hasUncommittedChanges(),
+            latestCommit: await this._getLatestCommitMessage()
         };
 
         this._panel.webview.postMessage({
@@ -165,8 +241,8 @@ export class AutoReleaseWebviewPanel {
         }
 
         const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        const currentBranch = this._getCurrentBranch();
-        const hasUncommitted = this._hasUncommittedChanges();
+        const currentBranch = await this._getCurrentBranch();
+        const hasUncommitted = await this._hasUncommittedChanges();
 
         // Check prerequisites
         if (hasUncommitted) {
@@ -180,7 +256,7 @@ export class AutoReleaseWebviewPanel {
         }
 
         // Show confirmation dialog
-        const version = this._getCurrentVersion();
+        const version = await this._getCurrentVersion();
         const proceed = await vscode.window.showWarningMessage(
             `This will create a PR from "${currentBranch}" to main, wait for CI checks, auto-merge, and create release v${version}. Continue?`,
             { modal: true },
@@ -526,5 +602,23 @@ export class AutoReleaseWebviewPanel {
     </script>
 </body>
 </html>`;
+    }
+
+    /**
+     * Execute a git command using VS Code's integrated terminal (fallback method)
+     * This avoids using Node.js child_process directly for web extension compatibility
+     */
+    private async _executeGitCommand(command: string, cwd: string): Promise<string | null> {
+        return new Promise((resolve) => {
+            try {
+                // For now, we'll return null to gracefully fall back
+                // In a future version, we could implement terminal-based execution
+                // but this would require more complex communication patterns
+                resolve(null);
+            } catch (error) {
+                console.warn('Git command execution failed:', error);
+                resolve(null);
+            }
+        });
     }
 }

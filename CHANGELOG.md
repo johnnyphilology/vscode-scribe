@@ -1,5 +1,11 @@
 # Change Log
 
+
+## [0.6.1] - 2025-06-28
+
+### Fixed
+- **🛠️ Auto Release Webview** - Fixed for developer mode
+
 ## [0.6.0] - 2025-06-28
 **🎉 Minor Release: Developer Tools & Modular Architecture**
 
