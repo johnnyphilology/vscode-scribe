@@ -19,7 +19,16 @@ export function generateSettingsTemplate(): string {
   "editor.fontSize": 16,
   "editor.fontLigatures": true,
   "editor.semanticHighlighting.enabled": true,
-  "workbench.colorTheme": "Scribe",
+  "workbench.colorTheme": "Scribe Medieval Theme",
+  "workbench.iconTheme": "scribe-icon-theme",
+  "files.associations": {
+    "*.oe": "oldenglish",
+    "*.on": "oldnorse",
+    "*.got": "gothic"
+  },
+  "scribe.enableSemanticTokens": true,
+  "scribe.enableDeveloperMode": false,
+  "scribe.dictionaryDataPath": "data/",
   "[oldenglish]": {
     "editor.fontFamily": "Noto Serif"
   },
@@ -30,7 +39,7 @@ export function generateSettingsTemplate(): string {
     "editor.fontFamily": "Noto Serif"
   },
   "editor.semanticTokenColorCustomizations": {
-    "[Scribe]": {
+    "[Scribe Medieval Theme]": {
       "rules": {
         "wordentry": {
           "foreground": "${highlightColor}"
@@ -43,7 +52,7 @@ export function generateSettingsTemplate(): string {
     }
   },
   "editor.tokenColorCustomizations": {
-    "[Scribe]": {
+    "[Scribe Medieval Theme]": {
       "textMateRules": [
         {
           "scope": "constant.language.runes.scribe",

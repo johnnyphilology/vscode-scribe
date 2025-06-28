@@ -2,6 +2,15 @@ import * as vscode from 'vscode';
 import oldEnglishSubs from '../../data/oldenglish/substitutions.json';
 
 /**
+ * Check if developer mode is enabled
+ */
+export function isDeveloperMode(): boolean {
+    const config = vscode.workspace.getConfiguration('scribe');
+    const devMode = config.get<boolean>('enableDeveloperMode');
+    return devMode !== undefined ? devMode : false;
+}
+
+/**
  * Get dynamic Old English substitutions based on wynn setting
  */
 export function getOldEnglishSubstitutions(): { [key: string]: string } {

@@ -15,3 +15,31 @@ export function autoActivateTheme() {
         }
     }
 }
+
+/**
+ * Apply the Scribe theme
+ */
+export async function applyTheme(): Promise<void> {
+    try {
+        const workbenchConfig = vscode.workspace.getConfiguration('workbench');
+        await workbenchConfig.update('colorTheme', 'Scribe Medieval Theme', vscode.ConfigurationTarget.Global);
+        await workbenchConfig.update('iconTheme', 'scribe-icon-theme', vscode.ConfigurationTarget.Global);
+        vscode.window.showInformationMessage('Scribe theme applied successfully!');
+    } catch (error) {
+        vscode.window.showErrorMessage(`Error applying theme: ${error}`);
+    }
+}
+
+/**
+ * Reset theme to default
+ */
+export async function resetTheme(): Promise<void> {
+    try {
+        const workbenchConfig = vscode.workspace.getConfiguration('workbench');
+        await workbenchConfig.update('colorTheme', undefined, vscode.ConfigurationTarget.Global);
+        await workbenchConfig.update('iconTheme', undefined, vscode.ConfigurationTarget.Global);
+        vscode.window.showInformationMessage('Theme reset to default successfully!');
+    } catch (error) {
+        vscode.window.showErrorMessage(`Error resetting theme: ${error}`);
+    }
+}
