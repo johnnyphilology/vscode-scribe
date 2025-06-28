@@ -198,5 +198,3 @@ export function activate(context: vscode.ExtensionContext) {
         handleGutters(vscode.window.activeTextEditor, context);
     }
 }
-
-export function deactivate() {}
