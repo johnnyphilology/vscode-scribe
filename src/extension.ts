@@ -203,28 +203,6 @@ function generateSettingsTemplate(): string {
 }
 
 /**
- * Register the settings insertion command
- * @param context - VS Code extension context
- */
-function registerSettingsInsertion(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand('extension.insertScribeSettings', () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            vscode.window.showErrorMessage('No active editor found');
-            return;
-        }
-
-        const settingsTemplate = generateSettingsTemplate();
-        const snippet = new vscode.SnippetString(settingsTemplate);
-        editor.insertSnippet(snippet);
-        
-        vscode.window.showInformationMessage('📋 Scribe settings template inserted! Copy this to your VS Code settings.json');
-    });
-
-    context.subscriptions.push(disposable);
-}
-
-/**
  * Register the open settings command
  * @param context - VS Code extension context
  */
@@ -252,8 +230,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     registerMacroLauncher(context); // Macro for @runes lines, user chooses script
 
-    // Register settings insertion command
-    registerSettingsInsertion(context);
+    // Register settings commands
     registerOpenSettings(context);
 
     // Register Add Word webview provider (sidebar)
@@ -336,6 +313,116 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(autoMergeCommand);
 
+    // Register Setup Workspace Settings command (replaces insertScribeSettings)
+    const setupWorkspaceSettingsCommand = vscode.commands.registerCommand('scribe.setupWorkspaceSettings', async () => {
+        const editor = vscode.window.activeTextEditor;
+        
+        // If we're in a JSON file, offer to insert template directly
+        if (editor && editor.document.languageId === 'json') {
+            const options = await vscode.window.showQuickPick([
+                {
+                    label: '📋 Insert Settings Template',
+                    description: 'Insert Scribe settings template at cursor position',
+                    action: 'insert'
+                },
+                {
+                    label: '⚙️ Setup Workspace Settings',
+                    description: 'Create/update .vscode/settings.json file',
+                    action: 'workspace'
+                }
+            ], {
+                placeHolder: 'Choose how to apply Scribe settings'
+            });
+
+            if (!options) {
+                return;
+            }
+
+            if (options.action === 'insert') {
+                // Insert template at cursor (old insertScribeSettings behavior)
+                const settingsTemplate = generateSettingsTemplate();
+                const snippet = new vscode.SnippetString(settingsTemplate);
+                editor.insertSnippet(snippet);
+                
+                vscode.window.showInformationMessage('📋 Scribe settings template inserted!');
+                return;
+            }
+        }
+
+        // Setup workspace settings (new behavior)
+        if (!vscode.workspace.workspaceFolders) {
+            vscode.window.showErrorMessage('No workspace folder found. Please open a folder or workspace first.');
+            return;
+        }
+
+        const workspaceRoot = vscode.workspace.workspaceFolders[0].uri;
+        const vscodeDir = vscode.Uri.joinPath(workspaceRoot, '.vscode');
+        const settingsFile = vscode.Uri.joinPath(vscodeDir, 'settings.json');
+
+        try {
+            // Check if .vscode directory exists, create if it doesn't
+            try {
+                await vscode.workspace.fs.stat(vscodeDir);
+            } catch {
+                await vscode.workspace.fs.createDirectory(vscodeDir);
+            }
+
+            // Parse the full settings template to extract relevant workspace settings
+            const fullTemplate = JSON.parse(generateSettingsTemplate());
+            
+            // Default Scribe workspace settings (extracted from template + scribe-specific)
+            const defaultSettings = {
+                ...fullTemplate,
+                "scribe.theme.autoActivate": true,
+                "scribe.completion.highlightColor": "#FFD700",
+                "scribe.oldenglish.enableWynn": false,
+                "scribe.dataPath": "data",
+                "scribe.developerMode": false,
+                "files.associations": {
+                    "*.oe": "oldenglish",
+                    "*.on": "oldnorse",
+                    "*.got": "gothic"
+                }
+            };
+
+            let existingSettings = {};
+            
+            // Try to read existing settings
+            try {
+                const existingContent = await vscode.workspace.fs.readFile(settingsFile);
+                const existingText = Buffer.from(existingContent).toString('utf8');
+                existingSettings = JSON.parse(existingText);
+            } catch {
+                // File doesn't exist or is invalid JSON, start fresh
+            }
+
+            // Merge settings (existing settings take precedence)
+            const mergedSettings = { ...defaultSettings, ...existingSettings };
+
+            // Write the settings file
+            const settingsContent = JSON.stringify(mergedSettings, null, 2);
+            await vscode.workspace.fs.writeFile(settingsFile, Buffer.from(settingsContent, 'utf8'));
+
+            // Show success message with options
+            const result = await vscode.window.showInformationMessage(
+                'Workspace Scribe settings have been configured in .vscode/settings.json',
+                'Open Settings File',
+                'View Settings'
+            );
+
+            if (result === 'Open Settings File') {
+                const document = await vscode.workspace.openTextDocument(settingsFile);
+                await vscode.window.showTextDocument(document);
+            } else if (result === 'View Settings') {
+                vscode.commands.executeCommand('workbench.action.openWorkspaceSettings');
+            }
+
+        } catch (error) {
+            vscode.window.showErrorMessage(`Failed to setup workspace settings: ${error}`);
+        }
+    });
+    context.subscriptions.push(setupWorkspaceSettingsCommand);
+
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
     }, null, context.subscriptions);
@@ -391,7 +478,7 @@ export function activate(context: vscode.ExtensionContext) {
                     'Generate Template'
                 ).then(selection => {
                     if (selection === 'Generate Template') {
-                        vscode.commands.executeCommand('extension.insertScribeSettings');
+                        vscode.commands.executeCommand('scribe.setupWorkspaceSettings');
                     }
                 });
             }

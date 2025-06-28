@@ -75,12 +75,13 @@
     "commands": [
       {
         "command": "extension.convertLanguageBlocks",
-        "title": "✨ Convert Language Blocks",
-        "icon": "$(sparkle)"
+        "title": "⚡ Convert Language Blocks",
+        "icon": "$(zap)"
       },
       {
-        "command": "extension.insertScribeSettings",
-        "title": "📋 Insert Scribe Settings Template"
+        "command": "scribe.setupWorkspaceSettings",
+        "title": "🔧 Insert/Setup Scribe Settings",
+        "icon": "$(wrench)"
       },
       {
         "command": "extension.openScribeSettings",
@@ -110,9 +111,9 @@
         "when": "editorTextFocus"
       },
       {
-        "command": "extension.insertScribeSettings",
+        "command": "scribe.setupWorkspaceSettings",
         "key": "alt+shift+s",
-        "when": "editorTextFocus && resourceExtname == .json"
+        "when": "editorTextFocus"
       },
       {
         "command": "scribe.addWord",
@@ -204,14 +205,19 @@
           "group": "navigation"
         },
         {
+          "command": "scribe.setupWorkspaceSettings",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "group": "navigation"
+        },
+        {
           "command": "scribe.autoMerge",
-          "when": "(resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic) && config.scribe.developerMode",
+          "when": "config.scribe.developerMode",
           "group": "navigation"
         }
       ],
       "commandPalette": [
         {
-          "command": "extension.insertScribeSettings",
+          "command": "scribe.setupWorkspaceSettings",
           "when": "editorIsOpen"
         },
         {
