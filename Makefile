@@ -39,7 +39,7 @@ unit-test: build ## 🧪 Run unit tests
 test: build ## 🔍 Run all tests (unit + integration)
 	@npm test
 
-package: build ## 📋 Package the extension into .vsix file
+package: ## 📋 Package the extension into .vsix file
 	@vsce package
 
 install: package ## 💾 Install the extension locally in VS Code

@@ -9,6 +9,10 @@ import { registerCompletionHover } from './providers/completionHover';
 import { registerWordEntrySemanticTokens } from './providers/semanticTokens';
 import { AddWordWebviewProvider } from './providers/addWordWebview';
 import { AddWordWebviewPanel } from './providers/addWordWebviewPanel';
+import { VersionBumpWebviewPanel } from './providers/versionBumpWebviewPanel';
+import { autoActivateTheme } from './providers/themeManager';
+import { getOldEnglishSubstitutions as getDynamicOldEnglishSubs, registerConfigurationHandlers } from './providers/configurationManager';
+import { generateSettingsTemplate } from './providers/settingsTemplate';
 import { extractWordList, bracketMarkers } from './utils/helpers';
 
 import oldEnglishSubs from '../data/oldenglish/substitutions.json';
@@ -30,40 +34,6 @@ interface LanguageConfig {
 }
 
 /**
- * Auto-activate Scribe theme if setting is enabled
- */
-function autoActivateTheme() {
-    const config = vscode.workspace.getConfiguration('scribe');
-    const autoActivate = config.get<boolean>('theme.autoActivate', true);
-    
-    if (autoActivate) {
-        const currentTheme = vscode.workspace.getConfiguration('workbench').get<string>('colorTheme');
-        if (currentTheme !== 'Scribe') {
-            vscode.workspace.getConfiguration('workbench').update('colorTheme', 'Scribe', vscode.ConfigurationTarget.Global);
-            console.log('[Scribe] Auto-activated Scribe theme');
-        }
-    }
-}
-
-/**
- * Get dynamic Old English substitutions based on wynn setting
- */
-function getOldEnglishSubstitutions(): { [key: string]: string } {
-    const config = vscode.workspace.getConfiguration('scribe');
-    const enableWynn = config.get<boolean>('oldenglish.enableWynn', false);
-    
-    const baseSubstitutions: { [key: string]: string } = { ...oldEnglishSubs };
-    
-    if (enableWynn) {
-        // Add w -> ƿ substitution
-        baseSubstitutions['w'] = 'ƿ';
-        baseSubstitutions['W'] = 'Ƿ';
-    }
-    
-    return baseSubstitutions;
-}
-
-/**
  * Register all providers for a medieval language
  * @param context - VS Code extension context
  * @param config - Language configuration
@@ -71,7 +41,7 @@ function getOldEnglishSubstitutions(): { [key: string]: string } {
 function registerLanguage(context: vscode.ExtensionContext, config: LanguageConfig) {
     // Use dynamic substitutions for Old English
     const substitutions = config.id === 'oldenglish' 
-        ? getOldEnglishSubstitutions() 
+        ? getDynamicOldEnglishSubs() 
         : config.substitutions;
         
     registerHandleSubstitutions(context, substitutions, config.id);
@@ -83,123 +53,6 @@ function registerLanguage(context: vscode.ExtensionContext, config: LanguageConf
         registerCompletionHover(context, config.id, config.words);
         registerWordEntrySemanticTokens(context, config.id, extractWordList(config.words));
     }
-}
-
-/**
- * Get the custom highlight color from settings
- */
-function getHighlightColor(): string {
-    const config = vscode.workspace.getConfiguration('scribe');
-    return config.get<string>('completion.highlightColor', '#FFD700');
-}
-
-/**
- * Generate settings template with current configuration values
- */
-function generateSettingsTemplate(): string {
-    const highlightColor = getHighlightColor();
-    
-    return `{
-  "editor.fontFamily": "Noto Serif",
-  "editor.fontSize": 16,
-  "editor.fontLigatures": true,
-  "editor.semanticHighlighting.enabled": true,
-  "workbench.colorTheme": "Scribe",
-  "[oldenglish]": {
-    "editor.fontFamily": "Noto Serif"
-  },
-  "[oldnorse]": {
-    "editor.fontFamily": "Noto Serif"
-  },
-  "[gothic]": {
-    "editor.fontFamily": "Noto Serif"
-  },
-  "editor.semanticTokenColorCustomizations": {
-    "[Scribe]": {
-      "rules": {
-        "wordentry": {
-          "foreground": "${highlightColor}"
-        },
-        "wordentry.definition": {
-          "foreground": "${highlightColor}",
-          "fontStyle": "bold"
-        }
-      }
-    }
-  },
-  "editor.tokenColorCustomizations": {
-    "[Scribe]": {
-      "textMateRules": [
-        {
-          "scope": "constant.language.runes.scribe",
-          "settings": {
-            "foreground": "#07d00b",
-            "fontStyle": "bold"
-          }
-        },
-        {
-          "scope": "constant.language.gothic.scribe",
-          "settings": {
-            "foreground": "#2087e7",
-            "fontStyle": "bold"
-          }
-        },
-        {
-          "scope": "constant.language.medieval.scribe",
-          "settings": {
-            "foreground": "#9d4edd",
-            "fontStyle": "bold"
-          }
-        },
-        {
-          "scope": "entity.name.tag.futhorc.scribe",
-          "settings": {
-            "foreground": "#FFD700"
-          }
-        },
-        {
-          "scope": "entity.name.tag.elderfuthark.scribe",
-          "settings": {
-            "foreground": "#D32F2F"
-          }
-        },
-        {
-          "scope": "entity.name.tag.youngerfuthark.scribe",
-          "settings": {
-            "foreground": "#19c819"
-          }
-        },
-        {
-          "scope": "entity.name.tag.medievalfuthark.scribe",
-          "settings": {
-            "foreground": "#8e24aa"
-          }
-        },
-        {
-          "scope": "entity.name.tag.gothic.scribe",
-          "settings": {
-            "foreground": "#2087e7"
-          }
-        },
-        {
-          "scope": "entity.name.tag.scribe",
-          "settings": {
-            "foreground": "#01ad29"
-          }
-        },
-        {
-          "scope": [
-            "punctuation.definition.tag.begin.scribe",
-            "punctuation.definition.tag.end.scribe"
-          ],
-          "settings": {
-            "foreground": "#808080"
-          }
-        }
-      ]
-    }
-  }
-}`;
 }
 
 /**
@@ -215,105 +68,10 @@ function registerOpenSettings(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
-export function activate(context: vscode.ExtensionContext) {
-    // Auto-activate theme if setting enabled
-    autoActivateTheme();
-
-    // Register all medieval languages
-    const languages: LanguageConfig[] = [
-        { id: 'oldenglish', substitutions: oldEnglishSubs, words: oldEnglishWords },
-        { id: 'oldnorse', substitutions: oldNorseSubs, words: oldNorseWords },
-        { id: 'gothic', substitutions: gothicSubs, words: gothicWords }
-    ];
-
-    languages.forEach(lang => registerLanguage(context, lang));
-
-    registerMacroLauncher(context); // Macro for @runes lines, user chooses script
-
-    // Register settings commands
-    registerOpenSettings(context);
-
-    // Register Add Word webview provider (sidebar)
-    const addWordProvider = new AddWordWebviewProvider(context.extensionUri);
-    context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider(AddWordWebviewProvider.viewType, addWordProvider)
-    );
-
-    // Register Add Word commands
-    const addWordCommand = vscode.commands.registerCommand('scribe.addWord', () => {
-        vscode.commands.executeCommand('workbench.view.explorer');
-        vscode.commands.executeCommand('scribe.addWordView.focus');
-    });
-    context.subscriptions.push(addWordCommand);
-
-    // Register Add Word Panel command (opens in new tab)
-    const addWordPanelCommand = vscode.commands.registerCommand('scribe.addWordPanel', () => {
-        AddWordWebviewPanel.createOrShow(context.extensionUri);
-    });
-    context.subscriptions.push(addWordPanelCommand);
-
-    // Register Auto-Merge command (developer mode only)
-    const autoMergeCommand = vscode.commands.registerCommand('scribe.autoMerge', async () => {
-        const config = vscode.workspace.getConfiguration('scribe');
-        const developerMode = config.get<boolean>('developerMode', false);
-        
-        if (!developerMode) {
-            vscode.window.showWarningMessage('Auto-merge feature is only available in Developer Mode. Enable it in Scribe settings.');
-            return;
-        }
-
-        // Check if we're in a git repository
-        if (!vscode.workspace.workspaceFolders) {
-            vscode.window.showErrorMessage('No workspace folder found.');
-            return;
-        }
-
-        const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        
-        try {
-            // Show confirmation dialog
-            const proceed = await vscode.window.showWarningMessage(
-                'This will create a PR and auto-merge the current branch. Continue?',
-                { modal: true },
-                'Yes, Auto-Merge',
-                'Cancel'
-            );
-
-            if (proceed !== 'Yes, Auto-Merge') {
-                return;
-            }
-
-            // Show progress
-            vscode.window.withProgress({
-                location: vscode.ProgressLocation.Notification,
-                title: 'Auto-merging current branch...',
-                cancellable: false
-            }, async (progress) => {
-                progress.report({ increment: 0, message: 'Running auto-merge script...' });
-                
-                // Run the auto-merge script
-                const terminal = vscode.window.createTerminal({
-                    name: 'Scribe Auto-Merge',
-                    cwd: workspaceRoot
-                });
-                
-                terminal.sendText('npm run auto-merge');
-                terminal.show();
-                
-                progress.report({ increment: 100, message: 'Auto-merge script started' });
-                
-                vscode.window.showInformationMessage(
-                    'Auto-merge script is running in the terminal. Check the output for progress.'
-                );
-            });
-
-        } catch (error) {
-            vscode.window.showErrorMessage(`Auto-merge failed: ${error}`);
-        }
-    });
-    context.subscriptions.push(autoMergeCommand);
-
-    // Register Setup Workspace Settings command (replaces insertScribeSettings)
+/**
+ * Register workspace settings command
+ */
+function registerWorkspaceSettingsCommand(context: vscode.ExtensionContext) {
     const setupWorkspaceSettingsCommand = vscode.commands.registerCommand('scribe.setupWorkspaceSettings', async () => {
         const editor = vscode.window.activeTextEditor;
         
@@ -422,9 +180,112 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
     context.subscriptions.push(setupWorkspaceSettingsCommand);
+}
 
+/**
+ * Register developer mode commands
+ */
+function registerDevCommands(context: vscode.ExtensionContext) {
+    // Register Auto-Merge command (developer mode only)
+    const autoMergeCommand = vscode.commands.registerCommand('scribe.autoMerge', async () => {
+        const config = vscode.workspace.getConfiguration('scribe');
+        const developerMode = config.get<boolean>('developerMode', false);
+        
+        if (!developerMode) {
+            vscode.window.showWarningMessage('Auto-merge feature is only available in Developer Mode. Enable it in Scribe settings.');
+            return;
+        }
+
+        // Check if we're in a git repository
+        if (!vscode.workspace.workspaceFolders) {
+            vscode.window.showErrorMessage('No workspace folder found.');
+            return;
+        }
+
+        const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+        
+        try {
+            // Show confirmation dialog
+            const proceed = await vscode.window.showWarningMessage(
+                'This will create a PR and auto-merge the current branch. Continue?',
+                { modal: true },
+                'Yes, Auto-Merge',
+                'Cancel'
+            );
+
+            if (proceed !== 'Yes, Auto-Merge') {
+                return;
+            }
+
+            // Show progress
+            vscode.window.withProgress({
+                location: vscode.ProgressLocation.Notification,
+                title: 'Auto-merging current branch...',
+                cancellable: false
+            }, async (progress) => {
+                progress.report({ increment: 0, message: 'Running auto-merge script...' });
+                
+                // Run the auto-merge script
+                const terminal = vscode.window.createTerminal({
+                    name: 'Scribe Auto-Merge',
+                    cwd: workspaceRoot
+                });
+                
+                terminal.sendText('npm run auto-merge');
+                terminal.show();
+                
+                progress.report({ increment: 100, message: 'Auto-merge script started' });
+                
+                vscode.window.showInformationMessage(
+                    'Auto-merge script is running in the terminal. Check the output for progress.'
+                );
+            });
+
+        } catch (error) {
+            vscode.window.showErrorMessage(`Auto-merge failed: ${error}`);
+        }
+    });
+    context.subscriptions.push(autoMergeCommand);
+
+    // Register Version Bump command (developer mode only)
+    const versionBumpCommand = vscode.commands.registerCommand('scribe.versionBump', () => {
+        const config = vscode.workspace.getConfiguration('scribe');
+        const developerMode = config.get<boolean>('developerMode', false);
+        
+        if (!developerMode) {
+            vscode.window.showWarningMessage('Version bump feature is only available in Developer Mode. Enable it in Scribe settings.');
+            return;
+        }
+
+        VersionBumpWebviewPanel.createOrShow(context.extensionUri);
+    });
+    context.subscriptions.push(versionBumpCommand);
+}
+
+/**
+ * Register Add Word commands
+ */
+function registerAddWordCommands(context: vscode.ExtensionContext) {
+    const addWordCommand = vscode.commands.registerCommand('scribe.addWord', () => {
+        vscode.commands.executeCommand('workbench.view.explorer');
+        vscode.commands.executeCommand('scribe.addWordView.focus');
+    });
+    context.subscriptions.push(addWordCommand);
+
+    const addWordPanelCommand = vscode.commands.registerCommand('scribe.addWordPanel', () => {
+        AddWordWebviewPanel.createOrShow(context.extensionUri);
+    });
+    context.subscriptions.push(addWordPanelCommand);
+}
+
+/**
+ * Register event handlers
+ */
+function registerEventHandlers(context: vscode.ExtensionContext) {
     vscode.window.onDidChangeActiveTextEditor(editor => {
-        if (editor) {handleGutters(editor, context);}
+        if (editor) {
+            handleGutters(editor, context);
+        }
     }, null, context.subscriptions);
 
     vscode.workspace.onDidChangeTextDocument(event => {
@@ -433,55 +294,47 @@ export function activate(context: vscode.ExtensionContext) {
            handleGutters(editor, context);
         }
     }, null, context.subscriptions);
+}
+
+export function activate(context: vscode.ExtensionContext) {
+    // Auto-activate theme if setting enabled
+    autoActivateTheme();
+
+    // Register all medieval languages
+    const languages: LanguageConfig[] = [
+        { id: 'oldenglish', substitutions: oldEnglishSubs, words: oldEnglishWords },
+        { id: 'oldnorse', substitutions: oldNorseSubs, words: oldNorseWords },
+        { id: 'gothic', substitutions: gothicSubs, words: gothicWords }
+    ];
+
+    languages.forEach(lang => registerLanguage(context, lang));
+
+    registerMacroLauncher(context);
+
+    // Register settings commands
+    registerOpenSettings(context);
+    registerWorkspaceSettingsCommand(context);
+
+    // Register developer mode commands
+    registerDevCommands(context);
+
+    // Register Add Word webview provider (sidebar)
+    const addWordProvider = new AddWordWebviewProvider(context.extensionUri);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(AddWordWebviewProvider.viewType, addWordProvider)
+    );
+
+    // Register Add Word commands
+    registerAddWordCommands(context);
+
+    // Register event handlers
+    registerEventHandlers(context);
+
+    // Register configuration change handlers
+    registerConfigurationHandlers(context);
 
     // Initialize when extension starts
     if (vscode.window.activeTextEditor) {
         handleGutters(vscode.window.activeTextEditor, context);
     }
-
-    // Listen for configuration changes
-    vscode.workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration('scribe')) {
-            // Handle theme auto-activation setting change
-            if (event.affectsConfiguration('scribe.theme.autoActivate')) {
-                autoActivateTheme();
-            }
-            
-            // Handle Old English wynn conversion setting change
-            if (event.affectsConfiguration('scribe.oldenglish.enableWynn')) {
-                vscode.window.showInformationMessage(
-                    '🔄 Old English wynn conversion setting changed. Reload the window for changes to take effect.',
-                    'Reload'
-                ).then(selection => {
-                    if (selection === 'Reload') {
-                        vscode.commands.executeCommand('workbench.action.reloadWindow');
-                    }
-                });
-            }
-            
-            // Handle data path setting change
-            if (event.affectsConfiguration('scribe.dataPath')) {
-                vscode.window.showInformationMessage(
-                    '📁 Data path setting changed. Reload the window for changes to take effect.',
-                    'Reload'
-                ).then(selection => {
-                    if (selection === 'Reload') {
-                        vscode.commands.executeCommand('workbench.action.reloadWindow');
-                    }
-                });
-            }
-            
-            // Handle highlight color setting change
-            if (event.affectsConfiguration('scribe.completion.highlightColor')) {
-                vscode.window.showInformationMessage(
-                    '🎨 Word entry highlight color changed. Update your settings.json with the new template to see changes.',
-                    'Generate Template'
-                ).then(selection => {
-                    if (selection === 'Generate Template') {
-                        vscode.commands.executeCommand('scribe.setupWorkspaceSettings');
-                    }
-                });
-            }
-        }
-    }, null, context.subscriptions);
 }

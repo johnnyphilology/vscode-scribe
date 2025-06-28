@@ -102,6 +102,11 @@
         "command": "scribe.autoMerge",
         "title": "🔀 Auto-Merge Current Branch",
         "icon": "$(git-merge)"
+      },
+      {
+        "command": "scribe.versionBump",
+        "title": "📈 Version Bump",
+        "icon": "$(tag)"
       }
     ],
     "keybindings": [
@@ -128,6 +133,11 @@
       {
         "command": "scribe.autoMerge",
         "key": "alt+shift+m",
+        "when": "config.scribe.developerMode"
+      },
+      {
+        "command": "scribe.versionBump",
+        "key": "alt+shift+b",
         "when": "config.scribe.developerMode"
       }
     ],
@@ -213,6 +223,11 @@
           "command": "scribe.autoMerge",
           "when": "config.scribe.developerMode",
           "group": "navigation"
+        },
+        {
+          "command": "scribe.versionBump",
+          "when": "config.scribe.developerMode",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
@@ -231,6 +246,10 @@
         },
         {
           "command": "scribe.autoMerge",
+          "when": "config.scribe.developerMode"
+        },
+        {
+          "command": "scribe.versionBump",
           "when": "config.scribe.developerMode"
         }
       ]
