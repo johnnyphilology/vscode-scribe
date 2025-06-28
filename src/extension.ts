@@ -275,6 +275,67 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(addWordPanelCommand);
 
+    // Register Auto-Merge command (developer mode only)
+    const autoMergeCommand = vscode.commands.registerCommand('scribe.autoMerge', async () => {
+        const config = vscode.workspace.getConfiguration('scribe');
+        const developerMode = config.get<boolean>('developerMode', false);
+        
+        if (!developerMode) {
+            vscode.window.showWarningMessage('Auto-merge feature is only available in Developer Mode. Enable it in Scribe settings.');
+            return;
+        }
+
+        // Check if we're in a git repository
+        if (!vscode.workspace.workspaceFolders) {
+            vscode.window.showErrorMessage('No workspace folder found.');
+            return;
+        }
+
+        const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+        
+        try {
+            // Show confirmation dialog
+            const proceed = await vscode.window.showWarningMessage(
+                'This will create a PR and auto-merge the current branch. Continue?',
+                { modal: true },
+                'Yes, Auto-Merge',
+                'Cancel'
+            );
+
+            if (proceed !== 'Yes, Auto-Merge') {
+                return;
+            }
+
+            // Show progress
+            vscode.window.withProgress({
+                location: vscode.ProgressLocation.Notification,
+                title: 'Auto-merging current branch...',
+                cancellable: false
+            }, async (progress) => {
+                progress.report({ increment: 0, message: 'Running auto-merge script...' });
+                
+                // Run the auto-merge script
+                const terminal = vscode.window.createTerminal({
+                    name: 'Scribe Auto-Merge',
+                    cwd: workspaceRoot
+                });
+                
+                terminal.sendText('npm run auto-merge');
+                terminal.show();
+                
+                progress.report({ increment: 100, message: 'Auto-merge script started' });
+                
+                vscode.window.showInformationMessage(
+                    'Auto-merge script is running in the terminal. Check the output for progress.'
+                );
+            });
+
+        } catch (error) {
+            vscode.window.showErrorMessage(`Auto-merge failed: ${error}`);
+        }
+    });
+    context.subscriptions.push(autoMergeCommand);
+
     vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {handleGutters(editor, context);}
     }, null, context.subscriptions);

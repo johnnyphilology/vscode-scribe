@@ -96,6 +96,11 @@
         "command": "scribe.addWordPanel",
         "title": "📝 Add Word to Dictionary (New Tab)",
         "icon": "$(new-file)"
+      },
+      {
+        "command": "scribe.autoMerge",
+        "title": "🔀 Auto-Merge Current Branch",
+        "icon": "$(git-merge)"
       }
     ],
     "keybindings": [
@@ -118,6 +123,11 @@
         "command": "scribe.addWordPanel",
         "key": "alt+shift+ctrl+w",
         "when": "true"
+      },
+      {
+        "command": "scribe.autoMerge",
+        "key": "alt+shift+m",
+        "when": "config.scribe.developerMode"
       }
     ],
     "snippets": [
@@ -192,6 +202,11 @@
           "command": "scribe.addWordPanel",
           "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
           "group": "navigation"
+        },
+        {
+          "command": "scribe.autoMerge",
+          "when": "(resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic) && config.scribe.developerMode",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
@@ -207,6 +222,10 @@
         },
         {
           "command": "scribe.addWordPanel"
+        },
+        {
+          "command": "scribe.autoMerge",
+          "when": "config.scribe.developerMode"
         }
       ]
     },
@@ -233,6 +252,11 @@
           "type": "string",
           "default": "data",
           "description": "Path to the directory containing language dictionaries (relative to workspace root)"
+        },
+        "scribe.developerMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable developer mode with additional debugging features and experimental functionality"
         }
       }
     }
