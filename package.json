@@ -230,7 +230,9 @@
     "test:web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=out/test/runUnitTests.js",
     "deploy": "vsce publish",
     "version-bump": "node scripts/version-bump.js",
-    "add-word": "node scripts/add-word.js"
+    "add-word": "node scripts/add-word.js",
+    "auto-release": "node scripts/auto-release.js",
+    "auto-merge": "node scripts/auto-merge.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

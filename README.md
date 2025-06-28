@@ -309,4 +309,35 @@ When enabled, all instances of the letter "w" will be automatically converted to
 
 **Note:** Changes to wynn conversion require a window reload to take effect.
 
+## 🛠️ Developer Automation
+
+Scribe includes powerful automation scripts for development and release workflows:
+
+### 🚀 **Release Automation**
+```bash
+# Complete automated release workflow
+npm run auto-release
+```
+**Features:** Creates PR → Waits for CI → Auto-merges → Creates GitHub release
+
+### 🔀 **PR Auto-Merge**
+```bash
+# Create PR with auto-merge enabled
+npm run auto-merge
+```
+**Features:** Creates PR → Enables auto-merge → Merges when CI passes
+
+### 📦 **Version Management**
+```bash
+# Interactive semantic version bumping
+npm run version-bump
+
+# Add new dictionary words
+npm run add-word
+```
+
+**Prerequisites:** GitHub CLI (`gh`) installed and authenticated
+
+**Documentation:** See [`scripts/README.md`](./scripts/README.md) for detailed usage guide
+
 ## [AGPLv3 License](./LICENSE)

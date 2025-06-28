@@ -26,6 +26,14 @@
 - **Type safety** - Fixed TypeScript compilation errors in dynamic substitution handling
 - **Configuration listeners** - Added workspace configuration change detection for real-time updates
 - **Better error handling** - Improved error messages and user feedback for configuration changes
+- **Command refactoring** - Renamed `convertRunesBlocks` to `convertLanguageBlocks` for better clarity
+
+### 🚀 **Developer Automation**
+- **Auto-release script** - Complete automated workflow: PR creation → CI wait → auto-merge → GitHub release
+- **Auto-merge script** - Simple PR creation with auto-merge for feature branches
+- **GitHub CLI integration** - Full `gh` command integration for streamlined workflows
+- **CI monitoring** - Intelligent waiting for SonarQube and test checks to pass
+- **Release automation** - Automatic GitHub releases with changelog-based release notes
 
 ### Added
 - **Developer automation scripts**:
