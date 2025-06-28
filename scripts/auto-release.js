@@ -210,49 +210,6 @@ async function createRelease(version) {
     log(`🔗 View release: https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/tag/${tagName}`, 'cyan');
 }
 
-async function handleExistingPR(currentBranch, version) {
-    log('Failed to create pull request. Checking if PR already exists...', 'yellow');
-    
-    // Try to find existing PR for this branch
-    const existingPR = execCommand(
-        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url`,
-        { silent: true, allowFailure: true }
-    );
-    
-    if (existingPR) {
-        try {
-            const prs = JSON.parse(existingPR);
-            if (prs.length > 0) {
-                const prNumber = prs[0].number;
-                const prUrl = prs[0].url;
-                log(`Found existing PR #${prNumber}: ${prUrl}`, 'cyan');
-                log(`✅ Using existing pull request: #${prNumber}`, 'green');
-                
-                // Continue with existing PR
-                const checksPass = await waitForChecks(prNumber);
-                
-                if (!checksPass) {
-                    log('CI checks failed or timed out. PR will not be merged automatically.', 'red');
-                    log(`Please review the PR manually: ${prUrl}`, 'yellow');
-                    process.exit(1);
-                }
-                
-                // Merge the PR
-                log('Merging pull request...', 'yellow');
-                execCommand(`gh pr merge ${prNumber} --squash --delete-branch`);
-                log(`✅ Pull request #${prNumber} merged and branch deleted`, 'green');
-                
-                // Continue to release creation...
-                await createRelease(version);
-                return true;
-            }
-        } catch (parseError) {
-            log(`Failed to parse existing PR data: ${parseError.message}`, 'red');
-        }
-    }
-    
-    return false;
-}
 
 function extractPRNumber(prResult, currentBranch) {
     // Try multiple regex patterns to extract PR number
@@ -290,6 +247,93 @@ function extractPRNumber(prResult, currentBranch) {
         }
     }
     
+    return prNumber;
+}
+
+function findExistingPR(currentBranch) {
+    const existingPR = execCommand(
+        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url,title`,
+        { silent: true, allowFailure: true }
+    );
+    
+    if (existingPR) {
+        try {
+            const prs = JSON.parse(existingPR);
+            if (prs.length > 0) {
+                const pr = prs[0];
+                log(`Found existing PR #${pr.number}: "${pr.title}"`, 'cyan');
+                log(`🔗 URL: ${pr.url}`, 'cyan');
+                return pr.number;
+            }
+        } catch (parseError) {
+            log(`Failed to parse existing PR data: ${parseError.message}`, 'yellow');
+        }
+    }
+    return null;
+}
+
+async function getOrCreatePR(currentBranch, version, commitMessage) {
+    // First, check if PR already exists for this branch
+    log('Checking for existing PR...', 'cyan');
+    let prNumber = findExistingPR(currentBranch);
+    
+    if (prNumber) {
+        log(`✅ Using existing pull request: #${prNumber}`, 'green');
+        return prNumber;
+    }
+
+    // No existing PR found, create a new one
+    log('No existing PR found. Creating new PR...', 'yellow');
+    const prTitle = `Release v${version}`;
+    const prBody = `Automated release PR for version ${version}
+
+**Changes:**
+${commitMessage}
+
+**Version:** ${version}
+
+This PR will be automatically merged once all CI checks pass.`;
+    
+    const prResult = execCommand(
+        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch}`,
+        { silent: true, allowFailure: true }
+    );
+    
+    if (!prResult) {
+        log('PR creation failed. Checking again for existing PR...', 'yellow');
+        prNumber = findExistingPR(currentBranch);
+        
+        if (!prNumber) {
+            log('Failed to create new PR and no existing PR found.', 'red');
+            log('Please check your GitHub CLI authentication and try again.', 'yellow');
+            process.exit(1);
+        }
+        
+        log(`✅ Using existing pull request: #${prNumber}`, 'green');
+        return prNumber;
+    }
+
+    log(`PR creation result: ${prResult}`, 'cyan');
+    debugLog(`Full PR creation output: ${prResult}`);
+    
+    prNumber = extractPRNumber(prResult, currentBranch);
+    
+    if (!prNumber) {
+        log('Could not determine PR number from creation result. Checking for existing PR...', 'yellow');
+        prNumber = findExistingPR(currentBranch);
+        
+        if (!prNumber) {
+            log('Could not determine PR number from creation result. Here is the full output:', 'red');
+            console.log(prResult);
+            log('Please create the PR manually or check GitHub CLI authentication.', 'yellow');
+            process.exit(1);
+        }
+        
+        log(`Found PR via fallback search: #${prNumber}`, 'green');
+        return prNumber;
+    }
+    
+    log(`✅ New pull request created: #${prNumber}`, 'green');
     return prNumber;
 }
 
@@ -336,47 +380,9 @@ async function main() {
     log('Pushing current branch to origin...', 'yellow');
     execCommand(`git push origin ${currentBranch}`);
     
-    // Create pull request
-    log('Creating pull request...', 'yellow');
-    const prTitle = `Release v${version}`;
-    const prBody = `Automated release PR for version ${version}
-
-**Changes:**
-${commitMessage}
-
-**Version:** ${version}
-
-This PR will be automatically merged once all CI checks pass.`;
-    
-    const prResult = execCommand(
-        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch}`,
-        { silent: true, allowFailure: true }
-    );
-    
-    if (!prResult) {
-        const handled = await handleExistingPR(currentBranch, version);
-        if (handled) {
-            return;
-        }
-        
-        log('No existing PR found and failed to create new one.', 'red');
-        log('Please check your GitHub CLI authentication and try again.', 'yellow');
-        process.exit(1);
-    }
-    
-    log(`PR creation result: ${prResult}`, 'cyan');
-    debugLog(`Full PR creation output: ${prResult}`);
-    
-    const prNumber = extractPRNumber(prResult, currentBranch);
-    
-    if (!prNumber) {
-        log('Could not determine PR number. Here is the full output:', 'red');
-        console.log(prResult);
-        log('Please create the PR manually or check GitHub CLI authentication.', 'yellow');
-        process.exit(1);
-    }
-    
-    log(`✅ Pull request created: #${prNumber}`, 'green');
+    // Get or create pull request
+    log('Getting or creating pull request...', 'yellow');
+    const prNumber = await getOrCreatePR(currentBranch, version, commitMessage);
     
     // Wait for checks to pass
     const checksPass = await waitForChecks(prNumber);
