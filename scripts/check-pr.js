@@ -13,6 +13,9 @@
 
 const { execSync } = require('child_process');
 
+// Configuration
+const DEBUG = process.env.DEBUG === '1' || process.argv.includes('--debug');
+
 // Colors for console output
 const colors = {
     reset: '\x1b[0m',
@@ -27,13 +30,23 @@ function log(message, color = 'reset') {
     console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
+function debugLog(message, color = 'cyan') {
+    if (DEBUG) {
+        console.log(`${colors[color]}[DEBUG] ${message}${colors.reset}`);
+    }
+}
+
 function execCommand(command, options = {}) {
     try {
+        debugLog(`Executing: ${command}`);
         const result = execSync(command, { 
             encoding: 'utf8',
             stdio: options.silent ? 'pipe' : 'inherit',
             ...options
         });
+        if (options.silent && result) {
+            debugLog(`Command output: ${result.trim()}`);
+        }
         return result?.trim();
     } catch (error) {
         if (!options.allowFailure) {
@@ -41,6 +54,10 @@ function execCommand(command, options = {}) {
             log(error.message, 'red');
             process.exit(1);
         }
+        debugLog(`Command failed (allowed): ${command}`);
+        debugLog(`Error: ${error.message}`);
+        debugLog(`Error code: ${error.status}`);
+        debugLog(`Error stderr: ${error.stderr?.toString()}`);
         return null;
     }
 }
@@ -90,7 +107,7 @@ async function checkPRStatus(shouldMerge = false) {
     // Check CI status
     log(`\n🔄 Checking CI status...`, 'yellow');
     const checksResult = execCommand(
-        `gh pr checks ${pr.number} --json state,conclusion,name`,
+        `gh pr checks ${pr.number} --json bucket,state,name`,
         { silent: true, allowFailure: true }
     );
     
@@ -107,14 +124,22 @@ async function checkPRStatus(shouldMerge = false) {
         return;
     }
     
-    const pendingChecks = checks.filter(check => check.state === 'PENDING' || check.state === 'IN_PROGRESS');
-    const failedChecks = checks.filter(check => check.conclusion === 'FAILURE' || check.conclusion === 'CANCELLED');
-    const succeededChecks = checks.filter(check => check.conclusion === 'SUCCESS');
+    const pendingChecks = checks.filter(check => 
+        check.bucket === 'pending'
+    );
+    const failedChecks = checks.filter(check => 
+        check.bucket === 'fail' || check.bucket === 'cancel'
+    );
+    const succeededChecks = checks.filter(check => check.bucket === 'pass');
+    const skippedChecks = checks.filter(check => 
+        check.bucket === 'skipping'
+    );
     
     log(`\n📊 Check Summary:`, 'cyan');
     log(`   ✅ Passed: ${succeededChecks.length}`, 'green');
     log(`   ⏳ Pending: ${pendingChecks.length}`, 'yellow');
     log(`   ❌ Failed: ${failedChecks.length}`, 'red');
+    log(`   ⏭️  Skipped: ${skippedChecks.length}`, 'cyan');
     
     if (succeededChecks.length > 0) {
         log(`\n✅ Passed Checks:`, 'green');

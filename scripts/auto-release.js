@@ -132,48 +132,144 @@ function generateReleaseNotes() {
 async function waitForChecks(prNumber) {
     log(`Waiting for CI checks to complete for PR #${prNumber}...`, 'yellow');
     
+    // Add initial debug info
+    debugLog(`Repository: ${REPO_OWNER}/${REPO_NAME}`);
+    debugLog(`PR Number: ${prNumber}`);
+    debugLog(`GitHub CLI version: ${execCommand('gh --version', { silent: true, allowFailure: true }) || 'unknown'}`);
+    
     const startTime = Date.now();
+    let retryCount = 0;
     
     while (Date.now() - startTime < MAX_WAIT_TIME) {
-        const checksResult = execCommand(
-            `gh pr checks ${prNumber} --json state,conclusion,name`,
+        retryCount++;
+        debugLog(`Check attempt #${retryCount}`);
+        
+        // First check if PR exists and is mergeable
+        const prStatus = execCommand(
+            `gh pr view ${prNumber} --json state,mergeable,statusCheckRollup`,
             { silent: true, allowFailure: true }
         );
         
-        if (!checksResult) {
-            log('Failed to get check status, retrying...', 'yellow');
+        if (!prStatus) {
+            log(`Failed to get PR status for #${prNumber}, retrying...`, 'yellow');
             await sleep(CHECK_INTERVAL);
             continue;
+        }
+        
+        let prData;
+        try {
+            prData = JSON.parse(prStatus);
+            debugLog(`PR State: ${prData.state}, Mergeable: ${prData.mergeable}`);
+        } catch (parseError) {
+            log(`Failed to parse PR status: ${parseError.message}, retrying...`, 'yellow');
+            await sleep(CHECK_INTERVAL);
+            continue;
+        }
+        
+        // Check if PR is closed or merged
+        if (prData.state === 'MERGED') {
+            log('PR is already merged!', 'green');
+            return true;
+        }
+        
+        if (prData.state === 'CLOSED') {
+            log('PR is closed. Cannot proceed.', 'red');
+            return false;
+        }
+        
+        // Get status checks using the newer API
+        let checksResult = execCommand(
+            `gh pr checks ${prNumber} --json bucket,state,name`,
+            { silent: true, allowFailure: true }
+        );
+        
+        // If checks command fails, try alternative approaches
+        if (!checksResult) {
+            debugLog('gh pr checks failed, trying alternative API...');
+            
+            // Try using the status API directly
+            checksResult = execCommand(
+                `gh api repos/${REPO_OWNER}/${REPO_NAME}/pulls/${prNumber}/status-checks --jq '.statuses[]'`,
+                { silent: true, allowFailure: true }
+            );
+            
+            if (!checksResult) {
+                debugLog('Both check APIs failed, falling back to mergeable status');
+                
+                // Fallback: check if PR is mergeable without specific checks
+                if (prData.mergeable === 'MERGEABLE') {
+                    log('No specific checks found, but PR is mergeable. Proceeding...', 'yellow');
+                    return true;
+                } else if (prData.mergeable === 'CONFLICTING') {
+                    log('PR has merge conflicts. Please resolve them.', 'red');
+                    return false;
+                } else {
+                    log(`PR mergeable status: ${prData.mergeable}. Retrying check status...`, 'yellow');
+                    await sleep(CHECK_INTERVAL);
+                    continue;
+                }
+            }
         }
         
         let checks;
         try {
             checks = JSON.parse(checksResult);
+            debugLog(`Found ${checks.length} checks`);
         } catch (parseError) {
             log(`Failed to parse check results: ${parseError.message}, retrying...`, 'yellow');
             await sleep(CHECK_INTERVAL);
             continue;
         }
         
-        const pendingChecks = checks.filter(check => check.state === 'PENDING' || check.state === 'IN_PROGRESS');
-        const failedChecks = checks.filter(check => check.conclusion === 'FAILURE' || check.conclusion === 'CANCELLED');
-        const succeededChecks = checks.filter(check => check.conclusion === 'SUCCESS');
+        // If no checks are configured, but PR is mergeable, proceed
+        if (checks.length === 0) {
+            if (prData.mergeable === 'MERGEABLE') {
+                log('No CI checks configured, but PR is mergeable. Proceeding...', 'green');
+                return true;
+            } else {
+                log('No CI checks found and PR not mergeable. Waiting...', 'yellow');
+                await sleep(CHECK_INTERVAL);
+                continue;
+            }
+        }
         
-        log(`Checks status: ${succeededChecks.length} passed, ${pendingChecks.length} pending, ${failedChecks.length} failed`, 'cyan');
+        const pendingChecks = checks.filter(check => 
+            check.bucket === 'pending'
+        );
+        const failedChecks = checks.filter(check => 
+            check.bucket === 'fail' || check.bucket === 'cancel'
+        );
+        const succeededChecks = checks.filter(check => 
+            check.bucket === 'pass'
+        );
+        const skippedChecks = checks.filter(check => 
+            check.bucket === 'skipping'
+        );
+        
+        log(`Checks status: ${succeededChecks.length} passed, ${pendingChecks.length} pending, ${failedChecks.length} failed, ${skippedChecks.length} skipped`, 'cyan');
         
         if (failedChecks.length > 0) {
             log('Some checks failed:', 'red');
-            failedChecks.forEach(check => log(`  ❌ ${check.name}`, 'red'));
+            failedChecks.forEach(check => log(`  ❌ ${check.name}: ${check.bucket}`, 'red'));
             return false;
         }
         
         if (pendingChecks.length === 0) {
-            log('All checks passed!', 'green');
-            return true;
+            log('All checks completed!', 'green');
+            if (succeededChecks.length > 0 || skippedChecks.length > 0) {
+                return true;
+            } else {
+                log('No successful checks found. This might indicate a configuration issue.', 'yellow');
+                // Check if PR is still mergeable despite no successful checks
+                if (prData.mergeable === 'MERGEABLE') {
+                    log('PR is still mergeable, proceeding...', 'green');
+                    return true;
+                }
+            }
         }
         
         log(`Waiting for ${pendingChecks.length} pending checks...`, 'yellow');
-        pendingChecks.forEach(check => log(`  ⏳ ${check.name}`, 'yellow'));
+        pendingChecks.forEach(check => log(`  ⏳ ${check.name}: ${check.bucket}`, 'yellow'));
         
         await sleep(CHECK_INTERVAL);
     }

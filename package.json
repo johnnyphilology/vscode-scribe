@@ -233,7 +233,9 @@
     "add-word": "node scripts/add-word.js",
     "auto-release": "node scripts/auto-release.js",
     "auto-merge": "node scripts/auto-merge.js",
-    "debug-gh": "node scripts/debug-gh.js"
+    "debug-gh": "node scripts/debug-gh.js",
+    "check-pr": "node scripts/check-pr.js",
+    "test-gh": "node scripts/test-gh.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
