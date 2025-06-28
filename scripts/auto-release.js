@@ -27,6 +27,7 @@ const REPO_NAME = 'scribe';
 const BASE_BRANCH = 'main';
 const CHECK_INTERVAL = 30000; // 30 seconds
 const MAX_WAIT_TIME = 1800000; // 30 minutes
+const DEBUG = process.env.DEBUG === '1' || process.argv.includes('--debug');
 
 // Colors for console output
 const colors = {
@@ -42,13 +43,23 @@ function log(message, color = 'reset') {
     console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
+function debugLog(message, color = 'cyan') {
+    if (DEBUG) {
+        console.log(`${colors[color]}[DEBUG] ${message}${colors.reset}`);
+    }
+}
+
 function execCommand(command, options = {}) {
     try {
+        debugLog(`Executing: ${command}`);
         const result = execSync(command, { 
             encoding: 'utf8',
             stdio: options.silent ? 'pipe' : 'inherit',
             ...options
         });
+        if (options.silent && result) {
+            debugLog(`Command output: ${result.trim()}`);
+        }
         return result?.trim();
     } catch (error) {
         if (!options.allowFailure) {
@@ -56,6 +67,8 @@ function execCommand(command, options = {}) {
             log(error.message, 'red');
             process.exit(1);
         }
+        debugLog(`Command failed (allowed): ${command}`);
+        debugLog(`Error: ${error.message}`);
         return null;
     }
 }
@@ -173,6 +186,113 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function createRelease(version) {
+    // Switch back to main and pull latest
+    log('Switching to main branch and pulling latest changes...', 'yellow');
+    execCommand(`git checkout ${BASE_BRANCH}`);
+    execCommand('git pull origin main');
+    
+    // Create release
+    log('Creating GitHub release...', 'yellow');
+    const tagName = `v${version}`;
+    const releaseNotes = generateReleaseNotes();
+    
+    // Check if tag already exists
+    const existingTag = execCommand(`git tag -l ${tagName}`, { silent: true, allowFailure: true });
+    if (existingTag) {
+        log(`Tag ${tagName} already exists. Skipping release creation.`, 'yellow');
+    } else {
+        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}"`);
+        log(`✅ Release ${tagName} created successfully`, 'green');
+    }
+    
+    log('🎉 Auto-release process completed successfully!', 'green');
+    log(`🔗 View release: https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/tag/${tagName}`, 'cyan');
+}
+
+async function handleExistingPR(currentBranch, version) {
+    log('Failed to create pull request. Checking if PR already exists...', 'yellow');
+    
+    // Try to find existing PR for this branch
+    const existingPR = execCommand(
+        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url`,
+        { silent: true, allowFailure: true }
+    );
+    
+    if (existingPR) {
+        try {
+            const prs = JSON.parse(existingPR);
+            if (prs.length > 0) {
+                const prNumber = prs[0].number;
+                const prUrl = prs[0].url;
+                log(`Found existing PR #${prNumber}: ${prUrl}`, 'cyan');
+                log(`✅ Using existing pull request: #${prNumber}`, 'green');
+                
+                // Continue with existing PR
+                const checksPass = await waitForChecks(prNumber);
+                
+                if (!checksPass) {
+                    log('CI checks failed or timed out. PR will not be merged automatically.', 'red');
+                    log(`Please review the PR manually: ${prUrl}`, 'yellow');
+                    process.exit(1);
+                }
+                
+                // Merge the PR
+                log('Merging pull request...', 'yellow');
+                execCommand(`gh pr merge ${prNumber} --squash --delete-branch`);
+                log(`✅ Pull request #${prNumber} merged and branch deleted`, 'green');
+                
+                // Continue to release creation...
+                await createRelease(version);
+                return true;
+            }
+        } catch (parseError) {
+            log(`Failed to parse existing PR data: ${parseError.message}`, 'red');
+        }
+    }
+    
+    return false;
+}
+
+function extractPRNumber(prResult, currentBranch) {
+    // Try multiple regex patterns to extract PR number
+    let prNumber = prResult.match(/#(\d+)/)?.[1];
+    if (!prNumber) {
+        // Try alternative patterns
+        prNumber = prResult.match(/pull\/(\d+)/)?.[1];
+    }
+    if (!prNumber) {
+        // Try to extract from URL pattern
+        prNumber = prResult.match(/\/(\d+)$/)?.[1];
+    }
+    
+    if (!prNumber) {
+        log('Failed to extract PR number from result:', 'red');
+        log(prResult, 'red');
+        log('Trying to find PR by branch name...', 'yellow');
+        
+        // Fallback: try to find the PR by branch name
+        const prList = execCommand(
+            `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number`,
+            { silent: true, allowFailure: true }
+        );
+        
+        if (prList) {
+            try {
+                const prs = JSON.parse(prList);
+                if (prs.length > 0) {
+                    prNumber = prs[0].number.toString();
+                    log(`Found PR by branch lookup: #${prNumber}`, 'cyan');
+                }
+            } catch (parseError) {
+                log(`Failed to parse PR list: ${parseError.message}`, 'red');
+            }
+        }
+    }
+    
+    return prNumber;
+}
+
 async function main() {
     log('🚀 Starting auto-release process...', 'blue');
     
@@ -230,12 +350,29 @@ This PR will be automatically merged once all CI checks pass.`;
     
     const prResult = execCommand(
         `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch}`,
-        { silent: true }
+        { silent: true, allowFailure: true }
     );
     
-    const prNumber = prResult.match(/#(\d+)/)?.[1];
+    if (!prResult) {
+        const handled = await handleExistingPR(currentBranch, version);
+        if (handled) {
+            return;
+        }
+        
+        log('No existing PR found and failed to create new one.', 'red');
+        log('Please check your GitHub CLI authentication and try again.', 'yellow');
+        process.exit(1);
+    }
+    
+    log(`PR creation result: ${prResult}`, 'cyan');
+    debugLog(`Full PR creation output: ${prResult}`);
+    
+    const prNumber = extractPRNumber(prResult, currentBranch);
+    
     if (!prNumber) {
-        log('Failed to extract PR number from result', 'red');
+        log('Could not determine PR number. Here is the full output:', 'red');
+        console.log(prResult);
+        log('Please create the PR manually or check GitHub CLI authentication.', 'yellow');
         process.exit(1);
     }
     
@@ -255,27 +392,8 @@ This PR will be automatically merged once all CI checks pass.`;
     execCommand(`gh pr merge ${prNumber} --squash --delete-branch`);
     log(`✅ Pull request #${prNumber} merged and branch deleted`, 'green');
     
-    // Switch back to main and pull latest
-    log('Switching to main branch and pulling latest changes...', 'yellow');
-    execCommand(`git checkout ${BASE_BRANCH}`);
-    execCommand('git pull origin main');
-    
     // Create release
-    log('Creating GitHub release...', 'yellow');
-    const tagName = `v${version}`;
-    const releaseNotes = generateReleaseNotes();
-    
-    // Check if tag already exists
-    const existingTag = execCommand(`git tag -l ${tagName}`, { silent: true, allowFailure: true });
-    if (existingTag) {
-        log(`Tag ${tagName} already exists. Skipping release creation.`, 'yellow');
-    } else {
-        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}"`);
-        log(`✅ Release ${tagName} created successfully`, 'green');
-    }
-    
-    log('🎉 Auto-release process completed successfully!', 'green');
-    log(`🔗 View release: https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/tag/${tagName}`, 'cyan');
+    await createRelease(version);
 }
 
 // Run the script
