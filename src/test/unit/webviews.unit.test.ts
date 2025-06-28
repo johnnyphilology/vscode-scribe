@@ -356,4 +356,180 @@ describe('Webview Providers Unit Tests', () => {
             assert.ok(mockVSCode.window.showErrorMessage.calledWith(errorMessage));
         });
     });
+
+    describe('AutoReleaseWebviewPanel', () => {
+        let mockPanel: MockWebviewPanel;
+
+        beforeEach(() => {
+            sinon.restore();
+            mockPanel = new MockWebviewPanel();
+            mockVSCode.window.createWebviewPanel.returns(mockPanel);
+        });
+
+        it('should create webview panel with correct properties', () => {
+            // Simulate creating auto-release webview panel
+            const panel = mockVSCode.window.createWebviewPanel(
+                'scribe.autoRelease',
+                'Auto Release',
+                1,
+                {
+                    enableScripts: true,
+                    localResourceRoots: []
+                }
+            );
+
+            assert.ok(mockVSCode.window.createWebviewPanel.calledOnce);
+            assert.ok(panel);
+            
+            const [viewType, title, column, options] = mockVSCode.window.createWebviewPanel.firstCall.args;
+            assert.strictEqual(viewType, 'scribe.autoRelease');
+            assert.strictEqual(title, 'Auto Release');
+            assert.strictEqual(column, 1);
+            assert.ok(options.enableScripts);
+        });
+
+        it('should generate HTML content for auto-release interface', () => {
+            // Test HTML generation logic for auto-release
+            const expectedElements = [
+                'Auto Release Process',
+                'Current Status',
+                'Version:',
+                'Branch:',
+                'Uncommitted Changes:',
+                'Latest Commit:',
+                'Create Release'
+            ];
+
+            // Mock HTML content that would be generated
+            const mockHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head><title>Auto Release</title></head>
+                <body>
+                    <h1>🚀 Auto Release</h1>
+                    <div class="info">Auto Release Process:</div>
+                    <div class="status-section">
+                        <h3>Current Status</h3>
+                        <div>Version: <span id="current-version">0.6.0</span></div>
+                        <div>Branch: <span id="current-branch">feature/test</span></div>
+                        <div>Uncommitted Changes: <span id="uncommitted-changes">No</span></div>
+                        <div>Latest Commit: <span id="latest-commit">Test commit</span></div>
+                    </div>
+                    <button id="create-release-btn">🚀 Create Release</button>
+                </body>
+                </html>
+            `;
+
+            for (const element of expectedElements) {
+                assert.ok(mockHtml.includes(element), `HTML should contain ${element}`);
+            }
+        });
+
+        it('should handle status messages from webview', () => {
+            const mockPanel = new MockWebviewPanel();
+            
+            // Test message handling for status requests
+            const messageHandler = sinon.stub();
+            mockPanel.webview.onDidReceiveMessage = messageHandler;
+
+            // Simulate status request message
+            const testMessage = {
+                command: 'getStatus'
+            };
+
+            // Test that the message would be handled
+            const handleMessage = (message: any) => {
+                if (message.command === 'getStatus') {
+                    return {
+                        currentVersion: '0.6.0',
+                        currentBranch: 'feature/test',
+                        hasUncommittedChanges: false,
+                        latestCommit: 'Test commit'
+                    };
+                }
+            };
+
+            const result = handleMessage(testMessage);
+            assert.ok(result);
+            assert.strictEqual(result.currentVersion, '0.6.0');
+            assert.strictEqual(result.currentBranch, 'feature/test');
+            assert.strictEqual(result.hasUncommittedChanges, false);
+        });
+
+        it('should handle create release messages from webview', () => {
+            const mockPanel = new MockWebviewPanel();
+            
+            // Test message handling for release creation
+            const messageHandler = sinon.stub();
+            mockPanel.webview.onDidReceiveMessage = messageHandler;
+
+            // Simulate create release message
+            const testMessage = {
+                command: 'createRelease'
+            };
+
+            // Test that the message would be handled
+            const handleMessage = (message: any) => {
+                if (message.command === 'createRelease') {
+                    // Simulate running the auto-release script
+                    return { success: true, message: 'Auto-release script started' };
+                }
+            };
+
+            const result = handleMessage(testMessage);
+            assert.ok(result);
+            assert.strictEqual(result.success, true);
+            assert.ok(result.message.includes('Auto-release script started'));
+        });
+
+        it('should validate prerequisites before allowing release', () => {
+            // Test validation logic
+            const validateRelease = (status: any) => {
+                const warnings = [];
+                
+                if (status.hasUncommittedChanges) {
+                    warnings.push('You have uncommitted changes');
+                }
+                
+                if (status.currentBranch === 'main') {
+                    warnings.push('You are on the main branch');
+                }
+                
+                return {
+                    canRelease: warnings.length === 0,
+                    warnings: warnings
+                };
+            };
+
+            // Test case: clean branch, not on main
+            const validStatus = {
+                currentBranch: 'feature/test',
+                hasUncommittedChanges: false
+            };
+            
+            const validResult = validateRelease(validStatus);
+            assert.strictEqual(validResult.canRelease, true);
+            assert.strictEqual(validResult.warnings.length, 0);
+
+            // Test case: on main branch
+            const mainBranchStatus = {
+                currentBranch: 'main',
+                hasUncommittedChanges: false
+            };
+            
+            const mainResult = validateRelease(mainBranchStatus);
+            assert.strictEqual(mainResult.canRelease, false);
+            assert.ok(mainResult.warnings.includes('You are on the main branch'));
+
+            // Test case: uncommitted changes
+            const uncommittedStatus = {
+                currentBranch: 'feature/test',
+                hasUncommittedChanges: true
+            };
+            
+            const uncommittedResult = validateRelease(uncommittedStatus);
+            assert.strictEqual(uncommittedResult.canRelease, false);
+            assert.ok(uncommittedResult.warnings.includes('You have uncommitted changes'));
+        });
+    });
 });

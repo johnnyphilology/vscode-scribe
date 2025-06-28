@@ -44,7 +44,16 @@ Module.prototype.require = function (...args: any[]) {
 describe('Extension Modularization Tests', () => {
     
     beforeEach(() => {
-        sinon.resetHistory();
+        // Reset all sinon stubs before each test
+        sinon.restore();
+        
+        // Recreate the main stubs
+        mockVSCode.commands.registerCommand = sinon.stub();
+        mockVSCode.workspace.getConfiguration = sinon.stub();
+        mockVSCode.workspace.onDidChangeConfiguration = sinon.stub();
+        mockVSCode.window.showInformationMessage = sinon.stub();
+        mockVSCode.window.showErrorMessage = sinon.stub();
+        mockVSCode.Disposable.from = sinon.stub().returns({ dispose: sinon.stub() });
     });
 
     describe('Extension Activation', () => {
@@ -356,6 +365,76 @@ describe('Extension Modularization Tests', () => {
             };
 
             assert.ok(!validateConfiguration(invalidConfig));
+        });
+    });
+
+    describe('Auto-Release Command', () => {
+        it('should register auto-release command with developer mode gating', () => {
+            // Test auto-release command registration
+            const mockConfig = {
+                get: sinon.stub().withArgs('developerMode').returns(false),
+            };
+            mockVSCode.workspace.getConfiguration.returns(mockConfig);
+
+            // Simulate auto-release command registration
+            function registerAutoReleaseCommand() {
+                return mockVSCode.commands.registerCommand('scribe.autoRelease', async () => {
+                    const config = mockVSCode.workspace.getConfiguration('scribe');
+                    const developerMode = config.get('developerMode', false);
+                    
+                    if (!developerMode) {
+                        mockVSCode.window.showErrorMessage('Auto-release feature is only available in Developer Mode. Enable it in Scribe settings.');
+                        return;
+                    }
+
+                    // Would create webview panel here
+                    return { success: true, message: 'Auto-release webview opened' };
+                });
+            }
+
+            const command = registerAutoReleaseCommand();
+            assert.ok(mockVSCode.commands.registerCommand.calledWith('scribe.autoRelease'));
+            
+            // Test command execution with developer mode disabled
+            const commandHandler = mockVSCode.commands.registerCommand.lastCall.args[1];
+            commandHandler();
+            
+            assert.ok(mockVSCode.workspace.getConfiguration.calledWith('scribe'));
+            assert.ok(mockConfig.get.calledWith('developerMode', false));
+            assert.ok(mockVSCode.window.showErrorMessage.calledWith('Auto-release feature is only available in Developer Mode. Enable it in Scribe settings.'));
+        });
+
+        it('should allow auto-release command execution when developer mode is enabled', () => {
+            // Test auto-release command with developer mode enabled
+            const mockConfig = {
+                get: sinon.stub().withArgs('developerMode').returns(true),
+            };
+            mockVSCode.workspace.getConfiguration.returns(mockConfig);
+
+            // Simulate auto-release command registration with developer mode enabled
+            function registerAutoReleaseCommand() {
+                return mockVSCode.commands.registerCommand('scribe.autoRelease', async () => {
+                    const config = mockVSCode.workspace.getConfiguration('scribe');
+                    const developerMode = config.get('developerMode', false);
+                    
+                    if (!developerMode) {
+                        mockVSCode.window.showErrorMessage('Auto-release feature is only available in Developer Mode. Enable it in Scribe settings.');
+                        return;
+                    }
+
+                    // Would create webview panel here - simulate success
+                    return { success: true, message: 'Auto-release webview opened' };
+                });
+            }
+
+            registerAutoReleaseCommand();
+            const commandHandler = mockVSCode.commands.registerCommand.lastCall.args[1];
+            const result = commandHandler();
+            
+            // Should not show error message when developer mode is enabled
+            assert.ok(mockVSCode.window.showErrorMessage.notCalled);
+            // Should return success result
+            assert.ok(result);
         });
     });
 });

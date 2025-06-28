@@ -10,6 +10,7 @@ import { registerWordEntrySemanticTokens } from './providers/semanticTokens';
 import { AddWordWebviewProvider } from './providers/addWordWebview';
 import { AddWordWebviewPanel } from './providers/addWordWebviewPanel';
 import { VersionBumpWebviewPanel } from './providers/versionBumpWebviewPanel';
+import { AutoReleaseWebviewPanel } from './providers/autoReleaseWebviewPanel';
 import { autoActivateTheme } from './providers/themeManager';
 import { getOldEnglishSubstitutions as getDynamicOldEnglishSubs, registerConfigurationHandlers } from './providers/configurationManager';
 import { generateSettingsTemplate } from './providers/settingsTemplate';
@@ -260,6 +261,20 @@ function registerDevCommands(context: vscode.ExtensionContext) {
         VersionBumpWebviewPanel.createOrShow(context.extensionUri);
     });
     context.subscriptions.push(versionBumpCommand);
+
+    // Register Auto-Release command (developer mode only)
+    const autoReleaseCommand = vscode.commands.registerCommand('scribe.autoRelease', () => {
+        const config = vscode.workspace.getConfiguration('scribe');
+        const developerMode = config.get<boolean>('developerMode', false);
+        
+        if (!developerMode) {
+            vscode.window.showWarningMessage('Auto-release feature is only available in Developer Mode. Enable it in Scribe settings.');
+            return;
+        }
+
+        AutoReleaseWebviewPanel.createOrShow(context.extensionUri);
+    });
+    context.subscriptions.push(autoReleaseCommand);
 }
 
 /**

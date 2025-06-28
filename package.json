@@ -107,6 +107,11 @@
         "command": "scribe.versionBump",
         "title": "📈 Version Bump",
         "icon": "$(tag)"
+      },
+      {
+        "command": "scribe.autoRelease",
+        "title": "🚀 Auto-Release",
+        "icon": "$(rocket)"
       }
     ],
     "keybindings": [
@@ -138,6 +143,11 @@
       {
         "command": "scribe.versionBump",
         "key": "alt+shift+b",
+        "when": "config.scribe.developerMode"
+      },
+      {
+        "command": "scribe.autoRelease",
+        "key": "alt+shift+r",
         "when": "config.scribe.developerMode"
       }
     ],
@@ -228,6 +238,11 @@
           "command": "scribe.versionBump",
           "when": "config.scribe.developerMode",
           "group": "navigation"
+        },
+        {
+          "command": "scribe.autoRelease",
+          "when": "config.scribe.developerMode",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
@@ -250,6 +265,10 @@
         },
         {
           "command": "scribe.versionBump",
+          "when": "config.scribe.developerMode"
+        },
+        {
+          "command": "scribe.autoRelease",
           "when": "config.scribe.developerMode"
         }
       ]
