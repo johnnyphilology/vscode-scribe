@@ -69,3 +69,6 @@ release: ## 🚀 Create and publish a new release
 setup: ## ⚡ Setup this workstation for development
 	@chmod +x .workstation/setup-autocomplete.sh
 	@./.workstation/setup-autocomplete.sh
+
+version: ## 📅 Show the current version of the extension
+	@echo "$(BOLD)$(GREEN)Current Version: $(VERSION)$(RESET)"

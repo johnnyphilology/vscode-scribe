@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.7.0] - 2025-06-29
+**Adding Gothic words from Wright's Gothic Primer (1910) & Adding Changelog Automation**
+
+🚀 **MINOR Release:** `0.6.1` → `0.7.0`
+
+### ✨ Added
+- Gothic now has `2368` new words.
+- Changelog fields now inside Webview for Developer mode.
+
+### 🔄 Changed
+- Removed `100` basic Gothic words for much improved glossary words with definitions and documentation.
 
 ## [0.6.1] - 2025-06-28
 
