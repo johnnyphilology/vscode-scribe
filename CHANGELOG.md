@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.7.3] - 2025-06-29
+**Very small patch to escape Release notes.**
+
+🚀 **PATCH Release:** `0.7.2` → `0.7.3`
+
+### 🔧 Fixed
+- Release notes weren't escaping backticks so information wasn't properly handled in Github
+
 ## [0.7.2] - 2025-06-29
 **Resolving small issue with Auto-Merge**
 
