@@ -146,7 +146,7 @@ async function waitForChecks(prNumber) {
         
         // First check if PR exists and is mergeable
         const prStatus = execCommand(
-            `gh pr view ${prNumber} --json state,mergeable,statusCheckRollup`,
+            `gh pr view ${prNumber} --json state,mergeable,statusCheckRollup --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -179,7 +179,7 @@ async function waitForChecks(prNumber) {
         
         // Get status checks using the newer API
         let checksResult = execCommand(
-            `gh pr checks ${prNumber} --json bucket,state,name`,
+            `gh pr checks ${prNumber} --json bucket,state,name --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -298,7 +298,7 @@ async function createRelease(version) {
     if (existingTag) {
         log(`Tag ${tagName} already exists. Skipping release creation.`, 'yellow');
     } else {
-        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}"`);
+        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}" --repo ${REPO_OWNER}/${REPO_NAME}`);
         log(`✅ Release ${tagName} created successfully`, 'green');
     }
     
@@ -326,7 +326,7 @@ function extractPRNumber(prResult, currentBranch) {
         
         // Fallback: try to find the PR by branch name
         const prList = execCommand(
-            `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number`,
+            `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -348,7 +348,7 @@ function extractPRNumber(prResult, currentBranch) {
 
 function findExistingPR(currentBranch) {
     const existingPR = execCommand(
-        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url,title`,
+        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url,title --repo ${REPO_OWNER}/${REPO_NAME}`,
         { silent: true, allowFailure: true }
     );
     
@@ -391,7 +391,7 @@ ${commitMessage}
 This PR will be automatically merged once all CI checks pass.`;
     
     const prResult = execCommand(
-        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch}`,
+        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch} --repo ${REPO_OWNER}/${REPO_NAME}`,
         { silent: true, allowFailure: true }
     );
     
@@ -431,6 +431,42 @@ This PR will be automatically merged once all CI checks pass.`;
     
     log(`✅ New pull request created: #${prNumber}`, 'green');
     return prNumber;
+}
+
+function attemptConflictResolution(currentBranch) {
+    log('Attempting to resolve conflicts by updating branch...', 'yellow');
+    
+    try {
+        // Fetch latest changes
+        execCommand('git fetch origin');
+        
+        // Try to rebase on main
+        log('Attempting rebase on main...', 'cyan');
+        const rebaseResult = execCommand(`git rebase origin/${BASE_BRANCH}`, { allowFailure: true });
+        
+        if (rebaseResult === null) {
+            log('Rebase failed. Trying merge instead...', 'yellow');
+            
+            // If rebase fails, try merge
+            const mergeResult = execCommand(`git merge origin/${BASE_BRANCH}`, { allowFailure: true });
+            
+            if (mergeResult === null) {
+                log('Both rebase and merge failed. Manual intervention required.', 'red');
+                return false;
+            }
+        }
+        
+        // Push updated branch
+        log('Pushing updated branch...', 'cyan');
+        execCommand(`git push origin ${currentBranch} --force-with-lease`);
+        
+        log('✅ Branch updated successfully', 'green');
+        return true;
+        
+    } catch (error) {
+        debugLog(`Conflict resolution failed: ${error.message}`);
+        return false;
+    }
 }
 
 async function main() {
@@ -489,9 +525,82 @@ async function main() {
         process.exit(1);
     }
     
-    // Merge the PR
+    // Check if PR is mergeable before attempting merge
+    log('Checking if PR is mergeable...', 'yellow');
+    const prStatus = execCommand(
+        `gh pr view ${prNumber} --json mergeable,mergeStateStatus --repo ${REPO_OWNER}/${REPO_NAME}`,
+        { silent: true, allowFailure: true }
+    );
+    
+    if (prStatus) {
+        try {
+            const prData = JSON.parse(prStatus);
+            debugLog(`PR mergeable: ${prData.mergeable}, merge state: ${prData.mergeStateStatus}`);
+            
+            if (prData.mergeable === 'CONFLICTING' || prData.mergeStateStatus === 'DIRTY') {
+                log('❌ Pull request has merge conflicts.', 'red');
+                
+                // Ask if user wants to attempt automatic resolution
+                log('Attempting to resolve conflicts automatically...', 'yellow');
+                
+                if (attemptConflictResolution(currentBranch)) {
+                    log('✅ Conflicts may have been resolved. Waiting a moment for GitHub to update...', 'green');
+                    
+                    // Wait a bit for GitHub to process the updated branch
+                    await sleep(10000);
+                    
+                    // Re-check PR status
+                    const updatedStatus = execCommand(
+                        `gh pr view ${prNumber} --json mergeable,mergeStateStatus --repo ${REPO_OWNER}/${REPO_NAME}`,
+                        { silent: true, allowFailure: true }
+                    );
+                    
+                    if (updatedStatus) {
+                        try {
+                            const updatedData = JSON.parse(updatedStatus);
+                            if (updatedData.mergeable === 'MERGEABLE') {
+                                log('✅ Conflicts resolved! Proceeding with merge...', 'green');
+                            } else {
+                                log('❌ Conflicts still exist after automatic resolution attempt.', 'red');
+                                log(`Please resolve conflicts manually: https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${prNumber}`, 'yellow');
+                                process.exit(1);
+                            }
+                        } catch (parseError) {
+                            debugLog(`Failed to parse updated PR status: ${parseError.message}`);
+                            log('Could not verify conflict resolution. Proceeding with merge attempt...', 'yellow');
+                        }
+                    }
+                } else {
+                    log('❌ Automatic conflict resolution failed.', 'red');
+                    log(`Please resolve conflicts manually: https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${prNumber}`, 'yellow');
+                    log('After resolving conflicts, you can run the auto-release script again.', 'cyan');
+                    process.exit(1);
+                }
+            }
+        } catch (parseError) {
+            debugLog(`Failed to parse PR status: ${parseError.message}`);
+            log(`Warning: Could not parse PR status, proceeding with merge attempt...`, 'yellow');
+        }
+    }
+    
+    // Attempt to merge the PR
     log('Merging pull request...', 'yellow');
-    execCommand(`gh pr merge ${prNumber} --squash --delete-branch`);
+    const mergeResult = execCommand(
+        `gh pr merge ${prNumber} --squash --delete-branch --repo ${REPO_OWNER}/${REPO_NAME}`,
+        { silent: true, allowFailure: true }
+    );
+    
+    if (!mergeResult) {
+        log('❌ Failed to merge pull request.', 'red');
+        log('This usually indicates merge conflicts or other issues.', 'yellow');
+        log(`Please check the PR manually: https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${prNumber}`, 'yellow');
+        log('Common solutions:', 'cyan');
+        log('  1. Resolve merge conflicts by rebasing your branch on main', 'cyan');
+        log('  2. Ensure all required status checks have passed', 'cyan');
+        log('  3. Check if the PR has been manually merged already', 'cyan');
+        process.exit(1);
+    }
+    
     log(`✅ Pull request #${prNumber} merged and branch deleted`, 'green');
     
     // Create release
