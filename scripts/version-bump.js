@@ -58,22 +58,32 @@ function updateReadme(oldVersion, newVersion) {
   }
 }
 
-function updateChangelog(newVersion) {
+function updateChangelog(newVersion, summary = '', added = '', changed = '', fixed = '') {
   const changelogPath = 'CHANGELOG.md';
   let changelog = fs.readFileSync(changelogPath, 'utf8');
   
   const today = new Date().toISOString().split('T')[0];
-  const newEntry = `## [${newVersion}] - ${today}
-### Added
-- 
-
-### Changed
-- 
-
-### Fixed
-- 
-
-`;
+  let newEntry = `## [${newVersion}] - ${today}`;
+  
+  // Add summary if provided, including the version bump type
+  if (summary.trim()) {
+    newEntry += `\n${summary.trim()}`;
+  }
+  
+  // Only add sections if they have content
+  if (added.trim()) {
+    newEntry += `\n\n### ✨ Added\n${added.trim()}`;
+  }
+  
+  if (changed.trim()) {
+    newEntry += `\n\n### 🔄 Changed\n${changed.trim()}`;
+  }
+  
+  if (fixed.trim()) {
+    newEntry += `\n\n### 🔧 Fixed\n${fixed.trim()}`;
+  }
+  
+  newEntry += '\n\n';
 
   // Insert new entry after the "# Change Log" header
   const headerPattern = /(# Change Log\s*\n)/;
@@ -203,7 +213,19 @@ async function main() {
     // Update files
     updatePackageJson(newVersion);
     updateReadme(currentVersion, newVersion);
-    updateChangelog(newVersion);
+    
+    // Handle changelog parameters (for webview usage)
+    const summaryArg = args.find(arg => arg.startsWith('--summary='));
+    const addedArg = args.find(arg => arg.startsWith('--added='));
+    const changedArg = args.find(arg => arg.startsWith('--changed='));
+    const fixedArg = args.find(arg => arg.startsWith('--fixed='));
+    
+    const summary = summaryArg ? summaryArg.replace('--summary=', '').replace(/'/g, '') : '';
+    const added = addedArg ? addedArg.replace('--added=', '').replace(/'/g, '') : '';
+    const changed = changedArg ? changedArg.replace('--changed=', '').replace(/'/g, '') : '';
+    const fixed = fixedArg ? fixedArg.replace('--fixed=', '').replace(/'/g, '') : '';
+    
+    updateChangelog(newVersion, summary, added, changed, fixed);
     
     console.log('\n🎉 Version bump completed successfully!');
     console.log('\n📝 Next steps:');
