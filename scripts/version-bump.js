@@ -83,10 +83,10 @@ function updateChangelog(newVersion, summary = '', added = '', changed = '', fix
     newEntry += `\n\n### 🔧 Fixed\n${fixed.trim()}`;
   }
   
-  newEntry += '\n';
+  newEntry += '\n\n';
 
   // Insert new entry after the "# Change Log" header with proper spacing
-  const headerPattern = /(# Change Log\s*\n)/;
+  const headerPattern = /(# Change Log\s*\n)\s*/;
   const updatedChangelog = changelog.replace(headerPattern, `$1\n${newEntry}`);
   
   fs.writeFileSync(changelogPath, updatedChangelog);
