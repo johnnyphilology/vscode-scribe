@@ -10,7 +10,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 
 ## Status
-_Scribe_ is currently **pre-release** at version `0.6.1`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.7.0`, but you are free to evalute it and give feedback!
 
 ## 🎨 Scribe Theme
 
@@ -54,9 +54,9 @@ Scribe includes a beautiful custom theme specifically designed for medieval lang
 
 Added basic functionality for autocomplete while typing.  Popups include definition and documentation.
 
-- **Old English:** 772 common words
-- **Old Norse:** 36,847 words
-- **Gothic:** 110 common words
+- **Old English:** `772` common words.
+- **Old Norse:** `36,847` exhaustive words.
+- **Gothic:** `2,368` comprehensive words.
 
 ## Languages
 
