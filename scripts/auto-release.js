@@ -73,6 +73,29 @@ function execCommand(command, options = {}) {
     }
 }
 
+function execCommandSafely(command, options = {}) {
+    // For commands that might output help instead of expected results,
+    // add extra validation
+    const result = execCommand(command, options);
+    
+    // If result looks like help output (contains common help keywords),
+    // treat it as a failure
+    if (result && typeof result === 'string') {
+        const helpKeywords = ['Usage:', 'USAGE:', 'Commands:', 'Options:', 'FLAGS:', 'ARGUMENTS:'];
+        const looksLikeHelp = helpKeywords.some(keyword => result.includes(keyword));
+        
+        if (looksLikeHelp) {
+            debugLog(`Command output looks like help text: ${command}`);
+            if (!options.allowFailure) {
+                throw new Error(`Command returned help text instead of expected output: ${command}`);
+            }
+            return null;
+        }
+    }
+    
+    return result;
+}
+
 function getPackageVersion() {
     const packagePath = path.join(__dirname, '..', 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
@@ -90,6 +113,17 @@ function getLatestCommitMessage() {
 function hasUncommittedChanges() {
     const status = execCommand('git status --porcelain', { silent: true });
     return status.length > 0;
+}
+
+function escapeShellString(str) {
+    // Escape special characters for shell commands
+    return str
+        .replace(/\\/g, '\\\\')  // Escape backslashes first
+        .replace(/"/g, '\\"')    // Escape double quotes
+        .replace(/`/g, '\\`')    // Escape backticks
+        .replace(/\$/g, '\\$')   // Escape dollar signs
+        .replace(/\n/g, '\\n')   // Escape newlines
+        .replace(/\r/g, '\\r');  // Escape carriage returns
 }
 
 function generateReleaseNotes() {
@@ -135,7 +169,10 @@ async function waitForChecks(prNumber) {
     // Add initial debug info
     debugLog(`Repository: ${REPO_OWNER}/${REPO_NAME}`);
     debugLog(`PR Number: ${prNumber}`);
-    debugLog(`GitHub CLI version: ${execCommand('gh --version', { silent: true, allowFailure: true }) || 'unknown'}`);
+    
+    // Get GitHub CLI version more robustly
+    const ghVersion = execCommandSafely('gh version', { silent: true, allowFailure: true });
+    debugLog(`GitHub CLI version: ${ghVersion || 'unknown'}`);
     
     const startTime = Date.now();
     let retryCount = 0;
@@ -298,8 +335,34 @@ async function createRelease(version) {
     if (existingTag) {
         log(`Tag ${tagName} already exists. Skipping release creation.`, 'yellow');
     } else {
-        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}" --repo ${REPO_OWNER}/${REPO_NAME}`);
-        log(`✅ Release ${tagName} created successfully`, 'green');
+        // Use a temporary file for release notes to avoid shell escaping issues
+        const tempNotesFile = path.join(__dirname, '..', 'tmp', 'release-notes.txt');
+        
+        try {
+            // Ensure tmp directory exists
+            const tmpDir = path.dirname(tempNotesFile);
+            if (!fs.existsSync(tmpDir)) {
+                fs.mkdirSync(tmpDir, { recursive: true });
+            }
+            
+            // Write release notes to temp file
+            fs.writeFileSync(tempNotesFile, releaseNotes, 'utf8');
+            
+            // Create release using the temp file
+            execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes-file "${tempNotesFile}" --repo ${REPO_OWNER}/${REPO_NAME}`);
+            
+            // Clean up temp file
+            fs.unlinkSync(tempNotesFile);
+            
+            log(`✅ Release ${tagName} created successfully`, 'green');
+        } catch (error) {
+            // Fallback to escaped string method
+            debugLog(`File-based release creation failed: ${error.message}`);
+            log('File-based release creation failed, trying escaped string method...', 'yellow');
+            const escapedReleaseNotes = escapeShellString(releaseNotes);
+            execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${escapedReleaseNotes}" --repo ${REPO_OWNER}/${REPO_NAME}`);
+            log(`✅ Release ${tagName} created successfully`, 'green');
+        }
     }
     
     log('🎉 Auto-release process completed successfully!', 'green');
@@ -390,8 +453,11 @@ ${commitMessage}
 
 This PR will be automatically merged once all CI checks pass.`;
     
+    const escapedPrTitle = escapeShellString(prTitle);
+    const escapedPrBody = escapeShellString(prBody);
+    
     const prResult = execCommand(
-        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch} --repo ${REPO_OWNER}/${REPO_NAME}`,
+        `gh pr create --title "${escapedPrTitle}" --body "${escapedPrBody}" --base ${BASE_BRANCH} --head ${currentBranch} --repo ${REPO_OWNER}/${REPO_NAME}`,
         { silent: true, allowFailure: true }
     );
     
@@ -476,7 +542,7 @@ async function main() {
     log('Checking prerequisites...', 'cyan');
     
     // Check if gh CLI is installed
-    const ghVersion = execCommand('gh --version', { silent: true, allowFailure: true });
+    const ghVersion = execCommandSafely('gh version', { silent: true, allowFailure: true });
     if (!ghVersion) {
         log('GitHub CLI (gh) is not installed. Please install it first.', 'red');
         process.exit(1);
