@@ -86,8 +86,9 @@ function updateChangelog(newVersion, summary = '', added = '', changed = '', fix
   newEntry += '\n\n';
 
   // Insert new entry after the "# Change Log" header with proper spacing
-  const headerPattern = /(# Change Log\s*\n)\s*/;
-  const updatedChangelog = changelog.replace(headerPattern, `$1\n${newEntry}`);
+  // This regex captures everything from "# Change Log" until the first "##" (previous entry)
+  const headerPattern = /(# Change Log)\s*\n\s*(?=##|$)/;
+  const updatedChangelog = changelog.replace(headerPattern, `$1\n\n${newEntry}`);
   
   fs.writeFileSync(changelogPath, updatedChangelog);
   console.log(`✅ Added new section to CHANGELOG.md: [${newVersion}]`);

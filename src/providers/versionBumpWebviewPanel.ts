@@ -135,7 +135,7 @@ export class VersionBumpWebviewPanel {
             
             // Add changelog sections if provided - use double quotes and escape properly
             if (message.summary) {
-                const summaryWithVersion = `${message.summary.trim()}\n\n🚀 **${message.bumpType.charAt(0).toUpperCase() + message.bumpType.slice(1)} Release:** \`${currentVersion}\` → \`${newVersion}\``;
+                const summaryWithVersion = `${message.summary.trim()}\n\n🚀 **${message.bumpType.toUpperCase()} Release:** \`${currentVersion}\` → \`${newVersion}\``;
                 command += ` --summary="${summaryWithVersion.replace(/"/g, '\\"').replace(/`/g, '\\`')}"`;
             }
             if (message.added) {
