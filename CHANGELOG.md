@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.7.1] - 2025-06-29
+**Fixing Auto-Merge**
+
+🚀 **PATCH Release:** `0.7.0` → `0.7.1`
+
+### 🔧 Fixed
+- Issues solved for `gh` commands for Auto Merge (Developer Mode)
+
 ## [0.7.0] - 2025-06-29
 **Adding Gothic words from Wright's Gothic Primer (1910) & Adding Changelog Automation**
 
