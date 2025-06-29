@@ -146,7 +146,7 @@ async function waitForChecks(prNumber) {
         
         // First check if PR exists and is mergeable
         const prStatus = execCommand(
-            `gh pr view ${prNumber} --json state,mergeable,statusCheckRollup`,
+            `gh pr view ${prNumber} --json state,mergeable,statusCheckRollup --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -179,7 +179,7 @@ async function waitForChecks(prNumber) {
         
         // Get status checks using the newer API
         let checksResult = execCommand(
-            `gh pr checks ${prNumber} --json bucket,state,name`,
+            `gh pr checks ${prNumber} --json bucket,state,name --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -298,7 +298,7 @@ async function createRelease(version) {
     if (existingTag) {
         log(`Tag ${tagName} already exists. Skipping release creation.`, 'yellow');
     } else {
-        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}"`);
+        execCommand(`gh release create ${tagName} --title "Release ${tagName}" --notes "${releaseNotes}" --repo ${REPO_OWNER}/${REPO_NAME}`);
         log(`✅ Release ${tagName} created successfully`, 'green');
     }
     
@@ -326,7 +326,7 @@ function extractPRNumber(prResult, currentBranch) {
         
         // Fallback: try to find the PR by branch name
         const prList = execCommand(
-            `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number`,
+            `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number --repo ${REPO_OWNER}/${REPO_NAME}`,
             { silent: true, allowFailure: true }
         );
         
@@ -348,7 +348,7 @@ function extractPRNumber(prResult, currentBranch) {
 
 function findExistingPR(currentBranch) {
     const existingPR = execCommand(
-        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url,title`,
+        `gh pr list --head ${currentBranch} --base ${BASE_BRANCH} --json number,url,title --repo ${REPO_OWNER}/${REPO_NAME}`,
         { silent: true, allowFailure: true }
     );
     
@@ -391,7 +391,7 @@ ${commitMessage}
 This PR will be automatically merged once all CI checks pass.`;
     
     const prResult = execCommand(
-        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch}`,
+        `gh pr create --title "${prTitle}" --body "${prBody}" --base ${BASE_BRANCH} --head ${currentBranch} --repo ${REPO_OWNER}/${REPO_NAME}`,
         { silent: true, allowFailure: true }
     );
     
@@ -491,7 +491,7 @@ async function main() {
     
     // Merge the PR
     log('Merging pull request...', 'yellow');
-    execCommand(`gh pr merge ${prNumber} --squash --delete-branch`);
+    execCommand(`gh pr merge ${prNumber} --squash --delete-branch --repo ${REPO_OWNER}/${REPO_NAME}`);
     log(`✅ Pull request #${prNumber} merged and branch deleted`, 'green');
     
     // Create release
