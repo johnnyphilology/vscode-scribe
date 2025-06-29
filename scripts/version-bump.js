@@ -220,10 +220,11 @@ async function main() {
     const changedArg = args.find(arg => arg.startsWith('--changed='));
     const fixedArg = args.find(arg => arg.startsWith('--fixed='));
     
-    const summary = summaryArg ? summaryArg.replace('--summary=', '').replace(/'/g, '') : '';
-    const added = addedArg ? addedArg.replace('--added=', '').replace(/'/g, '') : '';
-    const changed = changedArg ? changedArg.replace('--changed=', '').replace(/'/g, '') : '';
-    const fixed = fixedArg ? fixedArg.replace('--fixed=', '').replace(/'/g, '') : '';
+    // Properly extract and unescape the content
+    const summary = summaryArg ? summaryArg.replace('--summary=', '').replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"') : '';
+    const added = addedArg ? addedArg.replace('--added=', '').replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"') : '';
+    const changed = changedArg ? changedArg.replace('--changed=', '').replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"') : '';
+    const fixed = fixedArg ? fixedArg.replace('--fixed=', '').replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"') : '';
     
     updateChangelog(newVersion, summary, added, changed, fixed);
     

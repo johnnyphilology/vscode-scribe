@@ -133,19 +133,19 @@ export class VersionBumpWebviewPanel {
             // Build the command with changelog content
             let command = `npm run version-bump -- ${message.bumpType} --yes`;
             
-            // Add changelog sections if provided
+            // Add changelog sections if provided - use double quotes and escape properly
             if (message.summary) {
                 const summaryWithVersion = `${message.summary.trim()}\n\n**${message.bumpType.charAt(0).toUpperCase() + message.bumpType.slice(1)} release:** ${currentVersion} → ${newVersion}`;
-                command += ` --summary='${summaryWithVersion.replace(/'/g, "\\'")}'`;
+                command += ` --summary="${summaryWithVersion.replace(/"/g, '\\"')}"`;
             }
             if (message.added) {
-                command += ` --added='${message.added.replace(/'/g, "\\'")}'`;
+                command += ` --added="${message.added.replace(/"/g, '\\"')}"`;
             }
             if (message.changed) {
-                command += ` --changed='${message.changed.replace(/'/g, "\\'")}'`;
+                command += ` --changed="${message.changed.replace(/"/g, '\\"')}"`;
             }
             if (message.fixed) {
-                command += ` --fixed='${message.fixed.replace(/'/g, "\\'")}'`;
+                command += ` --fixed="${message.fixed.replace(/"/g, '\\"')}"`;
             }
 
             const terminal = vscode.window.createTerminal({
