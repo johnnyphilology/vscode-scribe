@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.7.2] - 2025-06-29
+**Resolving small issue with Auto-Merge**
+
+🚀 **PATCH Release:** `0.7.1` → `0.7.2`
+
+### 🔧 Fixed
+- Small `gh` CLI issue (This only impacts Developer Mode)
+
 ## [0.7.1] - 2025-06-29
 **Fixing Auto-Merge**
 

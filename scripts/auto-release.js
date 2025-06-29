@@ -64,8 +64,8 @@ function execCommand(command, options = {}) {
     } catch (error) {
         if (!options.allowFailure) {
             log(`Error executing command: ${command}`, 'red');
-            log(error.message, 'red');
-            process.exit(1);
+            log(`Command failed: ${command}`, 'red');
+            throw error;
         }
         debugLog(`Command failed (allowed): ${command}`);
         debugLog(`Error: ${error.message}`);
@@ -585,12 +585,40 @@ async function main() {
     
     // Attempt to merge the PR
     log('Merging pull request...', 'yellow');
-    const mergeResult = execCommand(
-        `gh pr merge ${prNumber} --squash --delete-branch --repo ${REPO_OWNER}/${REPO_NAME}`,
-        { silent: true, allowFailure: true }
-    );
+    let mergeSuccessful = false;
     
-    if (!mergeResult) {
+    try {
+        const mergeResult = execCommand(
+            `gh pr merge ${prNumber} --squash --delete-branch --repo ${REPO_OWNER}/${REPO_NAME}`,
+            { silent: true }
+        );
+        mergeSuccessful = true;
+        debugLog(`Merge command succeeded. Output: ${mergeResult || '(no output)'}`);
+        log('Merge command completed successfully!', 'green');
+    } catch (error) {
+        debugLog(`Merge command failed: ${error.message}`);
+        
+        // Check if the PR was actually merged by checking its status
+        log('Merge command failed, checking if PR was actually merged...', 'yellow');
+        const prStatus = execCommand(
+            `gh pr view ${prNumber} --json state --repo ${REPO_OWNER}/${REPO_NAME}`,
+            { silent: true, allowFailure: true }
+        );
+        
+        if (prStatus) {
+            try {
+                const statusData = JSON.parse(prStatus);
+                if (statusData.state === 'MERGED') {
+                    log('PR was successfully merged despite command error!', 'green');
+                    mergeSuccessful = true;
+                }
+            } catch (parseError) {
+                debugLog(`Failed to parse PR status: ${parseError.message}`);
+            }
+        }
+    }
+    
+    if (!mergeSuccessful) {
         log('❌ Failed to merge pull request.', 'red');
         log('This usually indicates merge conflicts or other issues.', 'yellow');
         log(`Please check the PR manually: https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${prNumber}`, 'yellow');
