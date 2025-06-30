@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -291,6 +291,11 @@
           "type": "boolean",
           "default": false,
           "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
+        },
+        "scribe.autoReloadOnWynnToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically reload the window when Wynn mode is toggled (disable for manual control)"
         },
         "scribe.dataPath": {
           "type": "string",

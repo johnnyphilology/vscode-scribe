@@ -257,6 +257,23 @@ export class VersionBumpWebviewPanel {
             outline-offset: -1px;
         }
         
+        .help-text {
+            font-size: 12px;
+            color: var(--vscode-descriptionForeground);
+            margin-top: 4px;
+            position: relative;
+        }
+        
+        .help-text::after {
+            content: " • Auto-formats as markdown list items";
+            color: var(--vscode-textLink-foreground);
+            font-style: italic;
+        }
+        
+        .form-group:first-of-type .help-text::after {
+            content: "";
+        }
+        
         .bump-options {
             display: grid;
             gap: 15px;
@@ -373,19 +390,19 @@ export class VersionBumpWebviewPanel {
             
             <div class="form-group">
                 <label for="added">✨ Added</label>
-                <textarea id="added" placeholder="- New feature 1&#10;- New feature 2&#10;- New capability..."></textarea>
+                <textarea id="added" placeholder="New feature 1&#10;New feature 2&#10;New capability..."></textarea>
                 <div class="help-text">New features, capabilities, or enhancements</div>
             </div>
             
             <div class="form-group">
                 <label for="changed">🔄 Changed</label>
-                <textarea id="changed" placeholder="- Updated feature 1&#10;- Modified behavior 2&#10;- Improved performance..."></textarea>
+                <textarea id="changed" placeholder="Updated feature 1&#10;Modified behavior 2&#10;Improved performance..."></textarea>
                 <div class="help-text">Changes to existing functionality</div>
             </div>
             
             <div class="form-group">
                 <label for="fixed">🔧 Fixed</label>
-                <textarea id="fixed" placeholder="- Fixed bug 1&#10;- Resolved issue 2&#10;- Corrected behavior..."></textarea>
+                <textarea id="fixed" placeholder="Fixed bug 1&#10;Resolved issue 2&#10;Corrected behavior..."></textarea>
                 <div class="help-text">Bug fixes and problem resolutions</div>
             </div>
         </div>
@@ -459,6 +476,71 @@ export class VersionBumpWebviewPanel {
             document.getElementById('majorPreview').textContent = \`\${major + 1}.0.0\`;
         }
 
+        // Auto-list functionality for changelog fields
+        function setupAutoList(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            
+            textarea.addEventListener('input', function(e) {
+                formatAsMarkdownList(this);
+            });
+
+            textarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    insertNewListItem(this);
+                }
+            });
+
+            textarea.addEventListener('paste', function(e) {
+                setTimeout(() => formatAsMarkdownList(this), 10);
+            });
+        }
+
+        function formatAsMarkdownList(textarea) {
+            const value = textarea.value;
+            if (!value.trim()) return;
+
+            const lines = value.split('\\n');
+            const formattedLines = lines.map(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return '';
+                
+                // If line already starts with list marker, leave it
+                if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('+ ')) {
+                    return line;
+                }
+                
+                // Add list marker to non-empty lines
+                const indent = line.length - line.trimLeft().length;
+                return ' '.repeat(indent) + '- ' + trimmed;
+            });
+
+            const newValue = formattedLines.join('\\n');
+            if (newValue !== value) {
+                const cursorPos = textarea.selectionStart;
+                textarea.value = newValue;
+                
+                // Try to maintain cursor position
+                const newCursorPos = Math.min(cursorPos + (newValue.length - value.length), newValue.length);
+                textarea.setSelectionRange(newCursorPos, newCursorPos);
+            }
+        }
+
+        function insertNewListItem(textarea) {
+            const cursorPos = textarea.selectionStart;
+            const value = textarea.value;
+            const beforeCursor = value.substring(0, cursorPos);
+            const afterCursor = value.substring(cursorPos);
+            
+            // Insert new line with list marker
+            const newText = beforeCursor + '\\n- ' + afterCursor;
+            textarea.value = newText;
+            
+            // Position cursor after the new list marker
+            const newCursorPos = cursorPos + 3; // +3 for "\\n- "
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+        }
+
         // Listen for messages from the extension
         window.addEventListener('message', event => {
             const message = event.data;
@@ -469,6 +551,11 @@ export class VersionBumpWebviewPanel {
                     document.getElementById('changelogForm').style.display = 'block';
                     document.getElementById('bumpOptions').style.display = 'block';
                     updatePreviews();
+                    
+                    // Setup auto-list for changelog fields
+                    setupAutoList('added');
+                    setupAutoList('changed');
+                    setupAutoList('fixed');
                     break;
             }
         });

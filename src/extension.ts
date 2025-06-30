@@ -275,6 +275,34 @@ function registerDevCommands(context: vscode.ExtensionContext) {
         AutoReleaseWebviewPanel.createOrShow(context.extensionUri);
     });
     context.subscriptions.push(autoReleaseCommand);
+
+    // Register Wynn Mode Toggle command (developer mode only)
+    const toggleWynnCommand = vscode.commands.registerCommand('scribe.toggleWynn', async () => {
+        const config = vscode.workspace.getConfiguration('scribe');
+        const developerMode = config.get<boolean>('developerMode', false);
+        
+        if (!developerMode) {
+            vscode.window.showWarningMessage('Wynn toggle is only available in Developer Mode. Enable it in Scribe settings.');
+            return;
+        }
+
+        const currentWynn = config.get<boolean>('oldenglish.enableWynn', false);
+        await config.update('oldenglish.enableWynn', !currentWynn, vscode.ConfigurationTarget.Workspace);
+        
+        const mode = !currentWynn ? 'enabled' : 'disabled';
+        
+        // For developer command, always auto-reload for quick testing
+        vscode.window.showInformationMessage(
+            `ƿ Wynn mode ${mode}! Reloading window...`,
+            { modal: false }
+        );
+        
+        // Small delay to let user see the message
+        setTimeout(() => {
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
+        }, 800);
+    });
+    context.subscriptions.push(toggleWynnCommand);
 }
 
 /**
