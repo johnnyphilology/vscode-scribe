@@ -45,6 +45,15 @@ export function registerConfigurationHandlers(context: vscode.ExtensionContext) 
                     }
                 });
             }
+            
+            if (event.affectsConfiguration('scribe.oldenglish.enableWynn')) {
+                const config = vscode.workspace.getConfiguration('scribe');
+                const enableWynn = config.get<boolean>('oldenglish.enableWynn', false);
+                const mode = enableWynn ? 'enabled' : 'disabled';
+                vscode.window.showInformationMessage(
+                    `ƿ Wynn mode ${mode}. Old English completions and word highlighting will now ${enableWynn ? 'use ƿ (wynn)' : 'use w'} characters.`
+                );
+            }
         }
     }, null, context.subscriptions);
 }

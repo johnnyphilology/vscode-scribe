@@ -18,19 +18,31 @@ export function registerWordEntrySemanticTokens(
                     console.log(`[Scribe] Providing semantic tokens for document: ${document.fileName}, language: ${document.languageId}`);
                     const builder = new vscode.SemanticTokensBuilder(legend);
 
-                    // Preprocess words for fast lookup, case-insensitive
-                    const wordSet = new Set(words.map(w => w.toLowerCase()));
+                    // Normalize function for word comparison, including wynn handling
+                    const normalizeWord = (word: string): string => {
+                        let normalized = word.toLowerCase();
+                        
+                        // For Old English, normalize wynn to w for matching against word list
+                        if (languageId === 'oldenglish') {
+                            normalized = normalized.replace(/ƿ/g, 'w');
+                        }
+                        
+                        return normalized;
+                    };
+
+                    // Preprocess words for fast lookup, case-insensitive and wynn-normalized
+                    const wordSet = new Set(words.map(w => normalizeWord(w)));
                     let tokenCount = 0;
 
                     for (let lineNum = 0; lineNum < document.lineCount; ++lineNum) {
                         const line = document.lineAt(lineNum).text;
-                        // Unicode-aware split (matches words only)
-                        const wordRegex = /[\p{L}]+/gu;
+                        // Match Old English characters including wynn
+                        const wordRegex = /[a-zA-ZƿÞþðæÆ]+/g;
                         let match;
                         while ((match = wordRegex.exec(line))) {
                             const raw = match[0];
-                            // Normalize for lookup (add your own rules as needed)
-                            const normalized = raw.toLowerCase();
+                            const normalized = normalizeWord(raw);
+                            
                             if (wordSet.has(normalized)) {
                                 console.log(`[Scribe] Found word entry: "${raw}" (normalized: "${normalized}") at line ${lineNum}, position ${match.index}`);
                                 builder.push(
