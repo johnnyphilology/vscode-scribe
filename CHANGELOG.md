@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.8.0] - 2025-06-30
+**Wynn mode improvements and DEV mode fixes**
+
+🚀 **MINOR Release:** `0.7.3` → `0.8.0`
+
+### ✨ Added
+- Ability to auto reload development window when toggling wynn mode
+
+### 🔧 Fixed
+- Autocomplete now will do a correct search for wynn instead of 'w'
+- When selecting a word it will use a semantic token with wynn vs. regular 'w'
+
 ## [0.7.3] - 2025-06-29
 **Very small patch to escape Release notes.**
 

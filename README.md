@@ -11,7 +11,7 @@ A scholarly Visual Studio Code extension that aids in writing medieval languages
 
 ## Status
 
-_Scribe_ is currently **pre-release** at version `0.7.3`, but you are free to evalute it and give feedback!
+_Scribe_ is currently **pre-release** at version `0.8.0`, but you are free to evalute it and give feedback!
 
 
 ## 🎨 Scribe Theme
