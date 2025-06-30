@@ -7,7 +7,7 @@ import oldEnglishSubs from '../../data/oldenglish/substitutions.json';
 export function isDeveloperMode(): boolean {
     const config = vscode.workspace.getConfiguration('scribe');
     const devMode = config.get<boolean>('enableDeveloperMode');
-    return devMode !== undefined ? devMode : false;
+    return devMode ?? false;
 }
 
 /**
@@ -29,6 +29,39 @@ export function getOldEnglishSubstitutions(): { [key: string]: string } {
 }
 
 /**
+ * Handle Wynn mode configuration changes
+ */
+function handleWynnModeChange() {
+    const config = vscode.workspace.getConfiguration('scribe');
+    const enableWynn = config.get<boolean>('oldenglish.enableWynn', false);
+    const autoReload = config.get<boolean>('autoReloadOnWynnToggle', true);
+    const mode = enableWynn ? 'enabled' : 'disabled';
+    
+    if (autoReload) {
+        // Auto-reload with a brief notification
+        vscode.window.showInformationMessage(
+            `ƿ Wynn mode ${mode}. Reloading window to apply changes...`,
+            { modal: false }
+        );
+        // Small delay to let user see the message
+        setTimeout(() => {
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
+        }, 1000);
+    } else {
+        // Show choice for manual control
+        vscode.window.showInformationMessage(
+            `ƿ Wynn mode ${mode}. Old English completions and word highlighting will now ${enableWynn ? 'use ƿ (wynn)' : 'use w'} characters. A reload is required for changes to take effect.`,
+            'Reload Window',
+            'Later'
+        ).then(selection => {
+            if (selection === 'Reload Window') {
+                vscode.commands.executeCommand('workbench.action.reloadWindow');
+            }
+        });
+    }
+}
+
+/**
  * Register configuration change handlers
  */
 export function registerConfigurationHandlers(context: vscode.ExtensionContext) {
@@ -47,12 +80,7 @@ export function registerConfigurationHandlers(context: vscode.ExtensionContext) 
             }
             
             if (event.affectsConfiguration('scribe.oldenglish.enableWynn')) {
-                const config = vscode.workspace.getConfiguration('scribe');
-                const enableWynn = config.get<boolean>('oldenglish.enableWynn', false);
-                const mode = enableWynn ? 'enabled' : 'disabled';
-                vscode.window.showInformationMessage(
-                    `ƿ Wynn mode ${mode}. Old English completions and word highlighting will now ${enableWynn ? 'use ƿ (wynn)' : 'use w'} characters.`
-                );
+                handleWynnModeChange();
             }
         }
     }, null, context.subscriptions);

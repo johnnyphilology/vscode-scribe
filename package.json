@@ -292,6 +292,11 @@
           "default": false,
           "description": "Convert all 'w' letters to wynn (ƿ) in Old English text"
         },
+        "scribe.autoReloadOnWynnToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically reload the window when Wynn mode is toggled (disable for manual control)"
+        },
         "scribe.dataPath": {
           "type": "string",
           "default": "data",
