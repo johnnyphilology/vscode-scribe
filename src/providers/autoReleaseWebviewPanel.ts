@@ -51,6 +51,9 @@ export class AutoReleaseWebviewPanel {
                     case 'getStatus':
                         await this._handleGetStatus();
                         return;
+                    case 'refreshStatus':
+                        await this._handleRefreshStatus();
+                        return;
                     case 'createRelease':
                         await this._handleCreateRelease();
                         return;
@@ -202,13 +205,42 @@ export class AutoReleaseWebviewPanel {
                 const git = gitExtension.exports;
                 const api = git.getAPI(1);
                 
+                // Wait a bit for repositories to be discovered and state to be loaded
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
                 if (api.repositories.length > 0) {
                     const repo = api.repositories[0];
+                    
+                    try {
+                        // Force a status refresh to ensure we have the latest state
+                        await repo.status();
+                        // Small delay to let the state update
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    } catch (statusError) {
+                        console.warn('Failed to refresh repo status:', statusError);
+                    }
+                    
                     console.log('Checking commit - HEAD:', repo.state.HEAD);
                     console.log('Checking commit - commit:', repo.state.HEAD?.commit);
                     
-                    if (repo.state.HEAD && repo.state.HEAD.commit) {
-                        return repo.state.HEAD.commit.message || 'No commit found';
+                    // Check if we have commit information
+                    const commitMessage = repo.state.HEAD?.commit?.message;
+                    if (commitMessage && commitMessage.trim().length > 0) {
+                        // Get just the first line (summary) if it's a multi-line commit
+                        const firstLine = commitMessage.split('\n')[0].trim();
+                        return firstLine ?? 'No commit message';
+                    }
+                    
+                    // Alternative: try to get from log
+                    try {
+                        const log = await repo.log({ maxEntries: 1 });
+                        if (log.length > 0) {
+                            const latestCommit = log[0];
+                            const message = latestCommit.message?.split('\n')[0]?.trim();
+                            return message ?? 'No commit message';
+                        }
+                    } catch (logError) {
+                        console.warn('Failed to get commit from log:', logError);
                     }
                 }
             }
@@ -232,6 +264,20 @@ export class AutoReleaseWebviewPanel {
             command: 'statusUpdate',
             status: status
         });
+    }
+
+    private async _handleRefreshStatus() {
+        // Force a git refresh first
+        try {
+            await vscode.commands.executeCommand('git.refresh');
+            // Wait a bit for the refresh to complete
+            await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (error) {
+            console.warn('Failed to refresh git state:', error);
+        }
+        
+        // Then get the status as normal
+        await this._handleGetStatus();
     }
 
     private async _handleCreateRelease() {
@@ -538,7 +584,8 @@ export class AutoReleaseWebviewPanel {
         });
         
         function refreshStatus() {
-            vscode.postMessage({ command: 'getStatus' });
+            setLoading(true);
+            vscode.postMessage({ command: 'refreshStatus' });
         }
         
         function createRelease() {
