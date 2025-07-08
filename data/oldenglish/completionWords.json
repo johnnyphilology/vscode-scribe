@@ -575,9 +575,14 @@
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
   },
   {
+    "word": "bera",
+    "detail": "bear",
+    "documentation": "Part of Speech: _Noun_\nGender: Male"
+  },
+  {
     "word": "beran",
-    "detail": "carry, bear; wear; sustain; give birth to",
-    "documentation": "Part of Speech: _Verb_\nConjugation: 4th Conjugation (strong)"
+    "detail": "carry, bear; wear; sustain; give birth to; bear",
+    "documentation": "Part of Speech: _Verb_\nConjugation: 4th Conjugation (strong)\n\nPart of Speech: _Noun_\\nGender: Male"
   },
   {
     "word": "berġe",
@@ -1195,6 +1200,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "englalande",
+    "detail": "England",
+    "documentation": "Part of Speech: _Noun_"
+  },
+  {
     "word": "englisċ",
     "detail": "English",
     "documentation": "Part of Speech: _Adjective_"
@@ -1720,6 +1730,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: s7"
   },
   {
+    "word": "ġehīeran",
+    "detail": "hear, listen to",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "ġehwā",
     "detail": "everyone; everything",
     "documentation": "Part of Speech: _Pronoun_"
@@ -2225,6 +2240,16 @@
     "documentation": "Part of Speech: _Pronoun_\\nGender: Male"
   },
   {
+    "word": "hire",
+    "detail": "her",
+    "documentation": "Part of Speech: _Pronoun_.  gen. of \"sēo\""
+  },
+  {
+    "word": "his",
+    "detail": "his",
+    "documentation": "Same as modern English \"his\"."
+  },
+  {
     "word": "hit",
     "detail": "it",
     "documentation": "Part of Speech: _Pronoun_"
@@ -2258,6 +2283,11 @@
     "word": "holt",
     "detail": "wood, woodland",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "holte",
+    "detail": "wood, woodland",
+    "documentation": "Part of Speech: _Noun_"
   },
   {
     "word": "hord",
@@ -2303,6 +2333,11 @@
     "word": "hūs",
     "detail": "house",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "hūse",
+    "detail": "house",
+    "documentation": "Part of Speech: _Noun_"
   },
   {
     "word": "hwā",
@@ -3015,6 +3050,21 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: 1st Conjugation (weak)"
   },
   {
+    "word": "reċċan",
+    "detail": "tell",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
+    "word": "reċċe",
+    "detail": "tell",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
+    "word": "reċeþ",
+    "detail": "tell",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "rīċe",
     "detail": "rich; powerful",
     "documentation": "Part of Speech: _Adjective_"
@@ -3445,6 +3495,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "tūne",
+    "detail": "town",
+    "documentation": "Part of Speech: _Noun_"
+  },
+  {
     "word": "tungol",
     "detail": "star; planet",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
@@ -3650,6 +3705,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: irreg."
   },
   {
+    "word": "wille",
+    "detail": "to want",
+    "documentation": "Part of Speech _Verb_"
+  },
+  {
     "word": "wilnian",
     "detail": "desire; seek out",
     "documentation": "Part of Speech: _Verb_\nConjugation: 2nd Conjugation (weak)"
@@ -3663,6 +3723,11 @@
     "word": "winnan",
     "detail": "struggle, contend",
     "documentation": "Part of Speech: _Verb_\nConjugation: 3nd Conjugation (strong)"
+  },
+  {
+    "word": "wintanċeastre",
+    "detail": "Winchester",
+    "documentation": "In Old English, Winchester was known as Wintancaester, which translates to \"Fort Venta\". This name reflects Winchester's history as a Roman town (Venta) that was later fortified. The city's Old English name is a combination of the Roman name \"Venta\" and the Old English word \"ceaster,\" meaning Roman town or fort."
   },
   {
     "word": "winter",
@@ -3693,6 +3758,11 @@
     "word": "wīte",
     "detail": "punishment; penalty, fine",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "witodlīċe",
+    "detail": "certainly, indeed",
+    "documentation": "Part of Speech: _Adverb_"
   },
   {
     "word": "wiþ",
@@ -3743,6 +3813,11 @@
     "word": "wuldor",
     "detail": "glory",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "wunaþ",
+    "detail": "live, dwell; remain, stay",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "wund",
@@ -3845,6 +3920,11 @@
     "documentation": "Part of Speech: _Conjugation_"
   },
   {
+    "word": "þām",
+    "detail": "that, the",
+    "documentation": "Part of Speech: Noun. nom/acc"
+  },
+  {
     "word": "þanc",
     "detail": "thought; thanks",
     "documentation": "Part of Speech: _Noun_\nGender: Male/Neuter\nDeclension: 1/2"
@@ -3923,6 +4003,11 @@
     "word": "þing",
     "detail": "thing; reason",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "þis",
+    "detail": "this",
+    "documentation": "Same as modern English \"this\"."
   },
   {
     "word": "þolian",
