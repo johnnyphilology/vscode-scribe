@@ -380,6 +380,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
   },
   {
+    "word": "āwacian",
+    "detail": "wake up, awaken, rouse",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "āwiht",
     "detail": "anything",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
@@ -535,14 +540,19 @@
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 3rd Declension (ō-stem)"
   },
   {
+    "word": "bēo",
+    "detail": "bee",
+    "documentation": "Part of Speech: _Noun_\\nGender: Female"
+  },
+  {
     "word": "bēodan",
     "detail": "offer; proclaim",
     "documentation": "Part of Speech: _Verb_\nConjugation: 2nd Conjugation (strong)"
   },
   {
     "word": "bēon",
-    "detail": "be",
-    "documentation": "Part of Speech: _Verb_\nConjugation: irreg."
+    "detail": "be; bee",
+    "documentation": "Part of Speech: _Verb_\nConjugation: irreg.\n\nPart of Speech: _Noun_\\nGender: Female"
   },
   {
     "word": "beorg",
@@ -568,6 +578,16 @@
     "word": "beran",
     "detail": "carry, bear; wear; sustain; give birth to",
     "documentation": "Part of Speech: _Verb_\nConjugation: 4th Conjugation (strong)"
+  },
+  {
+    "word": "berġe",
+    "detail": "berry",
+    "documentation": "Part of Speech: _Noun_\\nGender: Female"
+  },
+  {
+    "word": "berġean",
+    "detail": "berry",
+    "documentation": "Part of Speech: _Noun_\\nGender: Female"
   },
   {
     "word": "berstan",
@@ -1245,6 +1265,11 @@
     "documentation": "Part of Speech: _Adverb_"
   },
   {
+    "word": "fæt",
+    "detail": "cup, vessel, container",
+    "documentation": "Part of Speech: _Noun_\\nGender: Neuter"
+  },
+  {
     "word": "fāh",
     "detail": "decorated, shining",
     "documentation": "Part of Speech: _Adjective_"
@@ -1253,6 +1278,11 @@
     "word": "faran",
     "detail": "go, travel; fare",
     "documentation": "Part of Speech: _Verb_\nConjugation: s6"
+  },
+  {
+    "word": "fatu",
+    "detail": "cup, vessel, container",
+    "documentation": "Part of Speech: _Noun_\\nGender: Neuter"
   },
   {
     "word": "feallan",
@@ -1330,6 +1360,16 @@
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 3rd Declension (ō-stem)"
   },
   {
+    "word": "fisċ",
+    "detail": "fish",
+    "documentation": "Part of Speech: _Noun_\\nGender: Male"
+  },
+  {
+    "word": "fiscas",
+    "detail": "fish",
+    "documentation": "Part of Speech: _Noun_\\nGender: Male"
+  },
+  {
     "word": "flēogan",
     "detail": "fly",
     "documentation": "Part of Speech: _Verb_\nConjugation: 2nd Conjugation (strong)"
@@ -1355,6 +1395,16 @@
     "documentation": "Part of Speech: _Preposition_"
   },
   {
+    "word": "for•þām",
+    "detail": "for that reason, therefore",
+    "documentation": "Part of Speech: _Conjunction_"
+  },
+  {
+    "word": "for•þām•þe",
+    "detail": "because, since, for the reason that",
+    "documentation": "Part of Speech: _Conjunction_"
+  },
+  {
     "word": "forġiefan",
     "detail": "grant; forgive",
     "documentation": "Part of Speech: _Verb_\nConjugation: 5th Conjugation (strong)"
@@ -1363,6 +1413,11 @@
     "word": "forġieldan",
     "detail": "pay for, repay",
     "documentation": "Part of Speech: _Verb_\nConjugation: 3nd Conjugation (strong)"
+  },
+  {
+    "word": "forht",
+    "detail": "afraid, frightened",
+    "documentation": "Part of Speech: _Adjective_"
   },
   {
     "word": "forhtian",
@@ -1775,6 +1830,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
   },
   {
+    "word": "ġesċeaft",
+    "detail": "creation, creature",
+    "documentation": "Part of Speech: _Noun_\\nGender: Female/Neuter"
+  },
+  {
     "word": "ġesēċan",
     "detail": "look for, seek",
     "documentation": "Part of Speech: _Verb_\nConjugation: 1st Conjugation (weak)"
@@ -2160,6 +2220,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "him",
+    "detail": "him",
+    "documentation": "Part of Speech: _Pronoun_\\nGender: Male"
+  },
+  {
     "word": "hit",
     "detail": "it",
     "documentation": "Part of Speech: _Pronoun_"
@@ -2198,6 +2263,16 @@
     "word": "hord",
     "detail": "hoard",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "hræd",
+    "detail": "quick, swift, fast",
+    "documentation": "Part of Speech: _Adjective_"
+  },
+  {
+    "word": "hrædlīċe",
+    "detail": "quickly, swiftly, fast",
+    "documentation": "Part of Speech: _Adverb_"
   },
   {
     "word": "hraþe",
@@ -2283,6 +2358,11 @@
     "word": "hwīlum",
     "detail": "sometimes; formerly",
     "documentation": "Part of Speech: _Adverb_"
+  },
+  {
+    "word": "hwȳ",
+    "detail": "why",
+    "documentation": "Part of Speech: _Interrogative_"
   },
   {
     "word": "hyċġan",
@@ -2625,6 +2705,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "mete",
+    "detail": "food, meat",
+    "documentation": "Part of Speech: _Noun_\\nGender: Male"
+  },
+  {
     "word": "miċel",
     "detail": "big, great; much",
     "documentation": "Part of Speech: _Adjective_"
@@ -2653,6 +2738,11 @@
     "word": "mīl",
     "detail": "mile",
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 3rd Declension (ō-stem)"
+  },
+  {
+    "word": "mildþrȳþ",
+    "detail": "mildred",
+    "documentation": "Mildred is a feminine given name of Anglo-Saxon origin. It means \"gentle strength,\" derived from the Old English elements \"milde\" (mild or gentle) and \"þryð\" (strength or power)."
   },
   {
     "word": "mīn",
@@ -2713,6 +2803,11 @@
     "word": "nā",
     "detail": "not at all; never",
     "documentation": "Part of Speech: _Adverb_"
+  },
+  {
+    "word": "nabban",
+    "detail": "not have, not possess",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "nǣdre",
@@ -2780,6 +2875,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 6th Declension (consonant-stem)"
   },
   {
+    "word": "nillan",
+    "detail": "not want, not wish",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "niman",
     "detail": "take",
     "documentation": "Part of Speech: _Verb_\nConjugation: 4th Conjugation (strong)"
@@ -2836,13 +2936,13 @@
   },
   {
     "word": "onġēan",
-    "detail": "back, again",
-    "documentation": "Part of Speech: _Adverb_"
+    "detail": "against, opposite",
+    "documentation": "Part of Speech: _Preposition_"
   },
   {
     "word": "onġēan",
-    "detail": "against, opposite",
-    "documentation": "Part of Speech: _Preposition_"
+    "detail": "back, again; towards",
+    "documentation": "Part of Speech: _Adverb_\n\nPart of Speech: _Preposition_"
   },
   {
     "word": "onġietan",
@@ -2928,6 +3028,11 @@
     "word": "riht",
     "detail": "law; what is right; privilege",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
+  },
+  {
+    "word": "rinnan",
+    "detail": "to run",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "rōd",
@@ -3065,6 +3170,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: 5th Conjugation (strong)"
   },
   {
+    "word": "settan",
+    "detail": "to set, place, put",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "sibb",
     "detail": "kinship; peace",
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 3rd Declension (ō-stem)"
@@ -3108,6 +3218,11 @@
     "word": "siþþan",
     "detail": "afterwards; since; ago",
     "documentation": "Part of Speech: _Adverb_"
+  },
+  {
+    "word": "slæpan",
+    "detail": "to sleep",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "slēan",
@@ -3378,6 +3493,11 @@
     "word": "uton",
     "detail": "let's",
     "documentation": "Part of Speech: _misc._"
+  },
+  {
+    "word": "wacian",
+    "detail": "to wake up, awaken, rouse",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "wæl",
@@ -3681,13 +3801,13 @@
   },
   {
     "word": "þā",
-    "detail": "then",
-    "documentation": "Part of Speech: _Adverb_"
+    "detail": "when",
+    "documentation": "Part of Speech: _Conjugation_"
   },
   {
     "word": "þā",
-    "detail": "when",
-    "documentation": "Part of Speech: _Conjugation_"
+    "detail": "then; the",
+    "documentation": "Part of Speech: _Adverb_\n\nPart of Speech: _Determiner_"
   },
   {
     "word": "þǣr",
@@ -3698,6 +3818,11 @@
     "word": "þǣr",
     "detail": "where",
     "documentation": "Part of Speech: _Conjugation_"
+  },
+  {
+    "word": "þǣre",
+    "detail": "þat, þe; which, whom",
+    "documentation": "Part of Speech: _Pronoun_"
   },
   {
     "word": "þæt",
@@ -3723,6 +3848,11 @@
     "word": "þe",
     "detail": "that, who, which",
     "documentation": "Part of Speech: _Relative_"
+  },
+  {
+    "word": "þē",
+    "detail": "you",
+    "documentation": "Part of Speech: _Pronoun_"
   },
   {
     "word": "þēah",
@@ -3796,13 +3926,13 @@
   },
   {
     "word": "þonne",
-    "detail": "then",
-    "documentation": "Part of Speech: _Adverb_"
+    "detail": "when",
+    "documentation": "Part of Speech: _Conjugation_"
   },
   {
     "word": "þonne",
-    "detail": "when",
-    "documentation": "Part of Speech: _Conjugation_"
+    "detail": "then, than, when",
+    "documentation": "Part of Speech: _Adverb_"
   },
   {
     "word": "þrīe",

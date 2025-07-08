@@ -20,3 +20,6 @@ tmp/
 *.rej
 *.sublime-*
 *.code-workspace
+
+# ignore old-english texts
+oe/
