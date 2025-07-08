@@ -37,8 +37,8 @@ export function registerWordEntrySemanticTokens(
 
                     for (let lineNum = 0; lineNum < document.lineCount; ++lineNum) {
                         const line = document.lineAt(lineNum).text;
-                        // Match Old English characters including wynn, bullet for compound words, vowels with macrons, and dotted consonants
-                        const wordRegex = /[a-zA-ZƿÞþðæÆāēīōūȳǣċġɡ•()]+/g;
+                        // Match all Unicode letters (works universally for all languages)
+                        const wordRegex = /[\p{L}•()]+/gu;
                         let match;
                         while ((match = wordRegex.exec(line))) {
                             const raw = match[0];

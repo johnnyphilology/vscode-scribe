@@ -9,7 +9,7 @@ export function registerCompletionHover(
     context.subscriptions.push(
         vscode.languages.registerHoverProvider(languageId, {
             provideHover(document, position, token) {
-                const range = document.getWordRangeAtPosition(position, /[a-zA-ZƿÞþðæÆāēīōūȳǣċġɡ•()]+/);
+                const range = document.getWordRangeAtPosition(position, /[\p{L}•()]+/u);
                 if (!range) {
                     return undefined;
                 }
