@@ -100,6 +100,11 @@
     "documentation": "Part of Speech: _Pronoun_"
   },
   {
+    "word": "ælfġiefu",
+    "detail": "Ælfġiefu",
+    "documentation": "Ælfġiefu (also Ælfgyfu; Elfgifa, Elfgiva, Elgiva) is an Anglo-Saxon feminine personal name, from ælf \"elf\" and gifu \"gift\". When Emma of Normandy, the later mother of Edward the Confessor, became queen of England in 1002, she was given the native Anglo-Saxon name of Ælfgifu to be used in formal and official contexts."
+  },
+  {
     "word": "ælmihtiġ",
     "detail": "all-powerful",
     "documentation": "Part of Speech: _Adjective_"
@@ -178,6 +183,11 @@
     "word": "æþeling",
     "detail": "prince",
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
+  },
+  {
+    "word": "æþelrǣd",
+    "detail": "Æþelrǣd",
+    "documentation": "a male given name meaning “well-advised”, variant of Æþelred or Æðelred, equivalent to English Ethelred, Aethelred or Æthelred"
   },
   {
     "word": "æþelu",
@@ -2150,6 +2160,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: s7"
   },
   {
+    "word": "hātte",
+    "detail": "is called, is named",
+    "documentation": "Part of Speech: _Verb_"
+  },
+  {
     "word": "hē",
     "detail": "he, it (for masculine nouns)",
     "documentation": "Part of Speech: _Pronoun_"
@@ -2780,6 +2795,11 @@
     "documentation": "Mildred is a feminine given name of Anglo-Saxon origin. It means \"gentle strength,\" derived from the Old English elements \"milde\" (mild or gentle) and \"þryð\" (strength or power)."
   },
   {
+    "word": "mildþrȳþe",
+    "detail": "Mildred",
+    "documentation": "See Mildþrȳþ"
+  },
+  {
     "word": "mīn",
     "detail": "my",
     "documentation": "Part of Speech: _Adjective_"
@@ -2905,6 +2925,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "nese",
+    "detail": "no",
+    "documentation": "Just like \"no\" in English.  Similar to \"ne\" = \"not\""
+  },
+  {
     "word": "niht",
     "detail": "night",
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 6th Declension (consonant-stem)"
@@ -2918,6 +2943,11 @@
     "word": "niman",
     "detail": "take",
     "documentation": "Part of Speech: _Verb_\nConjugation: 4th Conjugation (strong)"
+  },
+  {
+    "word": "nis",
+    "detail": "is not",
+    "documentation": "ne + is"
   },
   {
     "word": "nīþ",
@@ -3215,6 +3245,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: 1st Conjugation (weak)"
   },
   {
+    "word": "sēo",
+    "detail": "that, the",
+    "documentation": "Article, Gender: Female"
+  },
+  {
     "word": "seofon",
     "detail": "seven",
     "documentation": "Part of Speech: _Adjective_"
@@ -3245,9 +3280,19 @@
     "documentation": "Part of Speech: _Adverb_"
   },
   {
+    "word": "sind",
+    "detail": "are",
+    "documentation": "Can also be sind(on)"
+  },
+  {
     "word": "sind(on)",
     "detail": "are",
     "documentation": "Part of Speech: _Verb_\nConjugation: vform"
+  },
+  {
+    "word": "sindon",
+    "detail": "are",
+    "documentation": "Can also be \"sind\""
   },
   {
     "word": "singal",
@@ -3695,6 +3740,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Female/Neuter\nDeclension: 2/3"
   },
   {
+    "word": "wile",
+    "detail": "want",
+    "documentation": "See wille, and willan"
+  },
+  {
     "word": "willa",
     "detail": "will, purpose, desire; pleasure",
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 4th Declension (Weak)"
@@ -3833,6 +3883,11 @@
     "word": "wunian",
     "detail": "live, dwell, stay",
     "documentation": "Part of Speech: _Verb_\nConjugation: 2nd Conjugation (weak)"
+  },
+  {
+    "word": "wuniaþ",
+    "detail": "live, dwell; remain, stay",
+    "documentation": "Part of Speech: _Verb_"
   },
   {
     "word": "wynn",
