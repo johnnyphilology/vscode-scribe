@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.8.1] - 2025-07-08
+**Adding several OE words**
+
+🚀 **PATCH Release:** `0.8.0` → `0.8.1`
+
+### ✨ Added
+- A dozen or so OE words
+
 ## [0.8.0] - 2025-06-30
 **Wynn mode improvements and DEV mode fixes**
 
