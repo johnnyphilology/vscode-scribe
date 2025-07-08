@@ -745,6 +745,16 @@
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
   },
   {
+    "word": "botl",
+    "detail": "house, mansion",
+    "documentation": "Part of Speech: _Noun_"
+  },
+  {
+    "word": "botle",
+    "detail": "house, mansion",
+    "documentation": "See botl."
+  },
+  {
     "word": "brād",
     "detail": "broad",
     "documentation": "Part of Speech: _Adjective_"
@@ -925,6 +935,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Female\nDeclension: 3rd Declension (ō-stem)"
   },
   {
+    "word": "cwēna",
+    "detail": "queen",
+    "documentation": "See cwēn"
+  },
+  {
     "word": "cweþan",
     "detail": "say, speak",
     "documentation": "Part of Speech: _Verb_\nConjugation: 5th Conjugation (strong)"
@@ -938,6 +953,11 @@
     "word": "cyning",
     "detail": "king",
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
+  },
+  {
+    "word": "cyningas",
+    "detail": "kings",
+    "documentation": "See cynning."
   },
   {
     "word": "cynn",
@@ -1310,6 +1330,11 @@
     "documentation": "Part of Speech: _Verb_\nConjugation: s7"
   },
   {
+    "word": "fēawe",
+    "detail": "few",
+    "documentation": "few"
+  },
+  {
     "word": "feax",
     "detail": "hair (of the head)",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
@@ -1413,6 +1438,11 @@
     "word": "for",
     "detail": "for, because of, in place of",
     "documentation": "Part of Speech: _Preposition_"
+  },
+  {
+    "word": "for•hwām",
+    "detail": "why",
+    "documentation": "OE equivalent of \"why\""
   },
   {
     "word": "for•þām",
@@ -1568,6 +1598,11 @@
     "word": "ġē",
     "detail": "you (pl.)",
     "documentation": "Part of Speech: _Pronoun_"
+  },
+  {
+    "word": "ġea",
+    "detail": "yes, yeah",
+    "documentation": "Equivalent to modern \"yeah\" or Ja (German)"
   },
   {
     "word": "ġēar",
@@ -2655,6 +2690,11 @@
     "documentation": "Part of Speech: _Adjective_"
   },
   {
+    "word": "lȳtlum",
+    "detail": "little",
+    "documentation": "See lȳtel"
+  },
+  {
     "word": "mā",
     "detail": "more",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: indecl."
@@ -2720,6 +2760,11 @@
     "documentation": "Part of Speech: _Adjective_"
   },
   {
+    "word": "maniġe",
+    "detail": "many",
+    "documentation": "Many"
+  },
+  {
     "word": "mann",
     "detail": "person; humanity (in general)",
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 6th Declension (consonant-stem)"
@@ -2770,9 +2815,19 @@
     "documentation": "Part of Speech: _Adverb_"
   },
   {
+    "word": "miclum",
+    "detail": "big, large, huge",
+    "documentation": "See miċel"
+  },
+  {
     "word": "mid",
     "detail": "with; among",
     "documentation": "Part of Speech: _Preposition_"
+  },
+  {
+    "word": "middan-ġeard",
+    "detail": "the world",
+    "documentation": "Part of Speech: _Noun_ (Literally \"middle earth\")"
   },
   {
     "word": "middanġeard",
@@ -3705,6 +3760,11 @@
     "documentation": "Part of Speech: _Noun_\nGender: Male\nDeclension: 1st Declension (a-stem)"
   },
   {
+    "word": "weras",
+    "detail": "men",
+    "documentation": "See wera"
+  },
+  {
     "word": "werod",
     "detail": "troop, company",
     "documentation": "Part of Speech: _Noun_\nGender: Neuter\nDeclension: 2nd Declension (a-stem)"
@@ -3773,6 +3833,11 @@
     "word": "winnan",
     "detail": "struggle, contend",
     "documentation": "Part of Speech: _Verb_\nConjugation: 3nd Conjugation (strong)"
+  },
+  {
+    "word": "wintanċeaster",
+    "detail": "Winchester",
+    "documentation": "See Wintanċeastre"
   },
   {
     "word": "wintanċeastre",
