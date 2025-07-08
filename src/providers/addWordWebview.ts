@@ -1,11 +1,6 @@
 import * as vscode from 'vscode';
 import { 
-    WordEntry, 
-    LanguageConfig, 
     getLanguages, 
-    loadWords, 
-    findExistingWord, 
-    mergeEntries, 
     addWordToDictionary, 
     checkWordExists 
 } from '../utils/wordDictionary';
@@ -13,7 +8,7 @@ import {
 export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'scribe.addWordView';
     private _view?: vscode.WebviewView;
-    private _extensionUri: vscode.Uri;
+    private readonly _extensionUri: vscode.Uri;
 
     constructor(private readonly extensionUri: vscode.Uri) {
         this._extensionUri = extensionUri;
@@ -63,9 +58,12 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                 return;
             }
 
+            // Normalize word to lowercase for consistency
+            const normalizedWord = payload.word.toLowerCase().trim();
+
             // If no action specified, check if word exists first
             if (!payload.action) {
-                const checkResult = checkWordExists(workspaceRoot, payload.language, payload.word);
+                const checkResult = checkWordExists(workspaceRoot, payload.language, normalizedWord);
                 if (checkResult.exists && checkResult.entry) {
                     // Word exists, need user decision
                     const languages = getLanguages();
@@ -74,7 +72,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                         payload: {
                             existing: checkResult.entry,
                             new: {
-                                word: payload.word,
+                                word: normalizedWord,
                                 detail: payload.detail,
                                 documentation: payload.documentation
                             },
@@ -89,7 +87,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
             const result = addWordToDictionary(
                 workspaceRoot,
                 payload.language,
-                payload.word,
+                normalizedWord,
                 payload.detail,
                 payload.documentation,
                 payload.action || 'add'
@@ -100,7 +98,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                 this.sendMessage({
                     type: 'wordAdded',
                     payload: {
-                        word: payload.word,
+                        word: normalizedWord,
                         language: languages[payload.language]?.name || payload.language,
                         count: result.count || 0
                     }
@@ -121,7 +119,9 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                 return;
             }
 
-            const result = checkWordExists(workspaceRoot, payload.language, payload.word);
+            // Normalize word to lowercase for consistency
+            const normalizedWord = payload.word.toLowerCase().trim();
+            const result = checkWordExists(workspaceRoot, payload.language, normalizedWord);
 
             this.sendMessage({
                 type: 'wordCheckResult',
@@ -340,7 +340,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
 
         <div class="form-group">
             <label for="word">Word:</label>
-            <input type="text" id="word" required placeholder="Enter the word">
+            <input type="text" id="word" required placeholder="Enter the word (will be stored as lowercase)">
             <div class="word-check">
                 <span id="wordExists" class="word-exists-indicator" style="display: none;"></span>
             </div>
@@ -448,7 +448,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
 
             const formData = {
                 language: languageSelect.value,
-                word: wordInput.value.trim(),
+                word: wordInput.value.toLowerCase().trim(), // Normalize to lowercase
                 detail: detailInput.value.trim(),
                 documentation: documentationInput.value.trim()
             };
@@ -462,7 +462,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
         function addWordWithAction(action) {
             const formData = {
                 language: languageSelect.value,
-                word: wordInput.value.trim(),
+                word: wordInput.value.toLowerCase().trim(), // Normalize to lowercase
                 detail: detailInput.value.trim(),
                 documentation: documentationInput.value.trim(),
                 action: action
@@ -489,9 +489,12 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                 return;
             }
 
+            // Normalize word to lowercase for checking
+            const normalizedWord = word.toLowerCase();
+
             vscode.postMessage({
                 type: 'checkWord',
-                payload: { language, word }
+                payload: { language, word: normalizedWord }
             });
         }
 
