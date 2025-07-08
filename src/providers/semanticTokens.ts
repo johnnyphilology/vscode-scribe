@@ -30,20 +30,23 @@ export function registerWordEntrySemanticTokens(
                         return normalized;
                     };
 
-                    // Preprocess words for fast lookup, case-insensitive and wynn-normalized
-                    const wordSet = new Set(words.map(w => normalizeWord(w)));
+                    // Create both exact and normalized word sets for comprehensive matching
+                    const exactWordSet = new Set(words.map(w => w.toLowerCase()));
+                    const normalizedWordSet = new Set(words.map(w => normalizeWord(w)));
                     let tokenCount = 0;
 
                     for (let lineNum = 0; lineNum < document.lineCount; ++lineNum) {
                         const line = document.lineAt(lineNum).text;
-                        // Match Old English characters including wynn
-                        const wordRegex = /[a-zA-ZƿÞþðæÆ]+/g;
+                        // Match Old English characters including wynn, bullet for compound words, vowels with macrons, and dotted consonants
+                        const wordRegex = /[a-zA-ZƿÞþðæÆāēīōūȳǣċġɡ•()]+/g;
                         let match;
                         while ((match = wordRegex.exec(line))) {
                             const raw = match[0];
+                            const rawLower = raw.toLowerCase();
                             const normalized = normalizeWord(raw);
                             
-                            if (wordSet.has(normalized)) {
+                            // Check both exact match and normalized match
+                            if (exactWordSet.has(rawLower) || normalizedWordSet.has(normalized)) {
                                 console.log(`[Scribe] Found word entry: "${raw}" (normalized: "${normalized}") at line ${lineNum}, position ${match.index}`);
                                 builder.push(
                                     lineNum,
