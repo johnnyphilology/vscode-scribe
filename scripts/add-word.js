@@ -10,9 +10,9 @@ const rl = readline.createInterface({
 });
 
 const LANGUAGES = {
-  '1': { id: 'oldenglish', name: 'Old English', file: 'data/oldenglish/completionWords.json' },
-  '2': { id: 'oldnorse', name: 'Old Norse', file: 'data/oldnorse/completionWords.json' },
-  '3': { id: 'gothic', name: 'Gothic', file: 'data/gothic/completionWords.json' }
+  '1': { id: 'oldenglish', name: 'Old English', file: 'external/scribe-data/data/oldenglish/completionWords.json' },
+  '2': { id: 'oldnorse', name: 'Old Norse', file: 'external/scribe-data/data/oldnorse/completionWords.json' },
+  '3': { id: 'gothic', name: 'Gothic', file: 'external/scribe-data/data/gothic/completionWords.json' }
 };
 
 function loadWords(filePath) {
@@ -321,7 +321,7 @@ async function main() {
   console.log('\n🎉 Word addition session completed!');
   console.log('\n📝 Next steps:');
   console.log('   1. Test the new words in VS Code');
-  console.log('   2. Commit your changes: git add data/ && git commit -m "feat: add new word entries"');
+  console.log('   2. Commit your changes: git add external/scribe-data/data/ && git commit -m "feat: add new word entries"');
   
   rl.close();
 }

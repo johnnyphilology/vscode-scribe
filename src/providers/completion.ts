@@ -47,8 +47,8 @@ export function registerCompletion(
             {
                 provideCompletionItems(document, position) {
                     const line = document.lineAt(position.line).text;
-                    // Match letters including Old English characters like ƿ, þ, ð, æ
-                    const regex = /([a-zA-ZƿÞþðæÆ]+)$/;
+                    // Match all Unicode letters plus special characters (works universally for all languages)
+                    const regex = /([\p{L}•()]+)$/u;
                     const wordMatch = regex.exec(line.slice(0, position.character));
                     const typed = wordMatch ? wordMatch[1] : '';
 

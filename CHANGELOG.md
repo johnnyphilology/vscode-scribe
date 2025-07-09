@@ -1,5 +1,20 @@
 # Change Log
 
+## [1.0.0] - 2025-07-09
+**Initial Release of `v1.0.0`**
+
+🚀 **MAJOR Release:** `0.8.1` → `1.0.0`
+
+### ✨ Added
+- Full Old English collection of words
+
+### 🔄 Changed
+- Storing data externally in https://github.com/johnnyphilology/vscode-scribe-data
+
+### 🔧 Fixed
+- Semantic filters had issues for special characters
+- Bugs and defects in web views
+
 ## [0.8.1] - 2025-07-08
 **Adding several OE words**
 

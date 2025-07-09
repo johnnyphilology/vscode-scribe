@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import oldEnglishSubs from '../../data/oldenglish/substitutions.json';
+import oldEnglishSubs from '../../external/scribe-data/data/oldenglish/substitutions.json';
 
 /**
  * Check if developer mode is enabled

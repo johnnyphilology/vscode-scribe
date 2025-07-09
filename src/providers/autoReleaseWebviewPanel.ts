@@ -1,5 +1,24 @@
 import * as vscode from 'vscode';
 
+/**
+ * Helper to get the correct Git repository for the current workspace root.
+ * This avoids picking up submodules or the wrong repo.
+ */
+async function _getRepositoryForWorkspace(api: any): Promise<any | undefined> {
+    if (!vscode.workspace.workspaceFolders || api.repositories.length === 0) {
+        return undefined;
+    }
+    const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    // Try to find the repo whose root matches the workspace root
+    for (const repo of api.repositories) {
+        if (repo.rootUri && repo.rootUri.fsPath === workspaceRoot) {
+            return repo;
+        }
+    }
+    // Fallback: return the first repo
+    return api.repositories[0];
+}
+
 export class AutoReleaseWebviewPanel {
     public static currentPanel: AutoReleaseWebviewPanel | undefined;
     public static readonly viewType = 'scribe.autoRelease';
@@ -95,7 +114,6 @@ export class AutoReleaseWebviewPanel {
 
     private async _getCurrentBranch(): Promise<string> {
         try {
-            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
             if (gitExtension) {
                 if (!gitExtension.isActive) {
@@ -104,16 +122,11 @@ export class AutoReleaseWebviewPanel {
                 const git = gitExtension.exports;
                 const api = git.getAPI(1);
                 
-                console.log('Git API available, repositories:', api.repositories.length);
-                
                 // Wait a bit for repositories to be discovered
                 await new Promise(resolve => setTimeout(resolve, 100));
                 
-                if (api.repositories.length > 0) {
-                    const repo = api.repositories[0];
-                    console.log('Repository state:', repo.state);
-                    console.log('HEAD:', repo.state.HEAD);
-                    
+                const repo = await _getRepositoryForWorkspace(api);
+                if (repo) {
                     // Try to refresh the repository state
                     try {
                         await repo.status();
@@ -144,8 +157,8 @@ export class AutoReleaseWebviewPanel {
                         await vscode.commands.executeCommand('git.refresh');
                         // Wait a bit and try again
                         await new Promise(resolve => setTimeout(resolve, 500));
-                        if (api.repositories.length > 0) {
-                            const repo = api.repositories[0];
+                        const repo = await _getRepositoryForWorkspace(api);
+                        if (repo) {
                             if (repo.state.HEAD && repo.state.HEAD.name) {
                                 return repo.state.HEAD.name;
                             }
@@ -167,7 +180,6 @@ export class AutoReleaseWebviewPanel {
 
     private async _hasUncommittedChanges(): Promise<boolean> {
         try {
-            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
             if (gitExtension) {
                 if (!gitExtension.isActive) {
@@ -176,11 +188,8 @@ export class AutoReleaseWebviewPanel {
                 const git = gitExtension.exports;
                 const api = git.getAPI(1);
                 
-                if (api.repositories.length > 0) {
-                    const repo = api.repositories[0];
-                    console.log('Checking changes - workingTreeChanges:', repo.state.workingTreeChanges?.length);
-                    console.log('Checking changes - indexChanges:', repo.state.indexChanges?.length);
-                    
+                const repo = await _getRepositoryForWorkspace(api);
+                if (repo) {
                     const workingTreeChanges = repo.state.workingTreeChanges || [];
                     const indexChanges = repo.state.indexChanges || [];
                     return workingTreeChanges.length > 0 || indexChanges.length > 0;
@@ -196,7 +205,6 @@ export class AutoReleaseWebviewPanel {
 
     private async _getLatestCommitMessage(): Promise<string> {
         try {
-            // First try VS Code's built-in git extension
             const gitExtension = vscode.extensions.getExtension('vscode.git');
             if (gitExtension) {
                 if (!gitExtension.isActive) {
@@ -208,9 +216,8 @@ export class AutoReleaseWebviewPanel {
                 // Wait a bit for repositories to be discovered and state to be loaded
                 await new Promise(resolve => setTimeout(resolve, 200));
                 
-                if (api.repositories.length > 0) {
-                    const repo = api.repositories[0];
-                    
+                const repo = await _getRepositoryForWorkspace(api);
+                if (repo) {
                     try {
                         // Force a status refresh to ensure we have the latest state
                         await repo.status();
@@ -219,9 +226,6 @@ export class AutoReleaseWebviewPanel {
                     } catch (statusError) {
                         console.warn('Failed to refresh repo status:', statusError);
                     }
-                    
-                    console.log('Checking commit - HEAD:', repo.state.HEAD);
-                    console.log('Checking commit - commit:', repo.state.HEAD?.commit);
                     
                     // Check if we have commit information
                     const commitMessage = repo.state.HEAD?.commit?.message;

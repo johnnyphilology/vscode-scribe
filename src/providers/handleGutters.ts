@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import TAGS from '../../data/markers.json';
+import TAGS from '../../external/scribe-data/data/markers.json';
 
 // Map tagName -> decorationType
 const decorationTypes = new Map<string, vscode.TextEditorDecorationType>();

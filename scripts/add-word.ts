@@ -279,7 +279,7 @@ async function main() {
   console.log('\n🎉 Word addition session completed!');
   console.log('\n📝 Next steps:');
   console.log('   1. Test the new words in VS Code');
-  console.log('   2. Commit your changes: git add data/ && git commit -m "feat: add new word entries"');
+  console.log('   2. Commit your changes: git add external/scribe-data/data/ && git commit -m "feat: add new word entries"');
   
   rl.close();
 }

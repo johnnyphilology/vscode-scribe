@@ -1,0 +1,3 @@
+[submodule "external/scribe-data"]
+	path = external/scribe-data
+	url = https://github.com/johnnyphilology/vscode-scribe-data.git

@@ -351,7 +351,7 @@ describe('Extension Modularization Tests', () => {
                     const values: { [key: string]: any } = {
                         'enableSemanticTokens': true,
                         'enableDeveloperMode': false,
-                        'dictionaryDataPath': 'data/',
+                        'dictionaryDataPath': 'external/scribe-data/data/',
                     };
                     return values[key];
                 }),

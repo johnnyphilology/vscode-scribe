@@ -28,7 +28,7 @@ export function generateSettingsTemplate(): string {
   },
   "scribe.enableSemanticTokens": true,
   "scribe.enableDeveloperMode": false,
-  "scribe.dictionaryDataPath": "data/",
+  "scribe.dictionaryDataPath": "external/scribe-data/data/",
   "[oldenglish]": {
     "editor.fontFamily": "Noto Serif"
   },
