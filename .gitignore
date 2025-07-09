@@ -21,6 +21,9 @@ tmp/
 *.sublime-*
 *.code-workspace
 
+# ignore former data directory
+data/
+
 # ignore old-english texts
 oe/
 words.oe
