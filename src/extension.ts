@@ -16,13 +16,13 @@ import { getOldEnglishSubstitutions as getDynamicOldEnglishSubs, registerConfigu
 import { generateSettingsTemplate } from './providers/settingsTemplate';
 import { extractWordList, bracketMarkers } from './utils/helpers';
 
-import oldEnglishSubs from '../data/oldenglish/substitutions.json';
-import oldNorseSubs from '../data/oldnorse/substitutions.json';
-import gothicSubs from '../data/gothic/substitutions.json';
-import gothicWords from '../data/gothic/completionWords.json';
-import oldEnglishWords from '../data/oldenglish/completionWords.json';
-import oldNorseWordsRaw from '../data/oldnorse/completionWords.json';
-import markers from '../data/markers.json';
+import oldEnglishSubs from '../external/scribe-data/data/oldenglish/substitutions.json';
+import oldNorseSubs from '../external/scribe-data/data/oldnorse/substitutions.json';
+import gothicSubs from '../external/scribe-data/data/gothic/substitutions.json';
+import gothicWords from '../external/scribe-data/data/gothic/completionWords.json';
+import oldEnglishWords from '../external/scribe-data/data/oldenglish/completionWords.json';
+import oldNorseWordsRaw from '../external/scribe-data/data/oldnorse/completionWords.json';
+import markers from '../external/scribe-data/data/markers.json';
 
 const oldNorseWords: any[] = Array.isArray(oldNorseWordsRaw) ? oldNorseWordsRaw : Object.values(oldNorseWordsRaw);
 

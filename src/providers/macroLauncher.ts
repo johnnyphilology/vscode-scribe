@@ -4,7 +4,7 @@ import { toElderFuthark } from '../languages/oldnorse/runes/elderFuthark';
 import { toYoungerFuthark } from '../languages/oldnorse/runes/youngerFuthark';
 import { toMedievalRunes } from '../languages/oldnorse/runes/medieval';
 import { toGothic } from '../languages/gothic/runes/gothicScript';
-import MARKERS from '../../data/markers.json';
+import MARKERS from '../../external/scribe-data/data/markers.json';
 
 const markerMap: { [key: string]: (txt: string) => string } = {
     'Futhorc': toFuthorc,
