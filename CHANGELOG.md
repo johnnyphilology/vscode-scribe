@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.0.1] - 2025-07-16
+**Adding • … substitution for Old English**
+
+🚀 **PATCH Release:** `1.0.0` → `1.0.1`
+
+### ✨ Added
+- By typing ".." will create the • character
+- By typing "..." will create the … character
+- These changes are useful for finding compound words and using ligature ellipses vs. dots
+
 ## [1.0.0] - 2025-07-09
 **Initial Release of `v1.0.0`**
 
