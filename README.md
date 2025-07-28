@@ -1,5 +1,5 @@
 # Scribe
-A scholarly Visual Studio Code extension that aids in writing medieval languages.
+A Visual Studio Code extension that aids in writing in languages with special characters.
 
 <img src="https://raw.githubusercontent.com/johnnyphilology/scribe/refs/heads/main/doc/scribe.png" width="400"/>
 
@@ -20,7 +20,6 @@ Scribe includes a beautiful custom theme specifically designed for medieval lang
 
 - **Dark scholarly theme** optimized for reading medieval texts
 - **Enhanced syntax highlighting** for runic text, Gothic script, and medieval letters
-- **Custom file icons** for medieval language files (`.oe`, `.on`, `.got`)
 - **Semantic token support** for word definitions and glossaries
 - **Reduced eye strain** with warm, professional colors
 
