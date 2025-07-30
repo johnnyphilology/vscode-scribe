@@ -96,6 +96,22 @@
         "foreground": "#ff6b35",
         "fontStyle": "bold"
       }
+    },
+    {
+      "name": "Latin Macrons",
+      "scope": "constant.language.latin.macrons.scribe",
+      "settings": {
+        "foreground": "#d4af37",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Latin Roman Numerals",
+      "scope": "constant.language.latin.numerals.scribe",
+      "settings": {
+        "foreground": "#9370db",
+        "fontStyle": "bold"
+      }
     }
   ]
 }

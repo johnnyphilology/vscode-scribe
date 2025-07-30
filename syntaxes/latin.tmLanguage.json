@@ -2,16 +2,20 @@
   "scopeName": "source.latin",
   "patterns": [
     {
+      "name": "constant.language.runes.scribe",
+      "match": "[\u16A0-\u16FF]+"
+    },
+    {
+      "name": "constant.language.gothic.scribe",
+      "match": "(𐌰|𐌱|𐌲|𐌳|𐌴|𐌵|𐌶|𐌷|𐌸|𐌹|𐌺|𐌻|𐌼|𐌽|𐌾|𐌿|𐍀|𐍁|𐍂|𐍃|𐍄|𐍅|𐍆|𐍇|𐍈|𐍉|𐍊)+"
+    },
+    {
       "name": "constant.language.latin.macrons.scribe",
       "match": "[āēīōū]+"
     },
     {
       "name": "constant.language.latin.numerals.scribe",
       "match": "\\b(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3}))\\b"
-    },
-    {
-      "name": "constant.language.latin.classical.scribe",
-      "match": "\\b[ABCDEFGHIKLMNOPQRSTVXYZ]+\\b"
     },
     {
       "name": "meta.block.tagged.scribe",
