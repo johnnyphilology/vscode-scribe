@@ -39,8 +39,11 @@ export function generateSettingsTemplate(): string {
   "[gothic]": {
     "editor.fontFamily": "Noto Serif"
   },
+  "[latin]": {
+    "editor.fontFamily": "Noto Serif"
+  },
   "editor.semanticTokenColorCustomizations": {
-    "[Scribe Medieval Theme]": {
+    "[Scribe]": {
       "rules": {
         "wordentry": {
           "foreground": "${highlightColor}"
@@ -53,7 +56,7 @@ export function generateSettingsTemplate(): string {
     }
   },
   "editor.tokenColorCustomizations": {
-    "[Scribe Medieval Theme]": {
+    "[Scribe]": {
       "textMateRules": [
         {
           "scope": "constant.language.runes.scribe",
