@@ -4,6 +4,7 @@ import { toElderFuthark } from '../languages/oldnorse/runes/elderFuthark';
 import { toYoungerFuthark } from '../languages/oldnorse/runes/youngerFuthark';
 import { toMedievalRunes } from '../languages/oldnorse/runes/medieval';
 import { toGothic } from '../languages/gothic/runes/gothicScript';
+import { toClassicalLatin } from '../languages/latin/latin';
 import MARKERS from '../../external/scribe-data/data/markers.json';
 
 const markerMap: { [key: string]: (txt: string) => string } = {
@@ -11,7 +12,8 @@ const markerMap: { [key: string]: (txt: string) => string } = {
     'ElderFuthark': toElderFuthark,
     'YoungerFuthark': toYoungerFuthark,
     'MedievalFuthark': toMedievalRunes,
-    'Gothic': toGothic
+    'Gothic': toGothic,
+    'Latin': toClassicalLatin
 };
 
 export function registerMacroLauncher(context: vscode.ExtensionContext) {

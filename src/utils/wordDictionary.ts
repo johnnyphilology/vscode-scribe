@@ -43,6 +43,11 @@ export function getLanguages(): { [key: string]: LanguageConfig } {
             id: 'gothic', 
             name: 'Gothic', 
             file: path.join(dataPath, 'gothic', 'completionWords.json')
+        },
+        'latin': { 
+            id: 'latin', 
+            name: 'Latin', 
+            file: path.join(dataPath, 'latin', 'completionWords.json')
         }
     };
 }

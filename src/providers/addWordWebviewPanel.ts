@@ -397,6 +397,7 @@ export class AddWordWebviewPanel {
                         <option value="oldenglish">Old English</option>
                         <option value="oldnorse">Old Norse</option>
                         <option value="gothic">Gothic</option>
+                        <option value="latin">Latin</option>
                     </select>
                 </div>
 

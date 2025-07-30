@@ -24,7 +24,8 @@ export function generateSettingsTemplate(): string {
   "files.associations": {
     "*.oe": "oldenglish",
     "*.on": "oldnorse",
-    "*.got": "gothic"
+    "*.got": "gothic",
+    "*.lat": "latin"
   },
   "scribe.enableSemanticTokens": true,
   "scribe.enableDeveloperMode": false,

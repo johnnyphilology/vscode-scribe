@@ -70,6 +70,18 @@
           ".got"
         ],
         "configuration": "./language-configurations.json"
+      },
+      {
+        "id": "latin",
+        "aliases": [
+          "Latin",
+          "latin",
+          "Classical Latin"
+        ],
+        "extensions": [
+          ".lat"
+        ],
+        "configuration": "./language-configurations.json"
       }
     ],
     "commands": [
@@ -163,6 +175,10 @@
       {
         "language": "gothic",
         "path": "./snippets/gothic.code-snippets"
+      },
+      {
+        "language": "latin",
+        "path": "./snippets/latin.code-snippets"
       }
     ],
     "grammars": [
@@ -180,6 +196,11 @@
         "language": "gothic",
         "scopeName": "source.gothic",
         "path": "./syntaxes/gothic.tmLanguage.json"
+      },
+      {
+        "language": "latin",
+        "scopeName": "source.latin",
+        "path": "./syntaxes/latin.tmLanguage.json"
       }
     ],
     "themes": [
@@ -211,22 +232,22 @@
       "editor/title": [
         {
           "command": "extension.convertLanguageBlocks",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "extension.openScribeSettings",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "scribe.addWordPanel",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "scribe.setupWorkspaceSettings",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {

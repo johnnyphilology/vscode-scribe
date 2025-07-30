@@ -19,12 +19,15 @@ import { extractWordList, bracketMarkers } from './utils/helpers';
 import oldEnglishSubs from '../external/scribe-data/data/oldenglish/substitutions.json';
 import oldNorseSubs from '../external/scribe-data/data/oldnorse/substitutions.json';
 import gothicSubs from '../external/scribe-data/data/gothic/substitutions.json';
+import latinSubs from '../external/scribe-data/data/latin/substitutions.json';
 import gothicWords from '../external/scribe-data/data/gothic/completionWords.json';
 import oldEnglishWords from '../external/scribe-data/data/oldenglish/completionWords.json';
 import oldNorseWordsRaw from '../external/scribe-data/data/oldnorse/completionWords.json';
+import latinWords from '../external/scribe-data/data/latin/completionWords.json';
 import markers from '../external/scribe-data/data/markers.json';
 
 const oldNorseWords: any[] = Array.isArray(oldNorseWordsRaw) ? oldNorseWordsRaw : Object.values(oldNorseWordsRaw);
+const latinWordsArray: any[] = Array.isArray(latinWords) ? latinWords : Object.values(latinWords);
 
 const allMarkers = bracketMarkers(markers);
 
@@ -140,7 +143,8 @@ function registerWorkspaceSettingsCommand(context: vscode.ExtensionContext) {
                 "files.associations": {
                     "*.oe": "oldenglish",
                     "*.on": "oldnorse",
-                    "*.got": "gothic"
+                    "*.got": "gothic",
+                    "*.lat": "latin"
                 }
             };
 
@@ -347,7 +351,8 @@ export function activate(context: vscode.ExtensionContext) {
     const languages: LanguageConfig[] = [
         { id: 'oldenglish', substitutions: oldEnglishSubs, words: oldEnglishWords },
         { id: 'oldnorse', substitutions: oldNorseSubs, words: oldNorseWords },
-        { id: 'gothic', substitutions: gothicSubs, words: gothicWords }
+        { id: 'gothic', substitutions: gothicSubs, words: gothicWords },
+        { id: 'latin', substitutions: latinSubs, words: latinWordsArray }
     ];
 
     languages.forEach(lang => registerLanguage(context, lang));

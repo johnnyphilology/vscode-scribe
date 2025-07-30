@@ -1,0 +1,51 @@
+{
+  "scopeName": "source.latin",
+  "patterns": [
+    {
+      "name": "constant.language.latin.macrons.scribe",
+      "match": "[āēīōū]+"
+    },
+    {
+      "name": "constant.language.latin.numerals.scribe",
+      "match": "\\b(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3}))\\b"
+    },
+    {
+      "name": "constant.language.latin.classical.scribe",
+      "match": "\\b[ABCDEFGHIKLMNOPQRSTVXYZ]+\\b"
+    },
+    {
+      "name": "meta.block.tagged.scribe",
+      "begin": "(<)(Latin)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "patterns": [
+          { "match": "Latin", "name": "entity.name.tag.latin.scribe" }
+        ]},
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      },
+      "end": "(</)(?i:(Latin))(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "patterns": [
+          { "match": "(?i:Latin)", "name": "entity.name.tag.latin.scribe" }
+        ]},
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      }
+    },
+    {
+      "name": "meta.block.tagged.generic.scribe",
+      "begin": "(<)([a-zA-Z]+)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "name": "entity.name.tag.scribe" },
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      },
+      "end": "(</)([a-zA-Z]+)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.scribe" },
+        "2": { "name": "entity.name.tag.scribe" },
+        "3": { "name": "punctuation.definition.tag.end.scribe" }
+      }
+    }
+  ]
+}
