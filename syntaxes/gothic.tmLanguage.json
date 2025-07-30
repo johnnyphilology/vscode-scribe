@@ -11,7 +11,7 @@
     },
     {
       "name": "meta.block.tagged.scribe",
-      "begin": "(<)(Futhorc|ElderFuthark|YoungerFuthark|MedievalFuthark|Gothic)(>)",
+      "begin": "(<)(Futhorc|ElderFuthark|YoungerFuthark|MedievalFuthark|Gothic|Latin)(>)",
       "beginCaptures": {
         "1": { "name": "punctuation.definition.tag.begin.scribe" },
         "2": { "patterns": [
@@ -19,11 +19,12 @@
           { "match": "ElderFuthark", "name": "entity.name.tag.elderfuthark.scribe" },
           { "match": "YoungerFuthark", "name": "entity.name.tag.youngerfuthark.scribe" },
           { "match": "MedievalFuthark", "name": "entity.name.tag.medievalfuthark.scribe" },
-          { "match": "Gothic", "name": "entity.name.tag.gothic.scribe" }
+          { "match": "Gothic", "name": "entity.name.tag.gothic.scribe" },
+          { "match": "Latin", "name": "entity.name.tag.latin.scribe" }
         ]},
         "3": { "name": "punctuation.definition.tag.end.scribe" }
       },
-      "end": "(</)(?i:(Futhorc|ElderFuthark|YoungerFuthark|MedievalFuthark|Gothic))(>)",
+      "end": "(</)(?i:(Futhorc|ElderFuthark|YoungerFuthark|MedievalFuthark|Gothic|Latin))(>)",
       "endCaptures": {
         "1": { "name": "punctuation.definition.tag.begin.scribe" },
         "2": { "patterns": [
@@ -31,7 +32,8 @@
           { "match": "(?i:ElderFuthark)", "name": "entity.name.tag.elderfuthark.scribe" },
           { "match": "(?i:YoungerFuthark)", "name": "entity.name.tag.youngerfuthark.scribe" },
           { "match": "(?i:MedievalFuthark)", "name": "entity.name.tag.medievalfuthark.scribe" },
-          { "match": "(?i:Gothic)", "name": "entity.name.tag.gothic.scribe" }
+          { "match": "(?i:Gothic)", "name": "entity.name.tag.gothic.scribe" },
+          { "match": "(?i:Latin)", "name": "entity.name.tag.latin.scribe" }
         ]},
         "3": { "name": "punctuation.definition.tag.end.scribe" }
       }

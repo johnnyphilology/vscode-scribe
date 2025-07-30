@@ -110,6 +110,12 @@ export function generateSettingsTemplate(): string {
           }
         },
         {
+          "scope": "entity.name.tag.latin.scribe",
+          "settings": {
+            "foreground": "#D32F2F"
+          }
+        },
+        {
           "scope": "entity.name.tag.scribe",
           "settings": {
             "foreground": "#01ad29"
