@@ -28,9 +28,10 @@ function askLanguage(): Promise<LanguageConfig> {
     console.log('  1) Old English');
     console.log('  2) Old Norse');
     console.log('  3) Gothic');
+    console.log('  4) Latin');
     console.log('  q) quit - Cancel operation');
     
-    rl.question('\nEnter your choice (1/2/3/q): ', (answer) => {
+    rl.question('\nEnter your choice (1/2/3/4/q): ', (answer) => {
       const choice = answer.toLowerCase().trim();
       const languages = getLanguages();
       switch (choice) {
@@ -42,6 +43,9 @@ function askLanguage(): Promise<LanguageConfig> {
           break;
         case '3':
           resolve(languages.gothic);
+          break;
+        case '4':
+          resolve(languages.latin);
           break;
         case 'q':
         case 'quit':

@@ -24,7 +24,8 @@ export function generateSettingsTemplate(): string {
   "files.associations": {
     "*.oe": "oldenglish",
     "*.on": "oldnorse",
-    "*.got": "gothic"
+    "*.got": "gothic",
+    "*.lat": "latin"
   },
   "scribe.enableSemanticTokens": true,
   "scribe.enableDeveloperMode": false,
@@ -38,8 +39,11 @@ export function generateSettingsTemplate(): string {
   "[gothic]": {
     "editor.fontFamily": "Noto Serif"
   },
+  "[latin]": {
+    "editor.fontFamily": "Noto Serif"
+  },
   "editor.semanticTokenColorCustomizations": {
-    "[Scribe Medieval Theme]": {
+    "[Scribe]": {
       "rules": {
         "wordentry": {
           "foreground": "${highlightColor}"
@@ -52,7 +56,7 @@ export function generateSettingsTemplate(): string {
     }
   },
   "editor.tokenColorCustomizations": {
-    "[Scribe Medieval Theme]": {
+    "[Scribe]": {
       "textMateRules": [
         {
           "scope": "constant.language.runes.scribe",
@@ -103,6 +107,12 @@ export function generateSettingsTemplate(): string {
           "scope": "entity.name.tag.gothic.scribe",
           "settings": {
             "foreground": "#2087e7"
+          }
+        },
+        {
+          "scope": "entity.name.tag.latin.scribe",
+          "settings": {
+            "foreground": "#D32F2F"
           }
         },
         {

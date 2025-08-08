@@ -335,6 +335,7 @@ export class AddWordWebviewProvider implements vscode.WebviewViewProvider {
                 <option value="oldenglish" selected>Old English</option>
                 <option value="oldnorse">Old Norse</option>
                 <option value="gothic">Gothic</option>
+                <option value="latin">Latin</option>
             </select>
         </div>
 

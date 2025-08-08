@@ -9,40 +9,49 @@
     "_file_gothic": {
       "iconPath": "../media/Gothic.svg"
     },
+    "_file_latin": {
+      "iconPath": "../media/Latin.svg"
+    },
   },
   "fileExtensions": {
     "oe": "_file_oldenglish",
     "on": "_file_oldnorse",
-    "got": "_file_gothic"
+    "got": "_file_gothic",
+    "lat": "_file_latin"
   },
   "fileNames": {},
   "languageIds": {
     "oldenglish": "_file_oldenglish",
     "oldnorse": "_file_oldnorse",
-    "gothic": "_file_gothic"
+    "gothic": "_file_gothic",
+    "latin": "_file_latin"
   },
   "light": {
     "fileExtensions": {
       "oe": "_file_oldenglish",
       "on": "_file_oldnorse",
-      "got": "_file_gothic"
+      "got": "_file_gothic",
+      "lat": "_file_latin"
     },
     "languageIds": {
       "oldenglish": "_file_oldenglish",
       "oldnorse": "_file_oldnorse",
-      "gothic": "_file_gothic"
+      "gothic": "_file_gothic",
+      "latin": "_file_latin"
     }
   },
   "highContrast": {
     "fileExtensions": {
       "oe": "_file_oldenglish",
       "on": "_file_oldnorse",
-      "got": "_file_gothic"
+      "got": "_file_gothic",
+      "lat": "_file_latin"
     },
     "languageIds": {
       "oldenglish": "_file_oldenglish",
       "oldnorse": "_file_oldnorse",
-      "gothic": "_file_gothic"
+      "gothic": "_file_gothic",
+      "latin": "_file_latin"
     }
   }
 }

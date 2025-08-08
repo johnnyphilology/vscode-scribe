@@ -9,7 +9,7 @@
   },
   "description": "A scholarly extension that aids in writing medieval languages.",
   "publisher": "JohnnyPhilology",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "repository": {
     "url": "https://github.com/johnnyphilology/scribe.git"
   },
@@ -68,6 +68,18 @@
         ],
         "extensions": [
           ".got"
+        ],
+        "configuration": "./language-configurations.json"
+      },
+      {
+        "id": "latin",
+        "aliases": [
+          "Latin",
+          "latin",
+          "Classical Latin"
+        ],
+        "extensions": [
+          ".lat"
         ],
         "configuration": "./language-configurations.json"
       }
@@ -163,6 +175,10 @@
       {
         "language": "gothic",
         "path": "./snippets/gothic.code-snippets"
+      },
+      {
+        "language": "latin",
+        "path": "./snippets/latin.code-snippets"
       }
     ],
     "grammars": [
@@ -180,6 +196,11 @@
         "language": "gothic",
         "scopeName": "source.gothic",
         "path": "./syntaxes/gothic.tmLanguage.json"
+      },
+      {
+        "language": "latin",
+        "scopeName": "source.latin",
+        "path": "./syntaxes/latin.tmLanguage.json"
       }
     ],
     "themes": [
@@ -211,22 +232,22 @@
       "editor/title": [
         {
           "command": "extension.convertLanguageBlocks",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "extension.openScribeSettings",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "scribe.addWordPanel",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
           "command": "scribe.setupWorkspaceSettings",
-          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic",
+          "when": "resourceLangId == oldenglish || resourceLangId == oldnorse || resourceLangId == gothic || resourceLangId == latin",
           "group": "navigation"
         },
         {
@@ -337,12 +358,12 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "compile:web": "webpack --config-name webExtensionConfig",
-    "watch": "webpack --watch",
-    "watch:web": "webpack --watch --config-name webExtensionConfig",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "package:web": "webpack --mode production --devtool hidden-source-map --config-name webExtensionConfig",
+    "compile": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js",
+    "compile:web": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --config-name webExtensionConfig",
+    "watch": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --watch",
+    "watch:web": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --watch --config-name webExtensionConfig",
+    "package": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --mode production --devtool hidden-source-map",
+    "package:web": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --mode production --devtool hidden-source-map --config-name webExtensionConfig",
     "package-extension": "npm run package && npm run package:web && vsce package",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",

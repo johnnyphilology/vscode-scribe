@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.1.0] - 2025-07-31
+**�� Adding Latin Support**
+
+🚀 **MINOR Release:** `1.0.1` → `1.1.0`
+
+### ✨ Added
+- Latin language support
+- Macrons for long vowels
+- `49,746` Latin words from Lewis and Short's dictionary
+
 ## [1.0.1] - 2025-07-16
 **Adding • … substitution for Old English**
 
